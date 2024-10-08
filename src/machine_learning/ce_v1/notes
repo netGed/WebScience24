@@ -1,4 +1,13 @@
 Log
+Grundlegendes zu den Daten/Aufgabenstellung
+- strukturierte Daten
+- features (ID, Platform/Spiel, Nachricht) + target (positiv, negativ, neutral, irrelevant)
+- Train: ca. 75k Datensätze, beim ersten Überfliegen keine Lücken, sehr sauber
+- Val: ca. 1750, dabei aber erkennbare Lücken und unsaubere Einträge
+- Inhalt: Nachrichten->Tweets, vmtl. um 2020 herum erstellt/gecrawlt (Tweets enthalten Bezug zum Corona-Lockdown, FIFA 20 usw)
+- Daten sind komplett ungeeignet für eine Kategorisierung von "Hate-Speech"
+- neben dem Tweet gibt es keine weiteren features, die für eine Klassifikation nützlich sein könnten
+
 
 Trainingsdaten
 - Spaltenbezeichnungen hinzugefügt: ['thread', 'topic', "sentiment", "tweet"]
@@ -15,7 +24,7 @@ Validierungsdaten
 => statt Validierungsdaten die bereinigten Trainingsdaten nutzen (80-20); neuen Anteil Trainingsdaten dann nochmal vor Modeltraining in train/test aufsplitten (wieder 80-20)
 
 
-Preprocessing für Naive-Bayes
+Preprocessing des bereinigten Datensatzes
 - Textvorverarbeitung: Links, Emojis, Sonderzeichen etc. entfernen, alles toLower
 - Stopwörter entfernen
 - Most frequent words: erstmal nicht entfernen, da auch Wörter wie "shit", "love" darunter sind, vmtl. relevant für die Klassifikation
@@ -26,10 +35,12 @@ Preprocessing für Naive-Bayes
 Ergebnisse erste Modellvarianten
 - Binäre Klassifikation deutlich besser als multi-class für NB
 - RF besser als alle NB Modelle, ggf. aber überangepasst (sehr hohe Train-Acc)
+- TF-IDF bringt minimale Verbesserung
 
 
 TODO
 - EDA fortführen, Ergebnisse festhalten
-- prüfen, ob Tokenization und TF-IDF zu größeren Unterschieden führt
 - detaillierter Auswertung der Modell (ROC-AUC)
-- Modelle mit Validierungsdaten auswerten/vergleichen
+- Modelle mit (originale/neuen) Validierungsdaten auswerten/vergleichen
+- LSTMs auf multi-class target trainieren
+- LSTMs mit komplett unbereinigten Daten trainieren
