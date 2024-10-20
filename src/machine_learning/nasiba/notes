@@ -1,0 +1,17 @@
+Die Emojis sind jetzt richtig kodiert und können richtig interpretiert werden 
+Entfernung von Hashtags/ special characters
+Entfernung von URL's im Text
+Entfernung der Punkte
+Entfernung von Stopwords
+Extraktion/Korrektur von shortcuts/slangs im Text
+Entfernung von Großbuchstaben in Wörtern
+Korrektur von falsch geschriebenen Wörtern im Text
+
+Bei der Reinigung des Datensatzes habe ich folgende Punkte, bei denen ich mir nicht sicher war:
+Welche Rolle könnte Ausrufezeichen (!) bei der Analyse spielen? Soll diese entfernt werden?
+Was konkret machen wir nun mit hashtags, soll diese auch entfernt werden? Oder sollen wir zuerst daraus
+eine neue Spalte erzeugen?
+Könnten *** auch zu negativen Wörtern beitragen? (Schimpfwörter)
+Was tun konkret mit Emojis?
+
+Und generell: spielen da überhaupt diese ganze Sonderzeichen später eine Rolle?
