@@ -10,20 +10,20 @@ Grundlegendes zu den Daten
 Themen-/Nutzerkreis o.Ä.) => zielt auf Data Fit ab -> geeignet für ein allgemeines Model zur Erkennung von Hate-Speech oder nur
 eingeschränkt?
 
-Aufbereitung Trainingsdaten
+Aufbereitung Trainingsdaten (allgemein)
 - Duplikate     => vorhanden; Lsg: droppen
-- Nullcheck     => vorhanden; Lsg: droppen
+- Nullcheck     => keine vorhanden
 - Typos/Inkonsistenzen      => keine kategorischen Features vorhanden, die man prüfen könnte; in den Tweets selbst eine Vielzahl von Schreibfehlern
-- Inkonsistente Kodierung       => behoben
+- Inkonsistente Kodierung       => falsches Encoding mithilfe von ftfy behoben
 - Ausreißer     => Ausreißer über die Charlänge/Wortanzahl bestimmt & gedroppt
-=> Bereinigter Datensatz: 29495 (-2467 /-7,7%)
+=> Bereinigter Datensatz nach allgemeiner Bereinigung: todo Zahlen eintragen
+=> Bereinigter Datensatz nach spezieller Bereinigung: todo Zahlen eintragen
 
 Preprocessing des bereinigten Trainingsdatensatzes
 - Textvorverarbeitung: Links, Emojis, Sonderzeichen etc. entfernen, alles toLower
 - Stopwörter (english) entfernen
-- Most frequent words: mit Gruppe klären, wie viele Wörter entfernt werden sollen
+- Most frequent words
 - Lemmatization: alle Wörter auf ihren Wortstamm reduzieren
-- Tokenization
 
 EDA
 - target stark ungleich verteilt (nur ~7% hate-speech)
@@ -32,12 +32,7 @@ EDA
    - twwets ohne HS Tendenz zur Normalverteilung bei Charanzahl, mit HS eher mehr Chars
    => tweets mit HS tendenziell eher etwas länger und daher auch mehr Chars
 
-
-Ideen
-- Feature Engineering: "@user" verwenden => hate-speech evtl. eher gegen einzelne Personen gerichtet => tweet mit handle versehen?
-   -> vmtl. geringe Aussagekraft, da user ca. 17k mal vorkommt, somit geringe Unterscheidungskraft
-
-
-TODO
-- Umgang mit den Sonderzeichen/Emojis?
-- Ungleichverteilung des Targets behandeln
+Zur Aufgaben-/Fragestellung
+Wie kann mithilfe von klassischen Verfahren des Maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf Sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+- Welche Herausforderungen gibt es bei der Aufbereitung der Texte?
+- Welche Verfahren sind besser/schlechter geeignet?
