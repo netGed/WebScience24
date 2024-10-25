@@ -1,0 +1,24 @@
+Mögliche Problemstellungen:
+
+1. Feinere Klassifizierung: Multiklass-Problem
+Problemstellung: Anstatt nur zu klassifizieren, ob ein Tweet Hate Speech enthält oder nicht, könnte man versuchen, verschiedene Arten von Hate Speech zu identifizieren. Beispielsweise könnte man Hate Speech in Kategorien wie rassistisch, sexistisch, homophob oder religiös diskriminierend unterteilen.
+Beispiel: "Wie können maschinelle Lernmethoden genutzt werden, um zwischen rassistisch motivierter Hate Speech und gender-bezogener Hate Speech in Tweets zu unterscheiden?"
+
+
+2. Einfluss von Emojis und Hashtags auf Hate Speech
+Problemstellung: Es könnte der Einfluss von Emojis und Hashtags auf die Wahrscheinlichkeit untersucht werden, dass Tweets Hate Speech enthalten.
+Beispiel: "Gibt es eine Korrelation zwischen der Verwendung von Emojis/Hashtags und der Wahrscheinlichkeit von Hate Speech in Tweets?"
+
+3. Verbindung von Hate Speech mit dem Verbreitungsverhalten
+Problemstellung: Es könnte untersucht werden, ob Tweets mit Hate Speech ein anderes Verbreitungsverhalten aufweisen (z.B. in Bezug auf Retweets) im Vergleich zu nicht-hasserfüllten Tweets.
+Beispiel: "Zeigen Tweets, die Hate Speech enthalten, ein anderes Verbreitungsverhalten auf Social Media als reguläre Tweets?"
+
+---------
+4. Erkennung und Umgang mit Klassenungleichgewicht (Imbalanced Class Problem)
+Problemstellung: Wenn es im Datensatz eine signifikante Ungleichheit zwischen den Labels (0 und 1) gibt, kann dies zu einer verzerrten Klassifikation führen. Es könnte untersucht werden, wie Techniken wie Oversampling, Undersampling oder gewichtete Klassifikationen helfen können, das Ungleichgewicht zu bewältigen.
+Beispiel: "Wie kann das Ungleichgewicht in den Klassen bei der Hate Speech-Klassifikation effektiv gehandhabt werden?"
+-->SMOTE (Synthetic Minority Over-sampling Technique), Random Undersampling, oder Verwendung von Klassifikatoren mit Gewichtungen für die weniger vertretene Klasse.
+
+5. Erkennung von Schlüsselthemen durch Themenmodellierung
+Problemstellung: Obwohl nur der Tweet-Text und das Label vorhanden sind, könnte eine Themenmodellierung verwendet werden, um herauszufinden, welche Hauptthemen in Hate Speech-Tweets im Vergleich zu Nicht-Hate Speech-Tweets vorkommen.
+Beispiel: "Welche Hauptthemen lassen sich in Tweets identifizieren, die als Hate Speech klassifiziert wurden?"
