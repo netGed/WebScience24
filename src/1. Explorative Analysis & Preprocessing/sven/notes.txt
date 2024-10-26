@@ -1,0 +1,29 @@
+Datensatz
+Vermutlich 0 = keine Hatespeech und 1 Hatespeech, aber sehr undurchsichtig
+z.T. Antworten auf andere Tweets dabei wo der Zusammenhang fehlt
+Duplikate im vierstelligen Bericht
+Sehe keine leeren Tweets im Train Datensatz
+Typos wie bihday vorhanden
+Tweets neuer als Ende 2017 (>140 Zeichen)
+Als geeignete klassische ML -Methoden aus dem Kurs würden sich überwachte Methoden wie SVM oder Bayes anbieten
+Wenig mit Label 1
+
+Verabeitung
+Dulikate gelöscht
+Stop words entfernt
+Stemming
+
+ToDo
+Emoji einbinden
+Typos
+Wir brauchen weitere Datensätze
+Können wir Antworten ohne Zusammenhang identifizieren und entfernen?
+
+Fragestellung
+Lässt sich anhand von Hashtags auf Hatespeech schließen? 
+Können wir Kontext zu Hashtags abbilden?
+
+Falls wir Hate Speech eingrenzen wollen, mögliche Ideen:
+https://en.wikipedia.org/wiki/Hate_speech
+
+Politisch motivierte Hatespeech finden (US-Wahlkampf). Twitter / X vs. Truth Social 
