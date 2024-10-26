@@ -3,6 +3,7 @@ Mögliche Problemstellungen:
 1. Feinere Klassifizierung: Multiklass-Problem
 Problemstellung: Anstatt nur zu klassifizieren, ob ein Tweet Hate Speech enthält oder nicht, könnte man versuchen, verschiedene Arten von Hate Speech zu identifizieren. Beispielsweise könnte man Hate Speech in Kategorien wie rassistisch, sexistisch, homophob oder religiös diskriminierend unterteilen.
 Beispiel: "Wie können maschinelle Lernmethoden genutzt werden, um zwischen rassistisch motivierter Hate Speech und gender-bezogener Hate Speech in Tweets zu unterscheiden?"
+Eventuell weiteren Datensatz nehmen, Modell trainieren um zwischen sexistisch und rassistisch zu klassifizieren und dann unseren Datensatz den Hate-Speech-Teil klassifizieren
 
 
 2. Einfluss von Emojis und Hashtags auf Hate Speech
