@@ -1,0 +1,20 @@
+Possible research questions: 
+
+# Traditional ML-Mehtods
+
+1. Unsupervised Learning 
+What patterns or themes emerge from hate speech data when using topic modeling (e.g., LDA) to analyze unlabelled tweets?
+
+2. Supervised Learning
+How do different supervised learning algorithms (e.g., logistic regression, support vector machines, decision trees) compare in detecting hate speech?
+    What features (e.g., word embeddings, character n-grams, TF-IDF) contribute most to the performance of supervised models in hate speech detection?
+    What is the impact of using imbalanced datasets on the performance of supervised models for hate speech detection, and how can techniques like SMOTE help?
+
+
+## DL-Methods
+
+(how) can a convolutional neural network (CNN) (be utilized to) effectively identify hate speech in short text snippets, such as tweets?
+What role do data augmentation techniques play in enhancing the performance of deep learning models for hate speech detection?
+
+
+
