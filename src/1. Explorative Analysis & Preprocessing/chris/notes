@@ -1,0 +1,38 @@
+Log
+Grundlegendes zu den Daten
+- strukturierte Daten
+- nur tweet + label (0 = kein hate-speech, 1 = hate-speech)
+- Train: ca. 32k Datensätze, beim ersten Überfliegen keine Lücken, sehr sauber
+- Val: ca. 17k
+- Tweets wurden anonymisiert (Handle durch "user" ersetzt)
+- keine Features die für die Representativeness genutzt werden könnten (Alter, Geschlecht etc.)
+- keine Features, die Aufschluss darüber geben, wie breit der Anwendungsbereich ist (stammen die Tweets z.B. nur aus einem beschränkten
+Themen-/Nutzerkreis o.Ä.) => zielt auf Data Fit ab -> geeignet für ein allgemeines Model zur Erkennung von Hate-Speech oder nur
+eingeschränkt?
+
+Aufbereitung Trainingsdaten (allgemein)
+- Duplikate     => vorhanden; Lsg: droppen
+- Nullcheck     => keine vorhanden
+- Typos/Inkonsistenzen      => keine kategorischen Features vorhanden, die man prüfen könnte; in den Tweets selbst eine Vielzahl von Schreibfehlern
+- Inkonsistente Kodierung       => falsches Encoding mithilfe von ftfy behoben
+- Ausreißer     => Ausreißer über die Charlänge/Wortanzahl bestimmt & gedroppt
+=> Bereinigter Datensatz nach allgemeiner Bereinigung: todo Zahlen eintragen
+=> Bereinigter Datensatz nach spezieller Bereinigung: todo Zahlen eintragen
+
+Preprocessing des bereinigten Trainingsdatensatzes
+- Textvorverarbeitung: Links, Emojis, Sonderzeichen etc. entfernen, alles toLower
+- Stopwörter (english) entfernen
+- Most frequent words
+- Lemmatization: alle Wörter auf ihren Wortstamm reduzieren
+
+EDA
+- target stark ungleich verteilt (nur ~7% hate-speech)
+- der Großteil der Tweets ist zwischen 9-17 Wörter lang mit 63-108 Zeichen
+   - tweets ohne HS tendenziell eher etwas weniger Worte als tweets mit HS
+   - twwets ohne HS Tendenz zur Normalverteilung bei Charanzahl, mit HS eher mehr Chars
+   => tweets mit HS tendenziell eher etwas länger und daher auch mehr Chars
+
+Zur Aufgaben-/Fragestellung
+Wie kann mithilfe von klassischen Verfahren des Maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf Sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+- Welche Herausforderungen gibt es bei der Aufbereitung der Texte?
+- Welche Verfahren sind besser/schlechter geeignet?
