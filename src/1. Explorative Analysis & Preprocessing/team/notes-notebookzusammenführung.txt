@@ -1,0 +1,27 @@
+Ausgangsbasis: Notebook von nasiba
+
+Änderungen / Ergänzungen
+- Einladen der Testdaten
+- Setzen der "index_col=0" => somit werden ca. 2432 Duplikate gefunden!
+- Nullprüfung mit isna() statt info()
+- Trennung Datenexploration und Datenaufbereitung
+    - in Exploration keine Veränderung der Daten (emojis)
+- Überprüfungsfunktionen so geändert/erweitert, dass immer ein df übergeben wird und die
+entsprechende Spalte erstellt wird
+- Spellcheck: Sonderzeichen vor Prüfung entfernt (hatte große Auswirkungen)
+- in richtiger Datenbereinigung Funktionsaufrufe herausgenommen und an das Ende verlagert, somit Reihenfolge besser abänderbar
+    - hier auch Änderungen der Funktionen auf df
+-
+
+
+
+
+Punkte klären
+- Ausreißerbestimmung anwenden, d.h. über Tweetlänge?
+- Shortcuts/Slang, großes Fehlerpotential durch Schreibfehler, Aktualität etc.
+- Negationen auflösen; schwierig
+- offen
+    - Umgang mit User-Handles und Hashtags
+    - Umgang mit Emojis: Umwandlung enthält Sonderzeichen, oft keine Leerzeichen zwischen Emoji
+- lohnt sich die Spellcorrection? dauert extrem lange und bringt Fehler mit sich
+-
