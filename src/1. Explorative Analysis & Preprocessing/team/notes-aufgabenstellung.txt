@@ -1,0 +1,64 @@
+Allgemeine Fragestellung
+- Wie kann mithilfe von klassischen Verfahren des maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf Sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+
+1. Bezogen auf die Daten
+- Welche Herausforderungen gibt es bei der Aufbereitung der Texte?
+- Feinere Klassifizierung: Multiklass-Problem rassistisch/sexistisch
+- Einfluss von Emojis und Hashtags auf Hate Speech
+- Verbindung von Hate Speech mit dem Verbreitungsverhalten
+- Einfluss von Features auf Hate Speech Detektion
+- Erkennung und Umgang mit Klassenungleichgewicht (Imbalanced Class Problem)
+- What is the impact of using imbalanced datasets on the performance of supervised models for hate speech detection, and how can techniques like SMOTE help?
+- Erkennung von Schlüsselthemen durch Themenmodellierung
+- Einfluss von Emojis, Hashtags, Ausrufezeichen/Sonderzeichen
+- Politisch motivierte Hatespeech finden (US-Wahlkampf). Twitter / X vs. Truth Social
+- Lässt sich anhand von Hashtags auf Hatespeech schließen?
+- Können wir Kontext zu Hashtags abbilden?
+- bei weiteren Datensätzen: gibt es neben Emojis und Hashtags weitere mögliche Features (z.B. Memes), die für die Detektion genutzt werden könnten?
+
+2. Bezogen auf die Verfahren (ML/DL)
+- Welche Verfahren sind besser/schlechter geeignet?
+- What role do data augmentation techniques play in enhancing the performance of deep learning models for hate speech detection?
+- What patterns or themes emerge from hate speech data when using topic modeling (e.g., LDA) to analyze unlabelled tweets?
+- How do different supervised learning algorithms (e.g., logistic regression, support vector machines, decision trees) compare in detecting hate speech?
+- (how) can a convolutional neural network (CNN) (be utilized to) effectively identify hate speech in short text snippets, such as tweets?
+- What role do data augmentation techniques play in enhancing the performance of deep learning models for hate speech detection?
+- Sind spezialisierte Modelle zur Sentiment Analysis auch für allgemeine Modelle geeignet; Bsp hier: wie gut funktioniert ein Modell zur Erkennung von Hate Speech für einen Datensatz mit positiv/negativ?
+- Anhand welcher Metriken soll die Modellperformance ausgewertet werden? Bsp hier: statt f1-Score hohe Priorität des Recalls, da durch die Erkennung von Hate Speech die menschliche Überprüfung angestoßen wird
+- Praxisbezug: wo liegt der praktische Nutzen eines Modells zur Erkennung von Hate Speech? Wie kann es in bestehende Systeme/Anwendungen integriert werden?
+- Welche Möglichkeiten zum Hypertuning gibt es bei Deep-Learning Verfahren?
+
+------------------------------------------------------------------------------------------------------------------------
+Zusammenfassung:
+Ausgangsfrage: Wie kann mithilfe von klassischen Verfahren des maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+
+1. Datenanalyse
+a) Welchen Einfluss haben Emojis und Hashtags auf Hate Speech?
+    - ist der Kontext von Hashtags abbildbar?
+    - bei neuen Daten: Einfluss von Memes, falls vorhanden?
+b) Verbindung von Hate Speech mit dem Verbreitungsverhalten, Redirect/Tagging von Nutzern
+c) Erkennung von Schlüsselthemen durch Themenmodellierung
+    - Erkennung von politisch/rassistisch/sexistisch motivierter Hate speech
+
+
+2. Datenerweiterung /-behandlung
+a) Einfluss von unbalancierten Daten, Einsatz von Techniken wie SMOTE
+b) Einfluss von data augmentation Techniken zur Verbesserung der Modellperformance
+    - hier: welche Techniken gibt es und sind auf den Datensatz anwendbar?
+c) Erkennung von Schlüsselthemen durch Themenmodellierung
+    - bei neuen Daten: Einsatz LDA zur Findung neuer Themenfelder (z.B. religiös motivierter Hate speech?)
+    - bei Unterscheidung Themenfelder: Möglichkeiten zur Erweiterung des Datensatzes zu einem Multiklass-Problem
+
+
+3. Verfahren (ML/DL)
+b) Welche ML-Modelle sind grundsätzlich anwendbar und welche davon haben die beste Performance + Möglichkeiten zum Hypertuning? => Bayes, Tree, LogReg, Ensemble, SVM, ...?
+a) Welche DL-Modelle sind grundsätzlich anwendbar und welche davon haben die beste Performance + Möglichkeiten zum Hypertuning? => RNN, CNN, (LLM), ...?
+c) Einfluss von data augmentation Techniken zur Verbesserung der Modellperformance
+    - hier: welche der eingesetzten Techniken führen zu einer signifikanten Verbesserung der Modellperformance, welche ggf. sogar zu Verschlechterung durch Überanpassung o.Ä.?
+d) Sind spezialisierte Modelle (hate speech) zur Sentiment Analysis auch für allgemeine Modelle (positiv/negativ) geeignet?
+e) Anhand welcher Metriken soll die Modellperformance ausgewertet werden? Gibt es Unterschiede bei den Modellen je nach Metrik?
+f) Praxisbezug: praktischer Nutzen eines Modells zur Erkennung von Hate Speech? Wie/wo in bestehendes System/Anwendung integrieren?
+
+
+
+

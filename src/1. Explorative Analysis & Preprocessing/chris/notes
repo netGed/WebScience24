@@ -36,3 +36,9 @@ Zur Aufgaben-/Fragestellung
 Wie kann mithilfe von klassischen Verfahren des Maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf Sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
 - Welche Herausforderungen gibt es bei der Aufbereitung der Texte?
 - Welche Verfahren sind besser/schlechter geeignet?
+- Sind spezialisierte Modelle zur Sentiment Analysis auch für allgemeine Modelle geeignet? Bsp hier: wie gut funktioniert ein Modell zur Erkennung von Hate Speech für einen Datensatz mit positiv/negativ?
+- Anhand welcher Metriken soll die Modellperformance ausgewertet werden? Bsp hier: statt f1-Score hohe Priorität des Recalls, da durch die Erkennung von Hate Speech die menschliche Überprüfung angestoßen wird
+    - Gibt es Unterschiede bei den Modellen je nach Metrik?
+- Praxisbezug: wo liegt der praktische Nutzen eines Modells zur Erkennung von Hate Speech? Wie kann es in bestehende Systeme/Anwendungen integriert werden?
+- bei weiteren Datensätzen: gibt es neben Emojis und Hashtags weitere mögliche Features (z.B. Memes), die für die Detektion genutzt werden könnten?
+- Welche Möglichkeiten zum Hypertuning gibt es bei Deep-Learning Verfahren?
