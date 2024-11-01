@@ -23,7 +23,6 @@ ToDo bis 14.11.2024
 - Hashtags ohne # in Tweet aufnehmen (chris)
 - bereinigte Emojis in Tweet aufnehmen, Sonderzeichen entfernen (chris)
 - Reihenfolge prüfen und ggf. überarbeiten (2.1.20) (chris)
-- Prüfungsliste s.o. abarbeiten (nasiba)
 - Zusätzliche Datenerweiterung (elena, chris)
     - künstlich, reduzieren, erweitern, original
 - Vektorisierung (sven)
@@ -32,6 +31,7 @@ ToDo bis 14.11.2024
 
 ToDo bis 28.11.2024
 - Explorative Datenanalyse: Zusammenführung / Erweitern (nasiba)
+- Prüfungsliste s.o. abarbeiten (nasiba)
 - Modelltraining
     - Klassisch: Bayes, Tree, LogReg, (RandomForest), SVM
         - 1. SVM (elena)
