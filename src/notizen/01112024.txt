@@ -44,7 +44,8 @@ ToDo bis 28.11.2024
         - 1. RoBERTa
         - 2. BERT
         - 3. CNN?
+- Parallel: eine Folie pro Modell/Bearbeitungsschritt mit den gemachten Schritten (alle)
 
-Ziel Modelltraining
+Ziel Modelltraining (alle)
 - mind. ein trainiertes Modell mit unterschiedlichen Metriken ausgewertet und verglichen
 - stichpunktartig beschrieben für Ausarbeitung
