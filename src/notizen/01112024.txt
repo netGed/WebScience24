@@ -1,0 +1,50 @@
+Entscheidung zu offenen Punkten für die Ausarbeitung:
+- user: rausnehmen; Begründung: ...
+- hashtags: mit in den Tweet nehmen, ohne #
+    -> als eigenes Feature und in normalem Tweet
+    -> Wörter trennen (getthanked z.B.)
+- emojis: wie tweets, auch allgemeine Bereinigung
+    -> emojis von Wörtern mit Leerzeichen trennen
+- ! => Umgang mit mehrere ! / ?: Entfernen mit Punktuation
+- Lemmatization: spacy als Ersatz für Stemming
+- Ausreißerbestimmung: vorerst rausnehmen bis Prüfung Nasiba
+- Spellcorrection: erstmal nicht, bis Prüfung
+
+Zu Prüfen
+- Negationen: awfully good => good / very good
+    - library zum Auflösen vorhanden/einfach einsetzbar?
+- selbstzensierte Beleidigungen mit ** o.Ä.
+    -> prüfen, gibt es welche? Erkennen?
+    -> s**t zu shit übersetzen/finden
+- 1.3 Ausreißerprüfung: sind die Ausreißertweets relevant (inhaltlich)?
+- Korrigierte Wörter prüfen (Spellcorrection), arbeitet die Library zuverlässig?
+
+ToDo bis 14.11.2024
+- Hashtags ohne # in Tweet aufnehmen (chris)
+- bereinigte Emojis in Tweet aufnehmen, Sonderzeichen entfernen (chris)
+- Reihenfolge prüfen und ggf. überarbeiten (2.1.20) (chris)
+- Prüfungsliste s.o. abarbeiten (nasiba)
+- Zusätzliche Datenerweiterung (elena, chris)
+    - künstlich, reduzieren, erweitern, original
+- Vektorisierung (sven)
+    - Word2Vec, TF-IDF, Bag-of-Words
+- Ausarbeitung anfangen (imran)
+
+ToDo bis 28.11.2024
+- Explorative Datenanalyse: Zusammenführung / Erweitern (nasiba)
+- Modelltraining
+    - Klassisch: Bayes, Tree, LogReg, (RandomForest), SVM
+        - 1. SVM (elena)
+        - 2. Ensemble (chris)
+        - 3. Bayes (sven)
+    - mind 1 DL: RNN, CNN => autokeras, keras hypertuner
+        - 1. RNN-LSTM (nasiba)
+        - 2. RNN-GRU (imran)
+    - eigene Idee/Ansatz: offen, todo
+        - 1. RoBERTa
+        - 2. BERT
+        - 3. CNN?
+
+Ziel Modelltraining
+- mind. ein trainiertes Modell mit unterschiedlichen Metriken ausgewertet und verglichen
+- stichpunktartig beschrieben für Ausarbeitung
