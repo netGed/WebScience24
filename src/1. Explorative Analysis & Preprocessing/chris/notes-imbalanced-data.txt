@@ -20,14 +20,22 @@ Resampling Methods (angewendet auf Clean)
     - Condensed Nearest Neighbor
     - Neighborhood Cleaning
 
+Ergebnisse bei Training von einfachen Modellen
+- Ensemble: können inhärent Klassenungleichgewichte verarbeiten, da mehrere Modelle trainiert und deren
+Ergebnisse kombiniert werden, Werte durch Over-/Undersampling daher nicht ausreichend aussagekräftig für einen Vergleich und Bewertung der
+ zu nutzenden Methode
+- SVM
+    - ohne balancierte Klassen wird die SVM bei clean/base und bei Undersampling nur auf 0 trainiert
+    - mit balancierten Klassen geht die Precison in Richtung der Oversampling-Daten (65-70%)
+- Bayes
+    - wie SVC ohne balancierte Klasse, Bayes bietet keine Möglichkeit zum Balancing
 
 https://www.analyticsvidhya.com/blog/2023/01/ensemble-learning-methods-bagging-boosting-and-stacking/
 https://neptune.ai/blog/when-to-choose-catboost-over-xgboost-or-lightgbm
 Modelle
-- Ensemble Modelle können inhärent Klassenungleichgewichte verarbeiten, da mehrere Modelle trainiert und deren
-Ergebnisse kombiniert werden
 - Boosting
 - Bagging
+
 
 
 
