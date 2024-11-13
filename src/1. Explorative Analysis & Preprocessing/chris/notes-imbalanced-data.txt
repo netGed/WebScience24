@@ -8,8 +8,9 @@ Ausgangsdaten
     - Orginaldaten umfassend vorverarbeitet
     - Verhältnis 1:14.3 (25839:1811)
 
---- Daten (Clean/Base) vor Anwendung der Resampling Methods mit Word2Vec vektorisiert ---
+- Daten (Clean/Base) vor Anwendung der Resampling Methods mit Word2Vec vektorisiert
 
+https://www.analyticsvidhya.com/blog/2022/05/handling-imbalanced-data-with-imbalance-learn-in-python/#h-techniques-for-handling-imbalanced-data
 Resampling Methods (angewendet auf Clean)
 - Oversampling: generiert künstliche Beispieldaten basierend auf der Minderheitenklasse
     - SMOTE (Synthetic Minority Over-sampling Technique)
@@ -17,24 +18,22 @@ Resampling Methods (angewendet auf Clean)
     - ADASYN (Adaptive Synthetic Sampling)
 - Undersampling: entfernt zufällig Daten aus der Mehrheitsklasse
     - NearMiss: wählt die Daten basierend auf Abstand zwischen Beispieldaten aus (3 Varianten, #3 hier angewendet)
-    - Condensed Nearest Neighbor
-    - Neighborhood Cleaning
+    - Condensed Nearest Neighbor (CNN): entfernt Daten der Mehrheitsklasse, die weit entfernt von der Entscheidungsgrenze sind
+        - extrem rechenintensiv
+    - Neighborhood Cleaning: kombiniert CNN und ENN (Edited Nearest Neighbors)
+        - extrem rechenintensiv
+    - Tomek Links: entfernt Daten der Mehrheitsklasse, die nahe an der Minderheitsklasse liegen, um Unterschiede nochmal zu verstärken
 
 Ergebnisse bei Training von einfachen Modellen
-- Ensemble: können inhärent Klassenungleichgewichte verarbeiten, da mehrere Modelle trainiert und deren
-Ergebnisse kombiniert werden, Werte durch Over-/Undersampling daher nicht ausreichend aussagekräftig für einen Vergleich und Bewertung der
- zu nutzenden Methode
-- SVM
-    - ohne balancierte Klassen wird die SVM bei clean/base und bei Undersampling nur auf 0 trainiert
-    - mit balancierten Klassen geht die Precison in Richtung der Oversampling-Daten (65-70%)
-- Bayes
-    - wie SVC ohne balancierte Klasse, Bayes bietet keine Möglichkeit zum Balancing
+-
+
 
 https://www.analyticsvidhya.com/blog/2023/01/ensemble-learning-methods-bagging-boosting-and-stacking/
 https://neptune.ai/blog/when-to-choose-catboost-over-xgboost-or-lightgbm
-Modelle
+Modelle todo feintunen, be- und auswerten
 - Boosting
 - Bagging
+- Stacking (todo noch nicht mit einfachem Modell umgesetzt, da rechenintensiv)
 
 
 
