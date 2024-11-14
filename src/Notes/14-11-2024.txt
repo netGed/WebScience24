@@ -7,6 +7,7 @@ Allgemein
 - @Chris: Resampling Notebooks zusammenfassen und für Aufruf bereitstellen
 - @Elena: Kanban-Board prüfen, schnell einzurichten?
 - @Nasiba: offene todo's vom 01.11.2024
+- @Imran: Explorative Datenanalyse in Teamnotebook zusammenführen
 
 
 Ausarbeitung
@@ -17,12 +18,11 @@ Ausarbeitung
 
 
 Präsentation
-- @Alle: jeder eine Folie
-    - Folie 1: Überblick des Workflows @Elena
-    - Folie 2: Datensatz und Fragestellung @Chris
-    - Folie 3: Knackpunkte im Datensatz (Emojis, Hashtags) @Nasiba -> Wordcloud bereinigt/unbereinigt einbeziehen
-    - Folie 4: Verwendete Modelle @Elena
-    - Folie 5: Eigene Ideen / Ansätze (BERT, LLM) @Imran
+- Folie 1: Überblick des Workflows @Elena
+- Folie 2: Datensatz und Fragestellung @Chris
+- Folie 3: Knackpunkte im Datensatz (Emojis, Hashtags) @Nasiba -> Wordcloud bereinigt/unbereinigt einbeziehen
+- Folie 4: Verwendete Modelle @Elena
+- Folie 5: Eigene Ideen / Ansätze (BERT, LLM) @Imran
 
 
 Nächste Besprechung: streiche 28.11, setze 30.11.2024 16:00 Uhr
