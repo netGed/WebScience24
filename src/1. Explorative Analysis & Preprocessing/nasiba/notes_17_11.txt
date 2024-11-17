@@ -17,11 +17,14 @@ Zudem war es auch mit den bestimmten Hashtags schwierig, diese zu korrigieren wi
 Es gäbe mit Sicherheit eine Option diese zu optimieren wie mit Deep Learning Methoden, diese würde aber unseren zeitlichen Rahmen sprengen
 
 2. Schimpfwörter:
-
+Nur ** markierte Wörter waren sehr wenige dabei, während mit richtigen Schimpfwörtern paar mehr waren
 
 3. Negationen auflösen:
+ich würde diese tatsächlich drin lassen, da diese zur Sentimentauswertung beiträgt
 
-
+4. Ausreißer:
+die Ausreißer wurden grundsätzlich durch encodede Emojis ausgelöst, auch wenn es einige Ausreißer ohne Emoji 
+dabei waren, waren die vergleichsweise nicht viele
 
 Außerdem:
 -Hashtag Zeichen wurden entfernt
