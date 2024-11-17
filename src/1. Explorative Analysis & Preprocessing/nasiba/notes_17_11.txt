@@ -32,5 +32,6 @@ Außerdem:
 -remove_special_characters angepasst
 
 Frage:
--Manche hashtags sind nicht richtig gesplitted: #nohate, #getthanked
+- Manche hashtags sind nicht richtig gesplitted: #nohate, #getthanked
+- tweet_cleaned mit Nan entfernen
 
