@@ -163,3 +163,8 @@ cython_debug/
 /data/covid19/Covid Data.csv
 /data/wikipedia/good.csv
 /data/wikipedia/promotional.csv
+src/1. Explorative Analysis & Preprocessing/sven/.idea/misc.xml
+src/1. Explorative Analysis & Preprocessing/sven/.idea/modules.xml
+src/1. Explorative Analysis & Preprocessing/sven/.idea/sven.iml
+src/1. Explorative Analysis & Preprocessing/sven/.idea/vcs.xml
+src/1. Explorative Analysis & Preprocessing/sven/.idea/inspectionProfiles/profiles_settings.xml
