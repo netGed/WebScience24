@@ -23,7 +23,7 @@ def vectorize_bow():
     bow_vectorizer = CountVectorizer()
 
     X_train_bow = bow_vectorizer.fit_transform(X_train_base)
-    X_test_bow = bow_vectorizer.fit_transform(X_test_base)
+    X_test_bow = bow_vectorizer.transform(X_test_base)
 
     return X_train_bow, X_test_bow, y_train_base, y_test_base
 
