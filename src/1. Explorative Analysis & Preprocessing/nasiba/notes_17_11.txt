@@ -1,0 +1,37 @@
+Prüfliste:
+1 Spellchecker:
+Die Bibliothek SpellChecker funktioniert an sich gut und hat 
+auch die richtige Ergebnisse zurückgegeben allerdings war die
+Berechnungszeit zu hoch.
+
+Weitere Optionen wurden getestet:
+- Die Bibliothek Autocorrect wurde ebenfalls getestet, die Ergebnisse waren ebenfalls nicht genügend, die Laufzeit zu lange
+- frequency_dictionary_en_82_765.txt aus https://github.com/wolfgarbe/SymSpell?tab=readme-ov-file in Kombi mit 
+SymSpell, Verbosity wurde ausprobiert, die Ergebnisse waren auch nicht zufriedenstellend, aber die Laufzeit war schnell.
+
+Das Problem:
+die Bibliotheken erkennen nicht unbedingt die neuen Wörter wie:
+retweet diese werden als falsch eingestuft und entsprechend falsch korrigiert: retweet - between
+Zudem war es auch mit den bestimmten Hashtags schwierig, diese zu korrigieren wie: #freemilo 
+
+Es gäbe mit Sicherheit eine Option diese zu optimieren wie mit Deep Learning Methoden, diese würde aber unseren zeitlichen Rahmen sprengen
+
+2. Schimpfwörter:
+Nur ** markierte Wörter waren sehr wenige dabei, während mit richtigen Schimpfwörtern paar mehr waren
+
+3. Negationen auflösen:
+ich würde diese tatsächlich drin lassen, da diese zur Sentimentauswertung beiträgt
+
+4. Ausreißer:
+die Ausreißer wurden grundsätzlich durch encodede Emojis ausgelöst, auch wenn es einige Ausreißer ohne Emoji 
+dabei waren, waren die vergleichsweise nicht viele
+
+Außerdem:
+-Hashtag Zeichen wurden entfernt
+
+-remove_special_characters angepasst
+
+Frage:
+- Manche hashtags sind nicht richtig gesplitted: #nohate, #getthanked
+- tweet_cleaned mit Nan entfernen
+
