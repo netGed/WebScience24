@@ -23,7 +23,7 @@ def vectorize_bow():
     bow_vectorizer = CountVectorizer()
 
     X_train_bow = bow_vectorizer.fit_transform(X_train_base)
-    X_test_bow = bow_vectorizer.fit_transform(X_test_base)
+    X_test_bow = bow_vectorizer.transform(X_test_base)
 
     return X_train_bow, X_test_bow, y_train_base, y_test_base
 
@@ -59,8 +59,8 @@ def vectorize_w2v():
     X_train_base_tokenized = X_train_base.map(word_tokenize)
     X_test_base_tokenized = X_test_base.map(word_tokenize)
 
-    w2v = Word2Vec(X_train_base, window=4, min_count=1, sg=0)
-    w2v.train(X_train_base_tokenized, total_examples=len(X_train_base), epochs=20)
+    w2v = Word2Vec(X_train_base_tokenized, window=4, min_count=1, sg=0)
+    w2v.train(X_train_base_tokenized, total_examples=len(X_train_base_tokenized), epochs=20)
 
     def w2v_vector(tokenized_tweet, size):
         vec = np.zeros(size).reshape((1, size))
@@ -117,8 +117,8 @@ def vectorize_ft():
     X_train_base_tokenized = X_train_base.map(word_tokenize)
     X_test_base_tokenized = X_test_base.map(word_tokenize)
 
-    ft = FastText(X_train_base, window=4)
-    ft.train(X_train_base_tokenized, total_examples=len(X_train_base), epochs=20)
+    ft = FastText(X_train_base_tokenized, window=4)
+    ft.train(X_train_base_tokenized, total_examples=len(X_train_base_tokenized), epochs=20)
 
     size = 100
     X_train_ft = np.zeros((len(X_train_base_tokenized), size))
