@@ -60,7 +60,7 @@ def vectorize_w2v():
     X_test_base_tokenized = X_test_base.map(word_tokenize)
 
     w2v = Word2Vec(X_train_base_tokenized, window=4, min_count=1, sg=0)
-    w2v.train(X_train_base_tokenized, total_examples=len(X_train_base), epochs=20)
+    w2v.train(X_train_base_tokenized, total_examples=len(X_train_base_tokenized), epochs=20)
 
     def w2v_vector(tokenized_tweet, size):
         vec = np.zeros(size).reshape((1, size))
