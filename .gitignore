@@ -168,3 +168,7 @@ src/1. Explorative Analysis & Preprocessing/sven/.idea/modules.xml
 src/1. Explorative Analysis & Preprocessing/sven/.idea/sven.iml
 src/1. Explorative Analysis & Preprocessing/sven/.idea/vcs.xml
 src/1. Explorative Analysis & Preprocessing/sven/.idea/inspectionProfiles/profiles_settings.xml
+src/1. Explorative Analysis & Preprocessing/sven/catboost_info/catboost_training.json
+src/1. Explorative Analysis & Preprocessing/sven/catboost_info/learn_error.tsv
+src/1. Explorative Analysis & Preprocessing/sven/catboost_info/time_left.tsv
+src/1. Explorative Analysis & Preprocessing/sven/catboost_info/learn/events.out.tfevents
