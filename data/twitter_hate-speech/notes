@@ -1,3 +1,13 @@
+train.csv: Original Trainingsdatensatz
+test.csv: Original Testdatensatz
+train_basic_cleaned: Bereinigter Trainingsdatensatz (nur Tweet)
+train_cleaned: Bereiniger Trainingsdatensatz (Tweet und weitere extrahierten Spalten wie Hashtag, user, etc.)
+
+
+
+
+
+----------------------------------
 Weitere Datensätze:
 - Twitter_Dataset_India                     https://www.kaggle.com/datasets/saurabhshahane/twitter-sentiment-dataset
 - Open datasets for sentiment analysis      https://github.com/charlesmalafosse/open-dataset-for-sentiment-analysis

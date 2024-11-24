@@ -1,0 +1,2 @@
+Fragen für 30.11.2024:
+Imran: In welchem Maße zählen BERT und LLM zu eigenen Ansätzen? Aus Thimms Mail lässt sich entnehmen, dass er unsere Fragestellung – den Umgang mit unausgeglichenen Daten und deren Vorverarbeitung – eher als einen erweiterten Ansatz (fünfter Punkt) betrachtet.
