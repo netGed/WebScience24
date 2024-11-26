@@ -1,0 +1,67 @@
+## Balance Data
+
+# Problem/Motivaiton 
+Most of the classification algorithms require data with equal class distribution. If imbalanced dataset is provided, they tend to give poor performance
+
+
+# Undersampling - Remove samples from the class which is over-represented
+e.g. TOMEK Undersampling: majority class observations are being dropped; not randomly but based on the proximity to the minority class observations
+
+
+# Oversampling - Generate new samples for the class which is under-represented
+•  Random sampling: random duplicaiton of existing observaitons
++ simplicity and ease of implementation (does not require any complex algorithms or assumptions about the underlying distribution of the data)
+- may lead to overfitting as no new knowledge (about the minority class) is added to the dataset (-> therefore might be better to create new samples -> increase variety to learn from)
+
+•  SMOTE: Find KNN for minority class observations -> place new synthetic data inbetween (and so on)
+regular SMOTE is based on KNN-logic; but there exist many variants of smotes e.g. SVM-Smote, kmeans-Smote, borderline-smote
++ can generate new samples based on existing ones, which helps to add more information to the dataset to improve model performance
+- may introduce noise with the synthetic instances, especially when the number of nearest neighbors is set too high
+
+• ADASYN: uses fundamnetal logic of SMOTE but does a little different job;
+ tries to give relatively higher weightage to those minority observations which are difficult to classify (e.g. close to decision boundary) -> will generate synthetic observations around those points being hard to classify 
+
+
+# Hybridsampling
+
+• SMOTETomek
+
+• SMOTEEN
+
+• https://ieeexplore.ieee.org/document/8864335
+
+
+# Gute Links
+https://towardsdatascience.com/oversampling-and-undersampling-explained-a-visual-guide-with-mini-2d-dataset-1155577d3091
+https://medium.com/@penpencil.blr/data-imbalance-how-is-adasyn-different-from-smote-f4eba54867ab 
+
+
+# Theorie @Report
+Traditionally, the classification algorithms make a few assumptions about the training data [4], such as the following:
+1.All the classes are equally represented.
+2.All the sub-concepts within a given class are equally represented.
+3.All the classes have similar class-conditional distributions.
+4.The values of all the features are defined for all the data instances in the dataset.
+5.The values of all the features are known for all the data instances in the dataset.
+
+Violations of such ideal conditions, which hinder the normal learning process of a classifier, are categorized as data irregularities. Violation of each of these assumptions corresponds to a well-known learning problem. Indeed, violations of the assumptions 1–5, listed above, respectively give rise to class imbalance, small disjuncts, class distribution skew, absent features, and missing features respectively. However, more than one of these assumptions may be violated together by a given dataset. Moreover, traditional classifiers are often sensitive to violations of more than one of these assumptions, as is itemized below.
+
+• Max-margin Classifiers – sensitive to class imbalance, small disjuncts, class distribution skew, absent features, missing features.
+• Neural Networks – sensitive to class imbalance, small disjuncts, absent features, missing features.
+• k-Nearest Neighbours (k-NN) – sensitive to class imbalance, small disjuncts, absent features, missing features; immune to class distribution skew as it does not make any assumptions regarding the class-conditional distributions.
+• Bayesian Inference – sensitive to class imbalance, small disjuncts, class distribution skew, absent features, missing features.
+• Decision Trees – sensitive to class imbalance, small disjuncts, class distribution skew; inherently immune to feature missingness as branching is based only on the observed features.
+https://www.sciencedirect.com/science/article/abs/pii/S0031320318300931 
+
+
+
+
+One of the common approaches was to use resampling techniques to make the dataset balanced. Resampling techniques can be applied either by undersampling or oversampling the dataset. Undersampling is the process of decreasing the amount of majority target instances or samples. Some common undersampling methods
+contain tomeks’ links [7], cluster centroids [8] and other methods. Oversampling can be performed by increasing the amount of minority class instances or samples with producing new instances or repeating some instances. An example of oversampling methods is Borderline-SMOTE [9]. Figure 1 shows the difference between the two techniques: oversampling and undersampling.
+[...]
+In latest years, many new metrics for imbalanced datasets were proposed from other fields. Some of these metrics are recall and positive predictive, ROC and AUC [18], F-measure and other metrics. For imbalance problematic, F-measure is a popular evaluation metrics [17]. It is a mixture of positive predictive and recall. It has a high value when both positive predictive and recall are high. Possibly, the best common metric to measure general classification performance is ROC [18].
+https://www.researchgate.net/publication/340978368_Machine_Learning_with_Oversampling_and_Undersampling_Techniques_Overview_Study_and_Experimental_Results 
+
+
+
+
