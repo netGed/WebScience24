@@ -35,3 +35,6 @@ Frage:
 - Manche hashtags sind nicht richtig gesplitted: #nohate, #getthanked
 - tweet_cleaned mit Nan entfernen
 
+
+Amp scheint in der Kombi &amp vorkommen und scheint so, dass es nicht richtig decodiert wurde.
+Was tun damit: Siehe explore_data letzte Zeile
