@@ -1,2 +1,4 @@
 Fragen für 30.11.2024:
 Imran: In welchem Maße zählen BERT und LLM zu eigenen Ansätzen? Aus Thimms Mail lässt sich entnehmen, dass er unsere Fragestellung – den Umgang mit unausgeglichenen Daten und deren Vorverarbeitung – eher als einen erweiterten Ansatz (fünfter Punkt) betrachtet.
+Imran: Ich sehe sehr oft GLOVE als Embedding-Ansatz (Vekorisierung), wird bei uns nicht verwendet. Auch wird eigentlich bei Embeddings andere bereits vordefinierter Sets genommen statt eigene auf unseren Datensatz zu trainieren (wie bei uns Word2Vec und FT implementiert ist
+Imran: RandomOversampler?
