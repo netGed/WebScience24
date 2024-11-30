@@ -307,3 +307,19 @@ def remove_duplicates(df, column_name):
     """
     df = df.drop_duplicates(subset=[column_name])
     return df
+
+def remove_word_from_column(df, column_name, word):
+    """
+    Removes a specified word from the values in a column of a DataFrame.
+    
+    Args:
+        df (pd.DataFrame): The input DataFrame.
+        column_name (str): The name of the column to process.
+        word (str): The word to remove from the column values.
+    
+    Returns:
+        pd.DataFrame: A DataFrame with the specified word removed from the column.
+    """
+    df[column_name] = df[column_name].str.replace(rf'\b{word}\b', '', regex=True).str.strip()
+    return df
+
