@@ -1,0 +1,15 @@
+Fragen für 30.11.2024:
+Imran: 
+- In welchem Maße zählen BERT und LLM zu eigenen Ansätzen? Aus Thimms Mail lässt sich entnehmen, dass er unsere Fragestellung – den Umgang mit unausgeglichenen Daten und deren Vorverarbeitung – eher als einen erweiterten Ansatz (fünfter Punkt) betrachtet.
+- Ich sehe sehr oft GLOVE als Embedding-Ansatz (Vekorisierung), wird bei uns nicht verwendet. Auch wird eigentlich bei Embeddings andere bereits vordefinierter Sets genommen statt eigene auf unseren Datensatz zu trainieren (wie bei uns Word2Vec und FT implementiert ist
+- RandomOversampler?
+- keinen gelabelten Testdatensatz
+- warum &amp etc noch im gecleanten Datensatz? Und noch NA werte?
+- nehmen wir keinen weiteren Datensatz hinzu ?
+- sehr gute Quellen: 
+https://www.sciencedirect.com/science/article/pii/S1877050922010134
+https://arxiv.org/abs/1803.03662
+
+To do's:
+
+- Anpassung/Überarbeitung des Berichts im Abschnitt Datenvorbereitung (@Nasiba)

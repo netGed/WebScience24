@@ -323,3 +323,19 @@ def remove_word_from_column(df, column_name, word):
     df[column_name] = df[column_name].str.replace(rf'\b{word}\b', '', regex=True).str.strip()
     return df
 
+import pandas as pd
+
+def remove_na_from_column(df, column_name):
+    """
+    Removes rows from a DataFrame where the specified column contains NaN or missing values.
+
+    Args:
+        df (pd.DataFrame): The DataFrame to clean.
+        column_name (str): The name of the column to check for NaN or missing values.
+
+    Returns:
+        pd.DataFrame: The cleaned DataFrame without NaN or missing values in the specified column.
+    """
+    return df[df[column_name].notna()]
+
+
