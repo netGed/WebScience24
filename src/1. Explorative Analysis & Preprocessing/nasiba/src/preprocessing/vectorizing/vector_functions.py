@@ -137,25 +137,26 @@ def vectorize_word2vec(df, text_column, label_column, vector_size=300, window=5,
 
 def vectorize_fasttext(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
     """
-    Vektorisiere Texte mit FastText.
+    Vectorize text using FastText.
 
     Args:
-    - df (pd.DataFrame): Der DataFrame, der die Textdaten enthält.
-    - text_column (str): Name der Spalte mit den Textdaten.
-    - label_column (str): Name der Spalte mit den Labels.
-    - vector_size (int): Dimension der Vektoren.
-    - window (int): Kontextfenstergröße.
-    - min_count (int): Mindestanzahl für ein Wort, um berücksichtigt zu werden.
-    - test_size (float): Anteil der Daten für das Testset.
-    - random_state (int): Zufallsseed für die Aufteilung.
+    - df (pd.DataFrame): The DataFrame containing the text data.
+    - text_column (str): Name of the column with text data.
+    - label_column (str): Name of the column with labels.
+    - vector_size (int): Dimensionality of the vector embeddings.
+    - window (int): Context window size.
+    - min_count (int): Minimum count for a word to be considered.
+    - test_size (float): Proportion of the data to be used for the test set.
+    - random_state (int): Random seed for splitting the data.
 
     Returns:
-    - X_train_ft (np.ndarray): FastText-Vektoren für das Trainingsset.
-    - X_test_ft (np.ndarray): FastText-Vektoren für das Testset.
-    - y_train (pd.Series): Labels für das Trainingsset.
-    - y_test (pd.Series): Labels für das Testset.
-    - ft_model (FastText): Das trainierte FastText-Modell.
+    - X_train_ft (np.ndarray): FastText vectors for the training set.
+    - X_test_ft (np.ndarray): FastText vectors for the test set.
+    - y_train (pd.Series): Labels for the training set.
+    - y_test (pd.Series): Labels for the test set.
+    - ft_model (FastText): The trained FastText model.
     """
+    
    
     df = df[df[text_column].notna()]
     
