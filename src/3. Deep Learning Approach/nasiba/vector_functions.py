@@ -199,6 +199,66 @@ def vectorize_fasttext(df, text_column, label_column, vector_size=300, window=5,
     
     return X_train_ft, X_test_ft, y_train, y_test, ft_model
 
+def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, test_size=0.3, random_state=42):
+    """
+    Vectorizes text data using pre-trained GloVe embeddings and splits it into training and test sets.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and label data.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing the target labels.
+        glove_path (str): Path to the pre-trained GloVe embeddings file.
+        vector_size (int, optional): The size of the GloVe vectors (default is 200 for glove.twitter.27B.200d.txt).
+        test_size (float, optional): The proportion of the data to use as test data (default is 0.3).
+        random_state (int, optional): Random state for reproducibility (default is 42).
+
+    Returns:
+        X_train (np.ndarray): GloVe vectorized training data.
+        X_test (np.ndarray): GloVe vectorized test data.
+        y_train (pd.Series): The training labels.
+        y_test (pd.Series): The test labels.
+        glove_embeddings (dict): The loaded GloVe embeddings dictionary.
+    """
+    # Step 1: Remove missing values and ensure all text is a string
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Step 2: Load GloVe embeddings into a dictionary
+    glove_embeddings = {}
+    with open(glove_path, encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            vector = np.asarray(values[1:], dtype='float32')
+            glove_embeddings[word] = vector
+
+    # Step 3: Split the data into training and test sets
+    X = df[text_column]
+    y = df[label_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+    # Step 4: Tokenize the text data
+    X_train_tokenized = X_train.map(word_tokenize)
+    X_test_tokenized = X_test.map(word_tokenize)
+
+    # Step 5: Function to calculate the average GloVe vector for a tokenized tweet
+    def average_glove_vector(tokenized_tweet, glove_embeddings, vector_size):
+        vec = np.zeros(vector_size)
+        count = 0
+        for word in tokenized_tweet:
+            if word in glove_embeddings:
+                vec += glove_embeddings[word]
+                count += 1
+        if count > 0:
+            vec /= count
+        return vec
+
+    # Step 6: Convert tokenized tweets to vectors
+    X_train_vectors = np.array([average_glove_vector(tweet, glove_embeddings, vector_size) for tweet in X_train_tokenized])
+    X_test_vectors = np.array([average_glove_vector(tweet, glove_embeddings, vector_size) for tweet in X_test_tokenized])
+
+    return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings 
+
 def compare_vectorization_methods(df, text_column, label_column):
     """
     Compares vectorizing methods BoW, TF-IDF, Word2Vec und FastText.
