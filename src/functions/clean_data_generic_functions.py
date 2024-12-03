@@ -391,3 +391,66 @@ def replace_text_smileys(df, column_name):
     """
     df[column_name] = df[column_name].fillna('').apply(replace_smileys)
     return df
+
+
+from ekphrasis.classes.segmenter import Segmenter
+
+
+def segment_text_cases(text):
+    """
+    Separates CamelCase and pascalCase words into strings.
+
+    # Code reference: https://github.com/cbaziotis/ekphrasis
+    """
+    # segmenter for CamelCase and pascalCase
+    seg = Segmenter()
+
+    new_text = []
+    for w in text.split():
+        new_word = seg.segment(w)
+
+        new_text.append(new_word)
+    return ' '.join(new_text)
+
+def segment_text_english(text):
+    """
+    Separates english words into strings according to a provided corpus.
+
+    # Code reference: https://github.com/cbaziotis/ekphrasis
+    """
+    # segmenter using the word statistics from english Wikipedia
+    seg_eng = Segmenter(corpus="english")
+
+    new_text = []
+    for w in text.split():
+        new_word = seg_eng.segment(w)
+
+        new_text.append(new_word)
+    return ' '.join(new_text)
+
+
+def segment_text_twitter(text):
+    """
+    Separates twitter words into strings according to a provided corpus.
+
+    # Code reference: https://github.com/cbaziotis/ekphrasis
+    """
+    # segmenter using the word statistics from Twitter
+    seg_tw = Segmenter(corpus="twitter")
+
+    new_text = []
+    for w in text.split():
+        new_word = seg_tw.segment(new_word)
+
+        new_text.append(new_word)
+    return ' '.join(new_text)
+
+
+def segment_tweets(df, column_name):
+    """
+    Separates all text in the specified column of a DataFrame according to a provided corpus.
+    """
+    df[column_name] = df[column_name].fillna('').apply(segment_text_cases)
+    df[column_name] = df[column_name].fillna('').apply(segment_text_english)
+    df[column_name] = df[column_name].fillna('').apply(segment_text_twitter)
+    return df
