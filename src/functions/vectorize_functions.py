@@ -6,7 +6,6 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 import gensim.downloader as api
 
-
 def vectorize_tfidf(df, text_column, label_column, test_size=0.3, random_state=42):
     """
     Vectorizes text data using TF-IDF and splits it into training and test sets.
