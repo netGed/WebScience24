@@ -15,13 +15,16 @@ from nltk.stem.snowball import SnowballStemmer, PorterStemmer
 from nltk.stem import WordNetLemmatizer
 from ftfy import fix_encoding
 import spacy
-
-from .shortcut_lists import shortcuts, shortforms, smileys
+from ekphrasis.classes.segmenter import Segmenter
+from .shortcut_lists import shortcuts, shortforms, smileys, symbol_mapping
 
 nlp = spacy.load("en_core_web_sm")
 
 pd.set_option('display.max_colwidth', None)
 
+seg_cases = Segmenter()  # Für CamelCase
+seg_english = Segmenter(corpus="english")  # Für englischen Text
+seg_twitter = Segmenter(corpus="twitter")  # Für Twitter-Daten
 
 def remove_special_characters(df, column_name):
     """
@@ -46,7 +49,7 @@ def remove_special_characters(df, column_name):
         raise ValueError(f"Column '{column_name}' does not exist in the DataFrame.")
 
     # Compile the regex pattern
-    pattern = re.compile(r"<.*?>|@\w+|[\/§&↝']")
+    pattern = re.compile(r"<.*?>|@\w+|[\/§&↝'();]")
 
     # Apply the regex substitution to the specified column
     df[column_name] = df[column_name].apply(
@@ -164,10 +167,18 @@ def clean_misspelled_words(df, column_name):
 
 def replace_emoji_in_sentence(text):
     """
-    Replaces emojis in a text with their descriptive names.
+    Replaces emojis and specific symbols in a text with their descriptive names.
     """
     if isinstance(text, str):
+        # Emojis durch Beschreibungen ersetzen
         new_text = emoji.demojize(text, delimiters=("__", "__"))
+
+        # Spezifische Symbole ersetzen
+        for symbol, description in symbol_mapping.items():
+            if symbol in new_text:
+                new_text = new_text.replace(symbol, description)
+
+        # Formatierung anpassen
         new_text = new_text.replace("__", " ").replace("_", " ")
         return new_text
     return text
@@ -175,11 +186,10 @@ def replace_emoji_in_sentence(text):
 
 def replace_emojis(df, column_name):
     """
-    Replaces emojis in the specified column of a DataFrame with their descriptive names.
+    Replaces emojis and specific symbols in the specified column of a DataFrame with their descriptive names.
     """
     df[column_name] = df[column_name].apply(replace_emoji_in_sentence)
     return df
-
 
 def remove_emoji_in_sentence(text):
     """
@@ -206,14 +216,20 @@ def remove_emojis(df, column_name):
 
 def get_emojis(text):
     """
-    Extracts emojis from a text and returns them as a comma-separated string.
+    Extracts emojis and symbols from a text and returns them as a comma-separated string.
     """
     emoji_list = []
-    for word in text.split():
-        for char in word:
+    if isinstance(text, str):
+       
+        for char in text:
+           
             if emoji.is_emoji(char):
-                emoji_list.append(emoji.demojize(char))
+                emoji_list.append(emoji.demojize(char, delimiters=("__", "__")))
+            
+            elif char in symbol_mapping:
+                emoji_list.append(symbol_mapping[char])
     return ','.join(emoji_list)
+
 
 
 def extract_emojis(df, column_name):
@@ -275,12 +291,35 @@ def remove_freqwords(text, freqwords):
 
 def remove_most_frequent_words(df, column_name):
     """
-    Removes the most frequent words from the specified column of a DataFrame.
+    Keeps the first occurrence of the most frequent words in the specified column of a DataFrame
+    and removes their subsequent occurrences within the same text.
     """
+    # Erstelle einen Wortzähler
     counter = create_word_counter(df[column_name])
+
+    # Finde die 10 häufigsten Wörter
     freqwords = set([w for (w, wc) in counter.most_common(10)])
-    df[column_name] = df[column_name].apply(lambda text: remove_freqwords(text, freqwords))
+
+    # Bearbeite die Spalte
+    df[column_name] = df[column_name].apply(lambda text: keep_first_freqwords(text, freqwords))
     return df
+
+
+def keep_first_freqwords(text, freqwords):
+    """
+    Keeps the first occurrence of the frequent words in a text and removes subsequent repetitions.
+    """
+    seen = set()
+    result = []
+    for word in text.split():
+        if word in freqwords:
+            if word not in seen:
+                result.append(word)  # Behalte das erste Vorkommen
+                seen.add(word)  # Markiere es als gesehen
+        else:
+            result.append(word)  # Nicht-häufige Wörter bleiben erhalten
+    return ' '.join(result)
+
 
 
 def find_words(col):
@@ -396,61 +435,47 @@ def replace_text_smileys(df, column_name):
 from ekphrasis.classes.segmenter import Segmenter
 
 
-def segment_text_cases(text):
+def segment_text_cases(text, segmenter):
     """
     Separates CamelCase and pascalCase words into strings.
-
-    # Code reference: https://github.com/cbaziotis/ekphrasis
     """
-    # segmenter for CamelCase and pascalCase
-    seg = Segmenter()
-
     new_text = []
     for w in text.split():
-        new_word = seg.segment(w)
-
+        new_word = segmenter.segment(w)
         new_text.append(new_word)
     return ' '.join(new_text)
 
-def segment_text_english(text):
+def segment_text_english(text, segmenter):
     """
-    Separates english words into strings according to a provided corpus.
-
-    # Code reference: https://github.com/cbaziotis/ekphrasis
+    Separates English words into strings using a provided corpus.
     """
-    # segmenter using the word statistics from english Wikipedia
-    seg_eng = Segmenter(corpus="english")
-
     new_text = []
     for w in text.split():
-        new_word = seg_eng.segment(w)
-
+        new_word = segmenter.segment(w)
         new_text.append(new_word)
     return ' '.join(new_text)
 
-
-def segment_text_twitter(text):
+def segment_text_twitter(text, segmenter):
     """
-    Separates twitter words into strings according to a provided corpus.
-
-    # Code reference: https://github.com/cbaziotis/ekphrasis
+    Separates Twitter-specific words into strings using a Twitter corpus.
     """
-    # segmenter using the word statistics from Twitter
-    seg_tw = Segmenter(corpus="twitter")
-
     new_text = []
     for w in text.split():
-        new_word = seg_tw.segment(new_word)
-
+        new_word = segmenter.segment(w)
         new_text.append(new_word)
     return ' '.join(new_text)
 
 
 def segment_tweets(df, column_name):
     """
-    Separates all text in the specified column of a DataFrame according to a provided corpus.
+    Segments all text in the specified column of a DataFrame using preloaded Segmenters.
     """
-    df[column_name] = df[column_name].fillna('').apply(segment_text_cases)
-    df[column_name] = df[column_name].fillna('').apply(segment_text_english)
-    df[column_name] = df[column_name].fillna('').apply(segment_text_twitter)
+    # Kombiniere die Segmentierungen in einer einzigen Iteration
+    def combined_segmentation(text):
+        text = segment_text_cases(text, seg_cases)
+        text = segment_text_english(text, seg_english)
+        text = segment_text_twitter(text, seg_twitter)
+        return text
+
+    df[column_name] = df[column_name].fillna('').apply(combined_segmentation)
     return df
