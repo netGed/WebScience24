@@ -1,0 +1,4 @@
+glove.twitter.27B.200d.txt: https://www.kaggle.com/datasets/fullmetal26/glovetwitter27b100dtxt
+glove840b300.txt: https://www.kaggle.com/datasets/takuok/glove840b300dtxt
+glove.6B: http://nlp.stanford.edu/data/glove.6B.zip
+fasttext: https://dl.fbaipublicfiles.com/fasttext/vectors-english/wiki-news-300d-1M.vec.zip
