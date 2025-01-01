@@ -151,3 +151,68 @@ def vectorize_glove(df, text_column, label_column, vector_size=100, test_size=0.
     X_test_glv = np.array([average_glove_vector(tweet, glv_model, vector_size) for tweet in X_test_tokenized])
 
     return X_train_glv, X_test_glv, y_train_glv, y_test_glv
+
+def vectorize_glove_without_avarage(df, text_column, label_column, glove_path, vector_size=100, max_seq_len=50, test_size=0.3, random_state=42):
+    """
+    Vectorizes text data using pre-trained GloVe embeddings and splits it into training and test sets.
+    Each sentence is represented as a sequence of word vectors.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and label data.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing the target labels.
+        glove_path (str): Path to the pre-trained GloVe embeddings file.
+        vector_size (int, optional): The size of the GloVe vectors (default is 100).
+        max_seq_len (int, optional): The maximum sequence length for padding (default is 50).
+        test_size (float, optional): The proportion of the data to use as test data (default is 0.3).
+        random_state (int, optional): Random state for reproducibility (default is 42).
+
+    Returns:
+        X_train (np.ndarray): GloVe vectorized training data.
+        X_test (np.ndarray): GloVe vectorized test data.
+        y_train (pd.Series): The training labels.
+        y_test (pd.Series): The test labels.
+        glove_embeddings (dict): The loaded GloVe embeddings dictionary.
+    """
+    # Step 1: Remove missing values and ensure all text is a string
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Step 2: Load GloVe embeddings into a dictionary
+    glove_embeddings = {}
+    with open(glove_path, encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            vector = np.asarray(values[1:], dtype='float32')
+            glove_embeddings[word] = vector
+
+    # Step 3: Split the data into training and test sets
+    X = df[text_column]
+    y = df[label_column]
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
+
+    # Step 4: Tokenize the text data
+    X_train_tokenized = X_train.map(word_tokenize)
+    X_test_tokenized = X_test.map(word_tokenize)
+
+    # Step 5: Function to convert a tokenized sentence into a sequence of GloVe vectors
+    def get_glove_vectors(tokenized_sentence, glove_embeddings, vector_size, max_seq_len):
+        vectors = []
+        for word in tokenized_sentence:
+            if word in glove_embeddings:
+                vectors.append(glove_embeddings[word])
+            else:
+                vectors.append(np.zeros(vector_size))  # Use zero vector for unknown words
+        # Truncate or pad the sequence to the desired max_seq_len
+        if len(vectors) > max_seq_len:
+            vectors = vectors[:max_seq_len]
+        else:
+            vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
+        return np.array(vectors)
+
+    # Step 6: Convert tokenized sentences to sequences of vectors
+    X_train_vectors = np.array([get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_train_tokenized])
+    X_test_vectors = np.array([get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_test_tokenized])
+
+    return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings
