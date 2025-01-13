@@ -2,3 +2,6 @@ https://gpt5.blog/glove-global-vectors-for-word-representation/
 https://nlp.stanford.edu/projects/glove/
 
 word2vec hat größere Vector Size nicht gut funktioniert
+Vektor Size Änderung bei 
+
+Bei Glove wurden keine Durschnittsvektoren sondern die richtigen Vektoren genommen

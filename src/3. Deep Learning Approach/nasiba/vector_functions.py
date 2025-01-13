@@ -81,7 +81,7 @@ def vectorize_tfidf(df, text_column, label_column, test_size=0.3, random_state=4
     return X_train_tfidf, X_test_tfidf, y_train, y_test, tfidf_vectorizer
 
 
-def vectorize_word2vec(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
+def vectorize_word2vec_with_average(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
     """
     Vectorizes text data using Word2Vec and splits it into training and test sets.
 
@@ -135,7 +135,7 @@ def vectorize_word2vec(df, text_column, label_column, vector_size=300, window=5,
 
     return X_train_vectors, X_test_vectors, y_train, y_test, w2v_model
 
-def vectorize_word2vec_no_average(df, text_column, label_column, vector_size=100, max_seq_len=50, window=5, min_count=1, test_size=0.3, random_state=42):
+def vectorize_word2vec(df, text_column, label_column, vector_size=100, max_seq_len=50, window=5, min_count=1, test_size=0.3, random_state=42):
     """
     Vectorizes text data using Word2Vec and returns sequences of word vectors.
 
@@ -259,7 +259,7 @@ def vectorize_fasttext(df, text_column, label_column, vector_size=300, window=5,
     
     return X_train_ft, X_test_ft, y_train, y_test, ft_model
 
-def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, test_size=0.3, random_state=42):
+def vectorize_glove_with_average(df, text_column, label_column, glove_path, vector_size=100, test_size=0.3, random_state=42):
     """
     Vectorizes text data using pre-trained GloVe embeddings and splits it into training and test sets.
 
@@ -319,7 +319,7 @@ def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, 
 
     return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings 
 
-def vectorize_glove_no_avarage(df, text_column, label_column, glove_path, vector_size=100, max_seq_len=50, test_size=0.3, random_state=42):
+def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, max_seq_len=50, test_size=0.3, random_state=42):
     """
     Vectorizes text data using pre-trained GloVe embeddings and splits it into training and test sets.
     Each sentence is represented as a sequence of word vectors.
