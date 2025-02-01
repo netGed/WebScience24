@@ -3,6 +3,7 @@ import pandas as pd
 
 def read_data():
     df = pd.read_csv("data/evaluation_dataset.csv", delimiter=";")
+    df = df.sample(frac=1, random_state=42)
     return df.to_dict(orient="records")
 
 

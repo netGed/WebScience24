@@ -37,9 +37,13 @@ const App: React.FC = () => {
     loadDataAsync();
   }, []);
 
-  const handleClassificationClick = async (tweet: string, label: number) => {
+  const handleClassificationClick = async (
+    tweet: string,
+    label: number,
+    new_label: number,
+  ) => {
     isLoading(true);
-    setSelectedTweet({ tweet: tweet, label: label });
+    setSelectedTweet({ tweet: tweet, label: label, new_label: new_label });
     const result = (await getPredictions(tweet)) as TPredictionData[];
     setPredictionData(result);
     isLoading(false);
@@ -53,7 +57,11 @@ const App: React.FC = () => {
         icon="pi pi-tags"
         className="p-button-sm p-button-text"
         onClick={() =>
-          handleClassificationClick(rowData["tweet"], rowData["label"])
+          handleClassificationClick(
+            rowData["tweet"],
+            rowData["label"],
+            rowData["new_label"],
+          )
         }
       />
     );
@@ -62,6 +70,22 @@ const App: React.FC = () => {
   const predictionTemplate = (rowData: TPredictionData) => {
     if (selectedTweet) {
       const realLabel = selectedTweet.label;
+
+      const classColor = classNames(
+        "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
+        {
+          "bg-red-100 text-red-900": rowData.label != realLabel,
+          "bg-green-100 text-green-900": rowData.label == realLabel,
+        },
+      );
+
+      return <div className={classColor}>{rowData.label}</div>;
+    }
+  };
+
+  const newPredictionTemplate = (rowData: TPredictionData) => {
+    if (selectedTweet) {
+      const realLabel = selectedTweet.new_label;
 
       const classColor = classNames(
         "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
@@ -137,7 +161,11 @@ const App: React.FC = () => {
                   className="p-button-sm p-button-text"
                   disabled={isInputInvalid()}
                   onClick={() =>
-                    handleClassificationClick(tweetText, tweetLabel.label)
+                    handleClassificationClick(
+                      tweetText,
+                      tweetLabel.label,
+                      tweetLabel.label,
+                    )
                   }
                 />
               </div>
@@ -155,6 +183,12 @@ const App: React.FC = () => {
               <h3>Label: </h3>
               <div className="ml-2">
                 {selectedTweet ? selectedTweet["label"] : ""}
+              </div>
+            </div>
+            <div className="ml-2 flex flex-row align-items-center">
+              <h3>Label (neu): </h3>
+              <div className="ml-2">
+                {selectedTweet ? selectedTweet["new_label"] : ""}
               </div>
             </div>
 
@@ -178,6 +212,11 @@ const App: React.FC = () => {
                 field="label"
                 header="Prediction"
                 body={predictionTemplate}
+              ></Column>
+              <Column
+                field="new_label"
+                header="Prediction (neu)"
+                body={newPredictionTemplate}
               ></Column>
             </DataTable>
           </div>

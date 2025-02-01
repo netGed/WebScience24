@@ -15,4 +15,5 @@ export type TPredictionData = {
 export type TSelectedTweet = {
   tweet: string;
   label: number;
+  new_label: number;
 };
