@@ -11,7 +11,7 @@ import { getPredictions } from "../api/predictions.ts";
 import { classNames } from "primereact/utils";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { getEvaluationData } from "../api/data.ts";
+import { getEvaluationData, getRandomTestData } from "../api/data.ts";
 
 const labels = [{ label: 0 }, { label: 1 }];
 
@@ -41,7 +41,6 @@ const App: React.FC = () => {
     isLoading(true);
     setSelectedTweet({ tweet: tweet, label: label });
     const result = (await getPredictions(tweet)) as TPredictionData[];
-    console.log(result);
     setPredictionData(result);
     isLoading(false);
   };
@@ -49,6 +48,7 @@ const App: React.FC = () => {
   const classificationTemplate = (rowData: TTweetData) => {
     return (
       <Button
+        rounded
         type="button"
         icon="pi pi-tags"
         className="p-button-sm p-button-text"
@@ -75,11 +75,19 @@ const App: React.FC = () => {
     }
   };
 
+  const handleRandomDataClick = async () => {
+    const data = (await getRandomTestData()) as TTweetData[];
+    if (data.length > 0) {
+      setTweetText(data[0].tweet);
+      setTweetLabel({ label: data[0].label });
+    }
+  };
+
   return (
     <>
       <Panel header="Praktikum WebScience">
         <div className="flex">
-          <div className="flex flex-column m-2" style={{ width: "50%" }}>
+          <div className="flex flex-column m-2" style={{ width: "55%" }}>
             <div className="flex">
               <DataTable
                 value={tweetData}
@@ -90,15 +98,21 @@ const App: React.FC = () => {
                 <Column field="id" header="Id"></Column>
                 <Column field="tweet" header="Tweet"></Column>
                 <Column field="label" header="Label"></Column>
-                <Column field="classify" header="Classify"></Column>
-                <Column
-                  style={{ flex: "0 0 4rem" }}
-                  body={classificationTemplate}
-                ></Column>
+                <Column field="new_label" header="Label (neu)"></Column>
+                <Column field="classify" header=""></Column>
+                <Column body={classificationTemplate}></Column>
               </DataTable>
             </div>
-            <div className="flex mt-2">
-              <div className="ml-2 flex flex-row align-items-center">
+            <div className="flex mt-4">
+              <div className="ml-2 flex flex-row align-items-center justify-content-center">
+                <Button
+                  label="Zufall"
+                  type="button"
+                  className="p-button-sm p-button-text m-2"
+                  onClick={() => handleRandomDataClick()}
+                  tooltip="Zufällig Tweet aus den Testdaten (mixed)"
+                  tooltipOptions={{ position: "top" }}
+                />
                 <h3>Tweet: </h3>
                 <InputText
                   className="m-2"
@@ -130,7 +144,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex flex-column m-2" style={{ width: "50%" }}>
+          <div className="flex flex-column m-2" style={{ width: "45%" }}>
             <div className="ml-2 flex flex-row align-items-center">
               <h3>Ausgewählter Tweet: </h3>
               <div className="ml-2">

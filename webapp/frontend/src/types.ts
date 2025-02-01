@@ -2,6 +2,7 @@ export type TTweetData = {
   id: number;
   tweet: string;
   label: number;
+  new_label: number;
 };
 
 export type TPredictionData = {

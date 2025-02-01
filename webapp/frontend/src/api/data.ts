@@ -14,7 +14,28 @@ export const getEvaluationData = async () => {
   return await axios
     .request(config)
     .then((response) => {
-      console.log("Response: ", response);
+      const str = JSON.stringify(response.data);
+      const data = JSON.parse(str);
+      return data as TTweetData[];
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+export const getRandomTestData = async () => {
+  const baseUrl = "/api/get_random_test_data/";
+
+  const config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: baseUrl,
+    headers: {},
+  };
+
+  return await axios
+    .request(config)
+    .then((response) => {
       const str = JSON.stringify(response.data);
       const data = JSON.parse(str);
       return data as TTweetData[];

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from webapp.backend.app.data_reader import read_data
+from webapp.backend.app.data_reader import read_data, get_random_data
 from webapp.backend.app.predictions import predict_ensemble, predict_svm, predict_nb, predict_gru, \
     predict_lstm, predict_bert, predict_roberta
 
@@ -26,7 +26,12 @@ async def root():
 @app.get("/get_evaluation_data")
 async def get_evaluation_data():
     data = read_data()
-    print(data)
+    return data
+
+
+@app.get("/get_random_test_data")
+async def get_random_test_data():
+    data = get_random_data()
     return data
 
 
