@@ -12,8 +12,10 @@ export type TPredictionData = {
   label: number;
 };
 
-export type TSelectedTweet = {
-  tweet: string;
-  label: number;
-  new_label: number;
+export type TClassificationData = {
+  model_name: string;
+  accuracy: number;
+  f1_score: number;
+  precision: number;
+  recall: number;
 };

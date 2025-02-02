@@ -18,15 +18,15 @@ def predict_ensemble(tweet):
 
     # generate classification
     probs = model.predict_proba(tweet_vectorized)
-    preds0 = str(probs[:, 0][0])
-    preds1 = str(probs[:, 1][0])
-    pred = str(model.predict(tweet_vectorized)[0])
+    preds0 = round(probs[:, 0][0], 2)
+    preds1 = round(probs[:, 1][0], 2)
+    pred = model.predict(tweet_vectorized)[0]
 
     result = {
         "model_name": "Balanced Random Forest",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -41,8 +41,14 @@ def predict_svm(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -50,9 +56,9 @@ def predict_svm(tweet):
 
     result = {
         "model_name": "SVM",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -67,8 +73,14 @@ def predict_nb(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -76,9 +88,9 @@ def predict_nb(tweet):
 
     result = {
         "model_name": "Naive Bayes",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -93,8 +105,14 @@ def predict_gru(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -102,9 +120,9 @@ def predict_gru(tweet):
 
     result = {
         "model_name": "RNN-GRU",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -119,8 +137,14 @@ def predict_lstm(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -128,9 +152,9 @@ def predict_lstm(tweet):
 
     result = {
         "model_name": "RNN-LSTM",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -145,8 +169,14 @@ def predict_bert(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -154,9 +184,9 @@ def predict_bert(tweet):
 
     result = {
         "model_name": "BERT",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
@@ -171,8 +201,14 @@ def predict_roberta(tweet):
     # vectorize tweet
 
     # generate classification
-    preds0 = random.randint(0, 99) / 100
-    preds1 = 1 - preds0
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
+
+    # mock classification
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -180,9 +216,9 @@ def predict_roberta(tweet):
 
     result = {
         "model_name": "ROBERTA",
-        "zero_proba": preds0,
-        "one_proba": preds1,
-        "label": pred
+        "zero_proba": str(preds0),
+        "one_proba": str(preds1),
+        "label": str(pred),
     }
 
     return result
