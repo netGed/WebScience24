@@ -5,6 +5,19 @@ export type TTweetData = {
   new_label: number;
 };
 
+export type TTweetDataWithMetric = {
+  id: number;
+  tweet: string;
+  label: number;
+  ensemble_metric: number;
+  nb_metric: number;
+  svm_metric: number;
+  gru_metric: number;
+  lstm_metric: number;
+  bert_metric: number;
+  roberta_metric: number;
+};
+
 export type TPredictionData = {
   model_name: string;
   zero_proba: number;

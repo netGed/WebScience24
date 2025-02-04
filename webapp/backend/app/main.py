@@ -4,7 +4,8 @@ import uvicorn
 
 from webapp.backend.app.classifications import classify_ensemble, classify_svm, classify_nb, classify_gru, \
     classify_lstm, classify_bert, classify_roberta
-from webapp.backend.app.data_reader import read_data, get_random_data
+from webapp.backend.app.data_reader import get_data_evaluation, get_data_mixed, get_data_new, \
+    get_data_old
 from webapp.backend.app.predictions import predict_ensemble, predict_svm, predict_nb, predict_gru, \
     predict_lstm, predict_bert, predict_roberta
 from webapp.backend.app.types import Tweet
@@ -28,13 +29,25 @@ async def root():
 
 @app.get("/get_evaluation_data")
 async def get_evaluation_data():
-    data = read_data()
+    data = get_data_evaluation()
     return data
 
 
-@app.get("/get_random_test_data")
-async def get_random_test_data():
-    data = get_random_data()
+@app.post("/get_random_test_data_old")
+async def get_random_test_data_old(count: int = 1):
+    data = get_data_old(count)
+    return data
+
+
+@app.post("/get_random_test_data_new")
+async def get_random_test_data_new(count: int = 1):
+    data = get_data_new(count)
+    return data
+
+
+@app.post("/get_random_test_data_mixed")
+async def get_random_test_data_mixed(count: int = 1):
+    data = get_data_mixed(count)
     return data
 
 
