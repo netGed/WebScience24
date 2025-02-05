@@ -36,7 +36,7 @@ def vectorize_tfidf(df, text_column, label_column, test_size=0.3, random_state=4
     X_train_tfidf = tfidf_vectorizer.fit_transform(X_train_base)
     X_test_tfidf = tfidf_vectorizer.transform(X_test_base)
 
-    return X_train_tfidf, X_test_tfidf, y_train_tfidf, y_test_tfidf
+    return X_train_tfidf, X_test_tfidf, y_train_tfidf, y_test_tfidf, tfidf_vectorizer
     
     
 def vectorize_w2v(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
