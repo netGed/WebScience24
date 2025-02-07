@@ -1,274 +1,233 @@
 import joblib
 import random
+
+import numpy as np
 import pandas as pd
-from sklearn.metrics import precision_score, recall_score, f1_score
+import torch
+from scipy.special import softmax
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
 from webapp.backend.app.types import Tweet
 
 tfidf_vectorizer_mixeddata = joblib.load("models/tfidf_vectorizer_mixeddata.joblib")
 
 
-def classify_ensemble(tweets: list[Tweet]):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_ensemble(tweet):
     # load model
     model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
+    # todo
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
+    df = pd.DataFrame({'Tweet': [tweet]})
+    tweet_vectorized = tfidf_vectorizer_mixeddata.transform([df['Tweet'][0]])
 
-    # generate metrics
-    acc = model.score(X_vectorized, y)
-    precision = precision_score(y, model.predict(X_vectorized))
-    recall = recall_score(y, model.predict(X_vectorized))
-    f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    probs = model.predict_proba(tweet_vectorized)
+    preds0 = round(probs[:, 0][0], 2)
+    preds1 = round(probs[:, 1][0], 2)
+    pred = model.predict(tweet_vectorized)[0]
 
     result = {
         "model_name": "Balanced Random Forest",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
 # todo
-def classify_svm(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_svm(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    # probs = model.classify_with_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "SVM",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
 # todo
-def classify_nb(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_nb(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "Naive Bayes",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
 # todo
-def classify_gru(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_gru(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "RNN-GRU",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
 # todo
-def classify_lstm(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_lstm(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "RNN-LSTM",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
 # todo
-def classify_bert(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
-
+def classify_with_bert(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+    # clean tweet before vectorization
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # vectorize tweet
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
+    # generate classification
+    # probs = model.predict_proba(tweet_vectorized)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
+    # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "BERT",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
 
 
-# todo
-def classify_roberta(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["new_label"]
+ROBERTA_MODEL_PATH = f"cardiffnlp/twitter-roberta-base-sentiment"
+tokenizer_roberta = AutoTokenizer.from_pretrained(ROBERTA_MODEL_PATH, map_location=torch.device('cpu'),
+                                                  local_files_only=True)
+model_roberta = AutoModelForSequenceClassification.from_pretrained(ROBERTA_MODEL_PATH, local_files_only=True)
 
-    # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
 
-    # clean tweets before vectorization
-    # todo?
+def classify_with_roberta(tweet):
+    # tokenize input
+    encoded_input = tokenizer_roberta(tweet, return_tensors='pt')
 
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    # generate classification
+    output = model_roberta(**encoded_input)
+    scores = output[0][0].detach().numpy()
+    scores = softmax(scores)
 
-    # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
-
-    # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    # generate classification
+    # Indizes: ["negative", "neutral", "positive"]
+    preds0 = round(scores[2], 2)  # 2 = positive
+    preds1 = round(scores[0], 2)  # 0 = negative
+    if preds0 > preds1:
+        pred = 0
+    else:
+        pred = 1
 
     result = {
         "model_name": "ROBERTA",
-        "accuracy": round(acc, 2),
-        "f1_score": round(f1, 2),
-        "precision": round(precision, 2),
-        "recall": round(recall, 2),
+        "zero_probability": str(preds0),
+        "one_probability": str(preds1),
+        "label": str(pred),
     }
 
     return result
