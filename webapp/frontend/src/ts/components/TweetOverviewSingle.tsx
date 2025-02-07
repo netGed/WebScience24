@@ -3,8 +3,8 @@ import { Panel } from "primereact/panel";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
-import { TPredictionData, TTweetData } from "../../types.ts";
-import { getPredictions } from "../api/predictions.ts";
+import { TClassificationData, TTweetData } from "../../types.ts";
+import { getClassificationForTweet } from "../api/classification.ts";
 import { classNames } from "primereact/utils";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
@@ -16,7 +16,9 @@ const labels = [{ label: 0 }, { label: 1 }];
 
 const TweetOverviewSingle: React.FC = () => {
   const [selectedTweet, setSelectedTweet] = useState<TTweetData>();
-  const [predictionData, setPredictionData] = useState<TPredictionData[]>([]);
+  const [predictionData, setPredictionData] = useState<TClassificationData[]>(
+    [],
+  );
   const [loadingPrediction, isLoadingPrediction] = useState(false);
   const [tweetText, setTweetText] = useState<string>("");
   const [tweetLabel, setTweetLabel] = useState(labels[0]);
@@ -26,20 +28,23 @@ const TweetOverviewSingle: React.FC = () => {
   };
 
   const handleClassificationClickSingle = async (
+    id: number,
     tweet: string,
     label: number,
-    new_label: number,
+    new_label?: number,
   ) => {
     isLoadingPrediction(true);
     const tweetData = {
-      id: -1,
+      id: id,
       tweet: tweet,
       label: label,
-      new_label: new_label,
+      new_label: new_label ? new_label : label,
     };
     setSelectedTweet(tweetData);
 
-    const predictionResult = (await getPredictions(tweet)) as TPredictionData[];
+    const predictionResult = (await getClassificationForTweet(
+      tweet,
+    )) as TClassificationData[];
     setPredictionData(predictionResult);
 
     isLoadingPrediction(false);
@@ -62,6 +67,7 @@ const TweetOverviewSingle: React.FC = () => {
         className="p-button-sm p-button-text"
         onClick={() => {
           handleClassificationClickSingle(
+            rowData["id"],
             rowData["tweet"],
             rowData["label"],
             rowData["new_label"],
@@ -71,7 +77,7 @@ const TweetOverviewSingle: React.FC = () => {
     );
   };
 
-  const predictionTemplate = (rowData: TPredictionData) => {
+  const predictionTemplate = (rowData: TClassificationData) => {
     if (selectedTweet) {
       const realLabel = selectedTweet.label;
 
@@ -87,7 +93,7 @@ const TweetOverviewSingle: React.FC = () => {
     }
   };
 
-  const newPredictionTemplate = (rowData: TPredictionData) => {
+  const newPredictionTemplate = (rowData: TClassificationData) => {
     if (selectedTweet) {
       const realLabel = selectedTweet.new_label;
 
@@ -158,6 +164,7 @@ const TweetOverviewSingle: React.FC = () => {
                   disabled={isInputInvalid()}
                   onClick={() =>
                     handleClassificationClickSingle(
+                      -1,
                       tweetText,
                       tweetLabel.label,
                       tweetLabel.label,
@@ -202,11 +209,11 @@ const TweetOverviewSingle: React.FC = () => {
             >
               <Column field="model_name" header="Model Name"></Column>
               <Column
-                field="zero_proba"
+                field="zero_probability"
                 header="No Hatespeech-Probability"
               ></Column>
               <Column
-                field="one_proba"
+                field="one_probability"
                 header="Hatespeech-Probability"
               ></Column>
               <Column

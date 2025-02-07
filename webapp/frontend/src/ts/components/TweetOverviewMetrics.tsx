@@ -3,8 +3,8 @@ import { Panel } from "primereact/panel";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
-import { TClassificationData, TTweetData } from "../../types.ts";
-import { getClassificationResults } from "../api/predictions.ts";
+import { TClassificationDataWithMetrics, TTweetData } from "../../types.ts";
+import { getClassificationMetrics } from "../api/classification.ts";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
 import Plot from "react-plotly.js";
 import TweetStore from "../stores/TweetStore.ts";
@@ -25,17 +25,17 @@ type TPlotData = {
 const TweetOverviewMetrics: React.FC = () => {
   const [selectedTweets, setSelectedTweets] = useState<TTweetData[]>([]);
   const [classificationData, setClassificationData] = useState<
-    TClassificationData[]
+    TClassificationDataWithMetrics[]
   >([]);
   useState<TTweetData>();
   const [loadingClassification, isLoadingClassification] = useState(false);
   const [plotData, setPlotData] = useState<TPlotData>({ x: [], y: [] });
   const [selectedMetric, setSelectedMetric] = useState(metrics[0]);
 
-  const updatePlotData = (newData: TClassificationData[]) => {
+  const updatePlotData = (newData: TClassificationDataWithMetrics[]) => {
     const x: string[] = [];
     const y: number[] = [];
-    const key = selectedMetric.metric as keyof TClassificationData;
+    const key = selectedMetric.metric as keyof TClassificationDataWithMetrics;
 
     newData.forEach((classData) => {
       x.push(classData.model_name);
@@ -48,9 +48,9 @@ const TweetOverviewMetrics: React.FC = () => {
     isLoadingClassification(true);
     const request =
       selectedTweets.length > 0 ? selectedTweets : TweetStore.tweets;
-    const result = (await getClassificationResults(
+    const result = (await getClassificationMetrics(
       request,
-    )) as TClassificationData[];
+    )) as TClassificationDataWithMetrics[];
     setClassificationData(result);
     isLoadingClassification(false);
 
