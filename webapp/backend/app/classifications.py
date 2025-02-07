@@ -1,23 +1,20 @@
 import joblib
 import random
-
-import numpy as np
 import pandas as pd
 import torch
 from scipy.special import softmax
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-from webapp.backend.app.types import Tweet
 
-tfidf_vectorizer_mixeddata = joblib.load("models/tfidf_vectorizer_mixeddata.joblib")
+tfidf_vectorizer_mixeddata = joblib.load("models/ensemble/tfidf_vectorizer_for_brf.joblib")
 
 
 def classify_with_ensemble(tweet):
     # load model
-    model = joblib.load("models/brf_untuned_tf.joblib")
+    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
 
     # clean tweet before vectorization
-    # todo
+    # todo?
 
     # vectorize tweet
     df = pd.DataFrame({'Tweet': [tweet]})
@@ -199,7 +196,7 @@ def classify_with_bert(tweet):
     return result
 
 
-ROBERTA_MODEL_PATH = f"cardiffnlp/twitter-roberta-base-sentiment"
+ROBERTA_MODEL_PATH = f"models/roberta/cardiffnlp/twitter-roberta-base-sentiment"
 tokenizer_roberta = AutoTokenizer.from_pretrained(ROBERTA_MODEL_PATH, map_location=torch.device('cpu'),
                                                   local_files_only=True)
 model_roberta = AutoModelForSequenceClassification.from_pretrained(ROBERTA_MODEL_PATH, local_files_only=True)
