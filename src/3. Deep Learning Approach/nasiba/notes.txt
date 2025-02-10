@@ -5,3 +5,22 @@ word2vec hat größere Vector Size nicht gut funktioniert
 Vektor Size Änderung bei 
 
 Bei Glove wurden keine Durschnittsvektoren sondern die richtigen Vektoren genommen
+
+Warum wird One-Hot-Encoding verwendet?
+✅ Notwendig für neuronale Netze: Viele Machine-Learning-Modelle (z. B. neuronale Netze mit Softmax-Output) erwarten die Klassen als One-Hot-Vektoren.
+✅ Verhindert falsche numerische Interpretationen: Ein klassisches y_train = [0, 1, 2] könnte sonst als kontinuierliche Werte interpretiert werden.
+✅ Erleichtert die Berechnung des Fehlers (Loss Function): One-Hot-Vektoren werden oft mit der Kreuzentropie (categorical crossentropy) verwendet.
+to_categorical() wandelt Labels in One-Hot-Format um.
+Wird in klassifizierenden neuronalen Netzen benötigt.
+Verhindert, dass das Modell fälschlicherweise Klassen als Zahlen mit Reihenfolge interpretiert.
+Ist besonders wichtig bei mehrklassigen Klassifikationsproblemen mit Softmax-Aktivierung.
+
+Problem von RNNs: Vanishing Gradient
+Beim Training mit Backpropagation treten oft zwei Probleme auf:
+
+Vanishing Gradient (verschwindender Gradient)
+Wenn die Gradienten in tiefen Netzwerken immer kleiner werden, können frühere Zustände kaum mehr beeinflusst werden. Das macht es schwer, langfristige Abhängigkeiten zu lernen.
+Exploding Gradient (explodierender Gradient)
+Umgekehrt können die Gradienten in manchen Fällen zu groß werden, was das Training instabil macht.
+👎 Standard-RNNs sind daher nicht gut für lange Sequenzen geeignet.
+Lösung: LSTM (Long Short-Term Memory)

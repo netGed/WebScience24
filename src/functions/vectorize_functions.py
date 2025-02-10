@@ -36,7 +36,7 @@ def vectorize_tfidf(df, text_column, label_column, test_size=0.3, random_state=4
     X_train_tfidf = tfidf_vectorizer.fit_transform(X_train_base)
     X_test_tfidf = tfidf_vectorizer.transform(X_test_base)
 
-    return X_train_tfidf, X_test_tfidf, y_train_tfidf, y_test_tfidf
+    return X_train_tfidf, X_test_tfidf, y_train_tfidf, y_test_tfidf, tfidf_vectorizer
     
     
 def vectorize_w2v(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
@@ -97,7 +97,7 @@ def vectorize_w2v(df, text_column, label_column, vector_size=300, window=5, min_
     for i in range(len(X_test_base_tokenized)):
         X_test_w2v[i, :] = w2v_vector(X_test_base_tokenized.iloc[i], vector_size)
 
-    return X_train_w2v, X_test_w2v, y_train_w2v, y_test_w2v
+    return X_train_w2v, X_test_w2v, y_train_w2v, y_test_w2v, w2v
     
 
 def vectorize_glove(df, text_column, label_column, vector_size=100, test_size=0.3, random_state=42):
@@ -150,7 +150,7 @@ def vectorize_glove(df, text_column, label_column, vector_size=100, test_size=0.
     X_train_glv = np.array([average_glove_vector(tweet, glv_model, vector_size) for tweet in X_train_tokenized])
     X_test_glv = np.array([average_glove_vector(tweet, glv_model, vector_size) for tweet in X_test_tokenized])
 
-    return X_train_glv, X_test_glv, y_train_glv, y_test_glv
+    return X_train_glv, X_test_glv, y_train_glv, y_test_glv, glv_model
 
 def vectorize_glove_without_avarage(df, text_column, label_column, glove_path, vector_size=100, max_seq_len=50, test_size=0.3, random_state=42):
     """
