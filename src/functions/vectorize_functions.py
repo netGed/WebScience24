@@ -275,3 +275,60 @@ def vectorize_word2vec_no_average(df, text_column, label_column, vector_size=100
     X_test_vectors = np.array([get_word2vec_sequence(sentence, w2v_model, vector_size, max_seq_len) for sentence in X_test_tokenized])
 
     return X_train_vectors, X_test_vectors, y_train, y_test, w2v_model
+
+def vectorize_glove_test_data(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50):
+    """
+    Vectorizes text data using pre-trained GloVe embeddings.
+    Each sentence is represented as a sequence of word vectors.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and labels.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing target labels.
+        glove_path (str): Path to the pre-trained GloVe embeddings file.
+        vector_size (int, optional): The size of the GloVe vectors (default is 100).
+        max_seq_len (int, optional): The maximum sequence length for padding (default is 50).
+
+    Returns:
+        train_vectors (np.ndarray): GloVe vektorisierte Daten.
+        train_y (pd.Series): Labels der Trainingsdaten.
+        glove_embeddings (dict): Das geladene GloVe-Embedding-Wörterbuch.
+    """
+    # Step 1: Entferne fehlende Werte und stelle sicher, dass der Text als String vorliegt
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Step 2: Lade GloVe-Embeddings in ein Wörterbuch
+    glove_embeddings = {}
+    with open(glove_path, encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            vector = np.asarray(values[1:], dtype='float32')
+            glove_embeddings[word] = vector
+
+    # Step 3: Tokenisiere den Text
+    X_tokenized = df[text_column].map(word_tokenize)
+
+    # Step 4: Funktion zur Umwandlung eines tokenisierten Satzes in eine Sequenz von GloVe-Vektoren
+    def get_glove_vectors(tokenized_sentence, glove_embeddings, vector_size, max_seq_len):
+        vectors = []
+        for word in tokenized_sentence:
+            if word in glove_embeddings:
+                vectors.append(glove_embeddings[word])
+            else:
+                vectors.append(np.zeros(vector_size))  # Null-Vektor für unbekannte Wörter
+        # Kürze oder padde die Sequenz auf die gewünschte max_seq_len
+        if len(vectors) > max_seq_len:
+            vectors = vectors[:max_seq_len]
+        else:
+            vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
+        return np.array(vectors)
+
+    # Step 5: Konvertiere tokenisierte Sätze in Vektoren
+    train_vectors = np.array([get_glove_vectors(sentence, glove_embeddings, vector_size, max_seq_len) for sentence in X_tokenized])
+
+    # Step 6: Extrahiere die Labels
+    train_y = df[label_column]
+
+    return train_vectors, train_y, glove_embeddings

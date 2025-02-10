@@ -24,3 +24,29 @@ Exploding Gradient (explodierender Gradient)
 Umgekehrt können die Gradienten in manchen Fällen zu groß werden, was das Training instabil macht.
 👎 Standard-RNNs sind daher nicht gut für lange Sequenzen geeignet.
 Lösung: LSTM (Long Short-Term Memory)
+
+Evaulation:
+
+Precision (Genauigkeit der positiven Vorhersagen)
+Class 0: 0.98 → 98 % der vorhergesagten Class-0-Fälle sind tatsächlich korrekt.
+Class 1: 0.88 → 88 % der vorhergesagten Class-1-Fälle sind tatsächlich korrekt.
+
+Recall (Empfindlichkeit / Wie viele Positive wurden erkannt?)
+Class 0: 0.99 → 99 % der tatsächlichen Class-0-Fälle wurden richtig vorhergesagt.
+Class 1: 0.66 → Nur 66 % der tatsächlichen Class-1-Fälle wurden richtig erkannt.
+➡ Der niedrige Recall für Class 1 bedeutet, dass 34 % der tatsächlichen positiven Fälle nicht erkannt wurden (False Negatives). Das Modell hat also Schwierigkeiten, alle Hate-Speech-Fälle zu erkennen.
+
+F1-Score (Harm. Mittelwert von Precision & Recall)
+Class 0: 0.99 → Sehr gut, da Precision & Recall hoch sind.
+Class 1: 0.76 → Mittelmäßig, da Recall niedrig ist.
+➡ Der niedrige F1-Score für Class 1 zeigt, dass das Modell nicht optimal darin ist, alle Hate-Speech-Fälle korrekt zu erkennen.
+
+
+Für sigmoid benötigt man kein one hot coding, während für softmax hot coding braucht
+
+Durch class_weight wurde an model mit sigmoid eine neu gewichtete Klassen übergeben
+
+MEhr Neuronen mit sigmoid wie 256 hat ohne class_weight gut funktioniert, mit class_weight war es gleich 0
+
+Verwenden einfach Recall() ohne class_id, da TensorFlow bei einem binären Klassifikationsproblem automatisch den Recall für Klasse 1 berechnet. Dadurch kannst du den Recall in jeder Epoche direkt in der history-Variable verfolgen, ohne One-Hot-Encoding der Labels.
+

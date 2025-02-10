@@ -194,6 +194,56 @@ def vectorize_word2vec(df, text_column, label_column, vector_size=100, max_seq_l
 
     return X_train_vectors, X_test_vectors, y_train, y_test, w2v_model
 
+def vectorize_word2vec_test_data(df, text_column, label_column, vector_size=100, max_seq_len=50, window=5, min_count=1):
+    """
+    Vectorizes text data using Word2Vec and returns sequences of word vectors.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and labels.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing the target labels.
+        vector_size (int, optional): The size of the Word2Vec vectors (default is 100).
+        max_seq_len (int, optional): The maximum sequence length for padding/truncation (default is 50).
+        window (int, optional): The window size for context words (default is 5).
+        min_count (int, optional): Minimum frequency for words to be included in the vocabulary (default is 1).
+
+    Returns:
+        X_vectors (np.ndarray): Word2Vec vektorisierte Daten als Sequenzen.
+        y_labels (pd.Series): Labels der Daten.
+        w2v_model (gensim.models.Word2Vec): Das trainierte Word2Vec-Modell.
+    """
+    # Step 1: Entferne fehlende Werte und stelle sicher, dass der Text als String vorliegt
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Step 2: Tokenisiere den Text
+    X_tokenized = df[text_column].map(lambda x: word_tokenize(x) if isinstance(x, str) else [])
+
+    # Step 3: Trainiere Word2Vec-Modell auf der gesamten tokenisierten Datenmenge
+    w2v_model = Word2Vec(sentences=X_tokenized, vector_size=vector_size, window=window, min_count=min_count, sg=0)
+
+    # Step 4: Funktion zur Umwandlung eines tokenisierten Satzes in eine Sequenz von Word2Vec-Vektoren
+    def get_word2vec_sequence(tokenized_sentence, model, vector_size, max_seq_len):
+        vectors = []
+        for word in tokenized_sentence:
+            if word in model.wv:
+                vectors.append(model.wv[word])
+            else:
+                vectors.append(np.zeros(vector_size))  # Null-Vektor für unbekannte Wörter
+        # Kürze oder padde die Sequenz auf die gewünschte max_seq_len
+        if len(vectors) > max_seq_len:
+            vectors = vectors[:max_seq_len]
+        else:
+            vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
+        return np.array(vectors)
+
+    # Step 5: Konvertiere tokenisierte Sätze in Vektoren
+    X_vectors = np.array([get_word2vec_sequence(sentence, w2v_model, vector_size, max_seq_len) for sentence in X_tokenized])
+
+    # Step 6: Extrahiere die Labels
+    y_labels = df[label_column]
+
+    return X_vectors, y_labels, w2v_model
 
 def vectorize_fasttext(df, text_column, label_column, vector_size=300, window=5, min_count=1, test_size=0.3, random_state=42):
     """
@@ -319,7 +369,7 @@ def vectorize_glove_with_average(df, text_column, label_column, glove_path, vect
 
     return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings 
 
-def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, max_seq_len=50, test_size=0.3, random_state=42):
+def vectorize_glove(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50, test_size=0.3, random_state=42):
     """
     Vectorizes text data using pre-trained GloVe embeddings and splits it into training and test sets.
     Each sentence is represented as a sequence of word vectors.
@@ -341,11 +391,11 @@ def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, 
         y_test (pd.Series): The test labels.
         glove_embeddings (dict): The loaded GloVe embeddings dictionary.
     """
-    # Step 1: Remove missing values and ensure all text is a string
+    # Entferne fehlende Werte und stelle sicher, dass der Text als String vorliegt
     df = df[df[text_column].notna()]
     df[text_column] = df[text_column].astype(str)
 
-    # Step 2: Load GloVe embeddings into a dictionary
+    # Lade GloVe-Embeddings in ein Dictionary
     glove_embeddings = {}
     with open(glove_path, encoding='utf-8') as f:
         for line in f:
@@ -354,96 +404,94 @@ def vectorize_glove(df, text_column, label_column, glove_path, vector_size=100, 
             vector = np.asarray(values[1:], dtype='float32')
             glove_embeddings[word] = vector
 
-    # Step 3: Split the data into training and test sets
+    # Datenaufteilung in Training- und Testsets
     X = df[text_column]
     y = df[label_column]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=test_size, random_state=random_state)
 
-    # Step 4: Tokenize the text data
-    X_train_tokenized = X_train.map(word_tokenize)
-    X_test_tokenized = X_test.map(word_tokenize)
+    # Tokenisiere den Text
+    X_train_tokenized = list(X_train.map(word_tokenize))
+    X_test_tokenized = list(X_test.map(word_tokenize))
 
-    # Step 5: Function to convert a tokenized sentence into a sequence of GloVe vectors
+    # Funktion zur Umwandlung eines tokenisierten Satzes in eine Sequenz von GloVe-Vektoren
+    def get_glove_vectors(tokenized_sentence, glove_embeddings, vector_size, max_seq_len):
+        vectors = [glove_embeddings[word] if word in glove_embeddings else np.zeros(vector_size) for word in tokenized_sentence]
+
+        # Sicherstellen, dass alle Sequenzen exakt `max_seq_len` lang sind
+        if len(vectors) < max_seq_len:
+            vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
+        else:
+            vectors = vectors[:max_seq_len]
+
+        return np.array(vectors, dtype=np.float32)
+
+    # Wandle tokenisierte Sätze in Vektoren um
+    X_train_vectors = [get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_train_tokenized]
+    X_test_vectors = [get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_test_tokenized]
+
+    # Überprüfung auf einheitliche Länge vor der Umwandlung in NumPy-Arrays
+    assert all(len(vec) == max_seq_len for vec in X_train_vectors), "Fehler: Uneinheitliche Länge in X_train_vectors!"
+    assert all(len(vec) == max_seq_len for vec in X_test_vectors), "Fehler: Uneinheitliche Länge in X_test_vectors!"
+
+    # Konvertiere Listen in NumPy-Arrays
+    X_train_vectors = np.array(X_train_vectors, dtype=np.float32)
+    X_test_vectors = np.array(X_test_vectors, dtype=np.float32)
+
+    return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings
+
+def vectorize_glove_test_data(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50):
+    """
+    Vectorizes text data using pre-trained GloVe embeddings.
+    Each sentence is represented as a sequence of word vectors.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and labels.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing target labels.
+        glove_path (str): Path to the pre-trained GloVe embeddings file.
+        vector_size (int, optional): The size of the GloVe vectors (default is 100).
+        max_seq_len (int, optional): The maximum sequence length for padding (default is 50).
+
+    Returns:
+        train_vectors (np.ndarray): GloVe vektorisierte Daten.
+        train_y (pd.Series): Labels der Trainingsdaten.
+        glove_embeddings (dict): Das geladene GloVe-Embedding-Wörterbuch.
+    """
+    # Step 1: Entferne fehlende Werte und stelle sicher, dass der Text als String vorliegt
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Step 2: Lade GloVe-Embeddings in ein Wörterbuch
+    glove_embeddings = {}
+    with open(glove_path, encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            vector = np.asarray(values[1:], dtype='float32')
+            glove_embeddings[word] = vector
+
+    # Step 3: Tokenisiere den Text
+    X_tokenized = df[text_column].map(word_tokenize)
+
+    # Step 4: Funktion zur Umwandlung eines tokenisierten Satzes in eine Sequenz von GloVe-Vektoren
     def get_glove_vectors(tokenized_sentence, glove_embeddings, vector_size, max_seq_len):
         vectors = []
         for word in tokenized_sentence:
             if word in glove_embeddings:
                 vectors.append(glove_embeddings[word])
             else:
-                vectors.append(np.zeros(vector_size))  # Use zero vector for unknown words
-        # Truncate or pad the sequence to the desired max_seq_len
+                vectors.append(np.zeros(vector_size))  # Null-Vektor für unbekannte Wörter
+        # Kürze oder padde die Sequenz auf die gewünschte max_seq_len
         if len(vectors) > max_seq_len:
             vectors = vectors[:max_seq_len]
         else:
             vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
         return np.array(vectors)
 
-    # Step 6: Convert tokenized sentences to sequences of vectors
-    X_train_vectors = np.array([get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_train_tokenized])
-    X_test_vectors = np.array([get_glove_vectors(tweet, glove_embeddings, vector_size, max_seq_len) for tweet in X_test_tokenized])
+    # Step 5: Konvertiere tokenisierte Sätze in Vektoren
+    train_vectors = np.array([get_glove_vectors(sentence, glove_embeddings, vector_size, max_seq_len) for sentence in X_tokenized])
 
-    return X_train_vectors, X_test_vectors, y_train, y_test, glove_embeddings
+    # Step 6: Extrahiere die Labels
+    train_y = df[label_column]
 
-
-def compare_vectorization_methods(df, text_column, label_column):
-    """
-    Compares vectorizing methods BoW, TF-IDF, Word2Vec und FastText.
-    """
-    results = []
-
-    # 1. Bag of Words
-    print("Vektorisierung: Bag of Words")
-    X_train_bow, X_test_bow, y_train, y_test, _ = vectorize_bag_of_words(df, text_column, label_column)
-
-    clf = LogisticRegression(max_iter=1000)
-    clf.fit(X_train_bow, y_train)
-    y_pred_bow = clf.predict(X_test_bow)
-    results.append({
-        "Method": "Bag of Words",
-        "Accuracy": accuracy_score(y_test, y_pred_bow),
-        "Precision": precision_score(y_test, y_pred_bow, average="weighted"),
-        "Recall": recall_score(y_test, y_pred_bow, average="weighted"),
-        "F1 Score": f1_score(y_test, y_pred_bow, average="weighted")
-    })
-
-    # 2. TF-IDF
-    print("Vektorisierung: TF-IDF")
-    X_train_tfidf, X_test_tfidf, y_train, y_test, _ = vectorize_tfidf(df, text_column, label_column)
-    clf.fit(X_train_tfidf, y_train)
-    y_pred_tfidf = clf.predict(X_test_tfidf)
-    results.append({
-        "Method": "TF-IDF",
-        "Accuracy": accuracy_score(y_test, y_pred_tfidf),
-        "Precision": precision_score(y_test, y_pred_tfidf, average="weighted"),
-        "Recall": recall_score(y_test, y_pred_tfidf, average="weighted"),
-        "F1 Score": f1_score(y_test, y_pred_tfidf, average="weighted")
-    })
-
-    # 3. Word2Vec
-    print("Vektorisierung: Word2Vec")
-    X_train_w2v, X_test_w2v, y_train, y_test, _ = vectorize_word2vec(df, text_column, label_column)
-    clf.fit(X_train_w2v, y_train)
-    y_pred_w2v = clf.predict(X_test_w2v)
-    results.append({
-        "Method": "Word2Vec",
-        "Accuracy": accuracy_score(y_test, y_pred_w2v),
-        "Precision": precision_score(y_test, y_pred_w2v, average="weighted"),
-        "Recall": recall_score(y_test, y_pred_w2v, average="weighted"),
-        "F1 Score": f1_score(y_test, y_pred_w2v, average="weighted")
-    })
-
-    # 4. FastText
-    print("Vektorisierung: FastText")
-    X_train_ft, X_test_ft, y_train, y_test, _ = vectorize_fasttext(df, text_column, label_column)
-    clf.fit(X_train_ft, y_train)
-    y_pred_ft = clf.predict(X_test_ft)
-    results.append({
-        "Method": "FastText",
-        "Accuracy": accuracy_score(y_test, y_pred_ft),
-        "Precision": precision_score(y_test, y_pred_ft, average="weighted"),
-        "Recall": recall_score(y_test, y_pred_ft, average="weighted"),
-        "F1 Score": f1_score(y_test, y_pred_ft, average="weighted")
-    })
-
-    results_df = pd.DataFrame(results)
-    return results_df
+    return train_vectors, train_y, glove_embeddings
