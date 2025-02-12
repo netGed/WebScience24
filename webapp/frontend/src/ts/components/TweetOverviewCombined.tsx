@@ -70,7 +70,6 @@ const TweetOverviewCombined: React.FC = () => {
     id: number,
     tweet: string,
     label: number,
-    new_label?: number,
   ) => {
     isLoadingPrediction(true);
     isLoadingClassification(true);
@@ -78,7 +77,6 @@ const TweetOverviewCombined: React.FC = () => {
       id: id,
       tweet: tweet,
       label: label,
-      new_label: new_label ? new_label : label,
     };
     setSelectedTweet(tweetData);
 
@@ -129,7 +127,6 @@ const TweetOverviewCombined: React.FC = () => {
             rowData["id"],
             rowData["tweet"],
             rowData["label"],
-            rowData["new_label"],
           );
         }}
       />
@@ -139,22 +136,6 @@ const TweetOverviewCombined: React.FC = () => {
   const predictionTemplate = (rowData: TClassificationData) => {
     if (selectedTweet) {
       const realLabel = selectedTweet.label;
-
-      const classColor = classNames(
-        "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
-        {
-          "bg-red-100 text-red-900": rowData.label != realLabel,
-          "bg-green-100 text-green-900": rowData.label == realLabel,
-        },
-      );
-
-      return <div className={classColor}>{rowData.label}</div>;
-    }
-  };
-
-  const newPredictionTemplate = (rowData: TClassificationData) => {
-    if (selectedTweet) {
-      const realLabel = selectedTweet.new_label;
 
       const classColor = classNames(
         "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
@@ -220,7 +201,6 @@ const TweetOverviewCombined: React.FC = () => {
                 <Column field="id" header="Id"></Column>
                 <Column field="tweet" header="Tweet"></Column>
                 <Column field="label" header="Label"></Column>
-                <Column field="new_label" header="Label (neu)"></Column>
                 <Column field="classify" header=""></Column>
                 <Column body={classificationTemplate}></Column>
               </DataTable>
@@ -263,7 +243,6 @@ const TweetOverviewCombined: React.FC = () => {
                       -1,
                       tweetText,
                       tweetLabel.label,
-                      tweetLabel.label,
                     )
                   }
                 />
@@ -285,12 +264,6 @@ const TweetOverviewCombined: React.FC = () => {
                 <h4>Label: </h4>
                 <div className="ml-2">
                   {selectedTweet ? selectedTweet["label"] : ""}
-                </div>
-              </div>
-              <div className="ml-2 flex flex-row align-items-center">
-                <h4>Label (neu): </h4>
-                <div className="ml-2">
-                  {selectedTweet ? selectedTweet["new_label"] : ""}
                 </div>
               </div>
             </div>
@@ -316,11 +289,6 @@ const TweetOverviewCombined: React.FC = () => {
                 field="label"
                 header="Prediction"
                 body={predictionTemplate}
-              ></Column>
-              <Column
-                field="new_label"
-                header="Prediction (neu)"
-                body={newPredictionTemplate}
               ></Column>
             </DataTable>
           </Panel>

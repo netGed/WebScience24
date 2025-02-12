@@ -17,7 +17,7 @@ def generate_classification_metrics_for_ensemble(tweets: list[Tweet]):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
@@ -50,7 +50,7 @@ def generate_classification_metrics_for_svm(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
@@ -89,7 +89,7 @@ def generate_classification_metrics_for_nb(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
@@ -128,7 +128,7 @@ def generate_classification_metrics_for_gru(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
@@ -167,7 +167,7 @@ def generate_classification_metrics_for_lstm(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
@@ -206,7 +206,7 @@ def generate_classification_metrics_for_bert(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
-    y = df["new_label"]
+    y = df["label"]
 
     # load model
     model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")

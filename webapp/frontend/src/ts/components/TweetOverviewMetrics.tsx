@@ -109,7 +109,6 @@ const TweetOverviewMetrics: React.FC = () => {
                 <Column field="id" header="Id"></Column>
                 <Column field="tweet" header="Tweet"></Column>
                 <Column field="label" header="Label"></Column>
-                <Column field="new_label" header="Label (neu)"></Column>
                 <Column field="classify" header=""></Column>
               </DataTable>
             </div>

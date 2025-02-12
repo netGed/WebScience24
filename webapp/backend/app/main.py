@@ -10,7 +10,7 @@ from webapp.backend.app.data_reader import get_data_evaluation, get_data_mixed, 
     get_data_old
 from webapp.backend.app.classifications import classify_with_ensemble, classify_with_svm, classify_with_nb, \
     classify_with_gru, \
-    classify_with_lstm, classify_with_bert, classify_with_roberta
+    classify_with_lstm, classify_with_bert, classify_with_roberta, classify_with_roberta2
 from webapp.backend.app.types import Tweet
 
 app = FastAPI()
