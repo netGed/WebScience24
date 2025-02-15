@@ -1,0 +1,2 @@
+C,break_ties,cache_size,class_weight,coef0,decision_function_shape,degree,gamma,kernel,max_iter,probability,random_state,shrinking,tol,verbose
+0.9799098521619943,False,200,"{0: 1, 1: 3}",0.0,ovr,3,0.031233911067827615,linear,-1,False,,True,0.001,False
