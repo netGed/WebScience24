@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Panel } from "primereact/panel";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
 import {
   TClassificationData,
-  TPredictionData,
+  TClassificationDataWithMetrics,
   TTweetData,
 } from "../../types.ts";
 import {
-  getClassificationResults,
-  getPredictions,
-} from "../api/predictions.ts";
+  getClassificationForTweet,
+  getClassificationMetrics,
+} from "../api/classification.ts";
 import { classNames } from "primereact/utils";
 import { InputText } from "primereact/inputtext";
 import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
@@ -36,9 +36,11 @@ type TPlotData = {
 const TweetOverviewCombined: React.FC = () => {
   const [selectedTweet, setSelectedTweet] = useState<TTweetData>();
   const [selectedTweets, setSelectedTweets] = useState<TTweetData[]>([]);
-  const [predictionData, setPredictionData] = useState<TPredictionData[]>([]);
+  const [predictionData, setPredictionData] = useState<TClassificationData[]>(
+    [],
+  );
   const [classificationData, setClassificationData] = useState<
-    TClassificationData[]
+    TClassificationDataWithMetrics[]
   >([]);
   useState<TTweetData>();
   const [loadingPrediction, isLoadingPrediction] = useState(false);
@@ -48,18 +50,14 @@ const TweetOverviewCombined: React.FC = () => {
   const [plotData, setPlotData] = useState<TPlotData>({ x: [], y: [] });
   const [selectedMetric, setSelectedMetric] = useState(metrics[0]);
 
-  useEffect(() => {
-    console.log("tweets changed");
-  }, []);
-
   const isInputInvalid = () => {
     return tweetText.length < 1;
   };
 
-  const updatePlotData = (newData: TClassificationData[]) => {
+  const updatePlotData = (newData: TClassificationDataWithMetrics[]) => {
     const x: string[] = [];
     const y: number[] = [];
-    const key = selectedMetric.metric as keyof TClassificationData;
+    const key = selectedMetric.metric as keyof TClassificationDataWithMetrics;
 
     newData.forEach((classData) => {
       x.push(classData.model_name);
@@ -69,26 +67,27 @@ const TweetOverviewCombined: React.FC = () => {
   };
 
   const handleClassificationClickSingle = async (
+    id: number,
     tweet: string,
     label: number,
-    new_label: number,
   ) => {
     isLoadingPrediction(true);
     isLoadingClassification(true);
     const tweetData = {
-      id: -1,
+      id: id,
       tweet: tweet,
       label: label,
-      new_label: new_label,
     };
     setSelectedTweet(tweetData);
 
-    const predictionResult = (await getPredictions(tweet)) as TPredictionData[];
+    const predictionResult = (await getClassificationForTweet(
+      tweet,
+    )) as TClassificationData[];
     setPredictionData(predictionResult);
 
-    const result = (await getClassificationResults([
+    const result = (await getClassificationMetrics([
       tweetData!,
-    ])) as TClassificationData[];
+    ])) as TClassificationDataWithMetrics[];
     setClassificationData(result);
 
     isLoadingPrediction(false);
@@ -99,9 +98,9 @@ const TweetOverviewCombined: React.FC = () => {
     isLoadingClassification(true);
     const request =
       selectedTweets.length > 0 ? selectedTweets : TweetStore.tweets;
-    const result = (await getClassificationResults(
+    const result = (await getClassificationMetrics(
       request,
-    )) as TClassificationData[];
+    )) as TClassificationDataWithMetrics[];
     setClassificationData(result);
     isLoadingClassification(false);
 
@@ -125,34 +124,18 @@ const TweetOverviewCombined: React.FC = () => {
         className="p-button-sm p-button-text"
         onClick={() => {
           handleClassificationClickSingle(
+            rowData["id"],
             rowData["tweet"],
             rowData["label"],
-            rowData["new_label"],
           );
         }}
       />
     );
   };
 
-  const predictionTemplate = (rowData: TPredictionData) => {
+  const predictionTemplate = (rowData: TClassificationData) => {
     if (selectedTweet) {
       const realLabel = selectedTweet.label;
-
-      const classColor = classNames(
-        "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
-        {
-          "bg-red-100 text-red-900": rowData.label != realLabel,
-          "bg-green-100 text-green-900": rowData.label == realLabel,
-        },
-      );
-
-      return <div className={classColor}>{rowData.label}</div>;
-    }
-  };
-
-  const newPredictionTemplate = (rowData: TPredictionData) => {
-    if (selectedTweet) {
-      const realLabel = selectedTweet.new_label;
 
       const classColor = classNames(
         "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
@@ -218,7 +201,6 @@ const TweetOverviewCombined: React.FC = () => {
                 <Column field="id" header="Id"></Column>
                 <Column field="tweet" header="Tweet"></Column>
                 <Column field="label" header="Label"></Column>
-                <Column field="new_label" header="Label (neu)"></Column>
                 <Column field="classify" header=""></Column>
                 <Column body={classificationTemplate}></Column>
               </DataTable>
@@ -258,8 +240,8 @@ const TweetOverviewCombined: React.FC = () => {
                   disabled={isInputInvalid()}
                   onClick={() =>
                     handleClassificationClickSingle(
+                      -1,
                       tweetText,
-                      tweetLabel.label,
                       tweetLabel.label,
                     )
                   }
@@ -284,12 +266,6 @@ const TweetOverviewCombined: React.FC = () => {
                   {selectedTweet ? selectedTweet["label"] : ""}
                 </div>
               </div>
-              <div className="ml-2 flex flex-row align-items-center">
-                <h4>Label (neu): </h4>
-                <div className="ml-2">
-                  {selectedTweet ? selectedTweet["new_label"] : ""}
-                </div>
-              </div>
             </div>
 
             <DataTable
@@ -302,22 +278,17 @@ const TweetOverviewCombined: React.FC = () => {
             >
               <Column field="model_name" header="Model Name"></Column>
               <Column
-                field="zero_proba"
+                field="zero_probability"
                 header="No Hatespeech-Probability"
               ></Column>
               <Column
-                field="one_proba"
+                field="one_probability"
                 header="Hatespeech-Probability"
               ></Column>
               <Column
                 field="label"
                 header="Prediction"
                 body={predictionTemplate}
-              ></Column>
-              <Column
-                field="new_label"
-                header="Prediction (neu)"
-                body={newPredictionTemplate}
               ></Column>
             </DataTable>
           </Panel>

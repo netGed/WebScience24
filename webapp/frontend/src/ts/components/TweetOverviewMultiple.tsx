@@ -3,14 +3,14 @@ import { Panel } from "primereact/panel";
 import { Column } from "primereact/column";
 import { DataTable } from "primereact/datatable";
 import { Button } from "primereact/button";
-import { TTweetDataWithMetric } from "../../types.ts";
+import { TTweetDataWithClassifications } from "../../types.ts";
 import TweetStore from "../stores/TweetStore.ts";
 import { observer } from "mobx-react-lite";
 
 const TweetOverviewMultiple: React.FC = () => {
-  const [selectedTweets, setSelectedTweets] = useState<TTweetDataWithMetric[]>(
-    [],
-  );
+  const [selectedTweets, setSelectedTweets] = useState<
+    TTweetDataWithClassifications[]
+  >([]);
 
   const classifyAllFooterButton = () => {
     return (
@@ -21,7 +21,7 @@ const TweetOverviewMultiple: React.FC = () => {
           icon="pi pi-tags"
           rounded
           raised
-          onClick={() => TweetStore.updateTweetMetrics(selectedTweets)}
+          onClick={() => TweetStore.updateTweetClassifications(selectedTweets)}
         />
       </div>
     );
@@ -37,28 +37,33 @@ const TweetOverviewMultiple: React.FC = () => {
           <Panel header="Tweetübersicht">
             <div className="flex">
               <DataTable
-                value={TweetStore.tweetsWithMetrics}
+                value={TweetStore.tweetsWithClassifications}
                 scrollable
                 scrollHeight="45rem"
                 footer={classifyAllFooterButton}
                 selectionMode="multiple"
                 selection={selectedTweets}
                 onSelectionChange={(e) =>
-                  setSelectedTweets(e.value as TTweetDataWithMetric[])
+                  setSelectedTweets(e.value as TTweetDataWithClassifications[])
                 }
                 loading={TweetStore.loading}
               >
                 <Column field="id" header="Id"></Column>
                 <Column field="tweet" header="Tweet"></Column>
                 <Column field="label" header="Label"></Column>
-                <Column field="new_label" header="Label (neu)"></Column>
-                <Column field="ensemble_model" header="Ensemble"></Column>
-                <Column field="nb_model" header="Naive Bayes"></Column>
-                <Column field="svm_model" header="SVM"></Column>
-                <Column field="gru_model" header="RNN-GRU"></Column>
-                <Column field="lstm_model" header="RNN-LSTM"></Column>
-                <Column field="bert_model" header="BERT"></Column>
-                <Column field="roberta_model" header="RoBERTa"></Column>
+                <Column
+                  field="classification_ensemble"
+                  header="Ensemble"
+                ></Column>
+                <Column field="classification_nb" header="Naive Bayes"></Column>
+                <Column field="classification_svm" header="SVM"></Column>
+                <Column field="classification_gru" header="RNN-GRU"></Column>
+                <Column field="classification_lstm" header="RNN-LSTM"></Column>
+                <Column field="classification_bert" header="BERT"></Column>
+                <Column
+                  field="classification_roberta"
+                  header="RoBERTa"
+                ></Column>
               </DataTable>
             </div>
           </Panel>

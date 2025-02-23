@@ -172,3 +172,9 @@ src/1. Explorative Analysis & Preprocessing/sven/catboost_info/catboost_training
 src/1. Explorative Analysis & Preprocessing/sven/catboost_info/learn_error.tsv
 src/1. Explorative Analysis & Preprocessing/sven/catboost_info/time_left.tsv
 src/1. Explorative Analysis & Preprocessing/sven/catboost_info/learn/events.out.tfevents
+
+src/2. Classical ML Methods/elena/mixed_data/w2v/linear/svm_w2v_linear_best_model_opt.pkl
+src/2. Classical ML Methods/elena/mixed_data/w2v/linear/svm_w2v_poly_best_model_opt.pkl
+src/2. Classical ML Methods/elena/mixed_data/w2v/linear/svm_w2v_rbf_best_model_opt.pkl
+src/2. Classical ML Methods/elena/mixed_data/w2v/linear/svm_w2v_sigmoid_best_model_opt.pkl
+

@@ -45,7 +45,7 @@ const App: React.FC = () => {
         </div>
         <div style={{ height: "95vh" }}>
           <TabView>
-            <TabPanel header="Komplettansicht">
+            <TabPanel header="Kompaktansicht">
               <TweetOverviewCombined />
             </TabPanel>
             <TabPanel header="Einzel-Tweet-Vorhersage">
