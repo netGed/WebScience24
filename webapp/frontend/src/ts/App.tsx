@@ -3,10 +3,6 @@ import "primeflex/primeflex.css";
 import "primereact/resources/themes/md-light-indigo/theme.css";
 import "primeicons/primeicons.css";
 import TweetOverviewSingle from "./components/TweetOverviewSingle.tsx";
-import { TabPanel, TabView } from "primereact/tabview";
-import TweetOverviewMultiple from "./components/TweetOverviewMetrics.tsx";
-import TweetOverviewCombined from "./components/TweetOverviewCombined.tsx";
-import TweetOverviewMultipleNew from "./components/TweetOverviewMultiple.tsx";
 import { Button } from "primereact/button";
 import TweetStore from "./stores/TweetStore.ts";
 
@@ -44,20 +40,20 @@ const App: React.FC = () => {
           />
         </div>
         <div style={{ height: "95vh" }}>
-          <TabView>
-            <TabPanel header="Kompaktansicht">
-              <TweetOverviewCombined />
-            </TabPanel>
-            <TabPanel header="Einzel-Tweet-Vorhersage">
+          {/*<TabView>*/}
+            {/*<TabPanel header="Kompaktansicht">*/}
+            {/*  <TweetOverviewCombined />*/}
+            {/*</TabPanel>*/}
+            {/*<TabPanel header="Einzel-Tweet-Vorhersage">*/}
               <TweetOverviewSingle />
-            </TabPanel>
-            <TabPanel header="Metriken / Plot">
-              <TweetOverviewMultiple />
-            </TabPanel>
-            <TabPanel header="Modellvergleich">
-              <TweetOverviewMultipleNew />
-            </TabPanel>
-          </TabView>
+            {/*</TabPanel>*/}
+            {/*<TabPanel header="Metriken / Plot">*/}
+            {/*  <TweetOverviewMultiple />*/}
+            {/*</TabPanel>*/}
+            {/*<TabPanel header="Modellvergleich">*/}
+            {/*  <TweetOverviewMultipleNew />*/}
+            {/*</TabPanel>*/}
+          {/*</TabView>*/}
         </div>
       </div>
     </>

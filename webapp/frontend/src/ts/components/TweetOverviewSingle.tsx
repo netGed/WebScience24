@@ -1,205 +1,253 @@
-import React, { useState } from "react";
-import { Panel } from "primereact/panel";
-import { Column } from "primereact/column";
-import { DataTable } from "primereact/datatable";
-import { Button } from "primereact/button";
-import { TClassificationData, TTweetData } from "../../types.ts";
-import { getClassificationForTweet } from "../api/classification.ts";
-import { classNames } from "primereact/utils";
-import { InputText } from "primereact/inputtext";
-import { Dropdown, DropdownChangeEvent } from "primereact/dropdown";
-import { getRandomTestDataMixed } from "../api/data.ts";
+import React, {useState} from "react";
+import {Panel} from "primereact/panel";
+import {Column} from "primereact/column";
+import {DataTable, DataTableFilterMeta} from "primereact/datatable";
+import {Button} from "primereact/button";
+import {TClassificationData, TTweetData} from "../../types.ts";
+import {getClassificationForTweet} from "../api/classification.ts";
+import {InputText} from "primereact/inputtext";
+import {Dropdown, DropdownChangeEvent} from "primereact/dropdown";
+import {getRandomTestDataMixed} from "../api/data.ts";
 import TweetStore from "../stores/TweetStore.ts";
-import { observer } from "mobx-react-lite";
+import {observer} from "mobx-react-lite";
+import TweetPredictionComponent from "./TweetPredictionComponent.tsx";
+import {FilterMatchMode} from "primereact/api";
+import {IconField} from "primereact/iconfield";
+import {InputIcon} from "primereact/inputicon";
 
-const labels = [{ label: 0 }, { label: 1 }];
+const labels = [{label: 0}, {label: 1}];
 
 const TweetOverviewSingle: React.FC = () => {
-  const [selectedTweet, setSelectedTweet] = useState<TTweetData>();
-  const [predictionData, setPredictionData] = useState<TClassificationData[]>(
-    [],
-  );
-  const [loadingPrediction, isLoadingPrediction] = useState(false);
-  const [tweetText, setTweetText] = useState<string>("");
-  const [tweetLabel, setTweetLabel] = useState(labels[0]);
-
-  const isInputInvalid = () => {
-    return tweetText.length < 1;
-  };
-
-  const handleClassificationClickSingle = async (
-    id: number,
-    tweet: string,
-    label: number,
-  ) => {
-    isLoadingPrediction(true);
-    const tweetData = {
-      id: id,
-      tweet: tweet,
-      label: label,
-    };
-    setSelectedTweet(tweetData);
-
-    const predictionResult = (await getClassificationForTweet(
-      tweet,
-    )) as TClassificationData[];
-    setPredictionData(predictionResult);
-
-    isLoadingPrediction(false);
-  };
-
-  const handleRandomDataClick = async () => {
-    const data = (await getRandomTestDataMixed()) as TTweetData[];
-    if (data.length > 0) {
-      setTweetText(data[0].tweet);
-      setTweetLabel({ label: data[0].label });
-    }
-  };
-
-  const classificationTemplate = (rowData: TTweetData) => {
-    return (
-      <Button
-        rounded
-        type="button"
-        icon="pi pi-tags"
-        className="p-button-sm p-button-text"
-        onClick={() => {
-          handleClassificationClickSingle(
-            rowData["id"],
-            rowData["tweet"],
-            rowData["label"],
-          );
-        }}
-      />
+    const [pinnedSelectedTweet, setPinnedSelectedTweet] = useState<TTweetData>();
+    const [pinnedPredictionData, setPinnedPredictionData] = useState<TClassificationData[]>(
+        [],
     );
-  };
+    const [loadingPinningPrediction, isLoadingPinningPrediction] = useState(false);
 
-  const predictionTemplate = (rowData: TClassificationData) => {
-    if (selectedTweet) {
-      const realLabel = selectedTweet.label;
+    const [selectedTweet, setSelectedTweet] = useState<TTweetData>();
+    const [predictionData, setPredictionData] = useState<TClassificationData[]>(
+        [],
+    );
+    const [loadingPrediction, isLoadingPrediction] = useState(false);
+    const [tweetText, setTweetText] = useState<string>("");
+    const [tweetLabel, setTweetLabel] = useState(labels[0]);
 
-      const classColor = classNames(
-        "border-circle w-2rem h-2rem inline-flex font-bold justify-content-center align-items-center text-sm",
-        {
-          "bg-red-100 text-red-900": rowData.label != realLabel,
-          "bg-green-100 text-green-900": rowData.label == realLabel,
-        },
-      );
+    const [filters, setFilters] = useState<DataTableFilterMeta>({
+        global: {value: null, matchMode: FilterMatchMode.CONTAINS},
+        id: {value: null, matchMode: FilterMatchMode.CONTAINS},
+        tweet: {value: null, matchMode: FilterMatchMode.CONTAINS},
+    });
+    const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
 
-      return <div className={classColor}>{rowData.label}</div>;
-    }
-  };
+    const isInputInvalid = () => {
+        return tweetText.length < 1;
+    };
 
-  return (
-    <>
-      <div className="flex overflow-hidden" style={{ height: "85vh" }}>
-        <div className="flex flex-column m-2" style={{ width: "50vw" }}>
-          <Panel header="Tweetübersicht">
+    const handleClassificationClickSingle = async (
+        id: number,
+        tweet: string,
+        label: number,
+    ) => {
+        isLoadingPrediction(true);
+        const tweetData = {
+            id: id,
+            tweet: tweet,
+            label: label,
+        };
+        setSelectedTweet(tweetData);
+
+        const predictionResult = (await getClassificationForTweet(
+            tweet,
+        )) as TClassificationData[];
+        setPredictionData(predictionResult);
+
+        isLoadingPrediction(false);
+    };
+
+    const handlePinningClickSingle = async (
+        id: number,
+        tweet: string,
+        label: number,
+    ) => {
+        isLoadingPinningPrediction(true);
+        const tweetData = {
+            id: id,
+            tweet: tweet,
+            label: label,
+        };
+        setPinnedSelectedTweet(tweetData);
+
+        const predictionResult = (await getClassificationForTweet(
+            tweet,
+        )) as TClassificationData[];
+        setPinnedPredictionData(predictionResult);
+
+        isLoadingPinningPrediction(false);
+    };
+
+    const handleRandomDataClick = async () => {
+        const data = (await getRandomTestDataMixed()) as TTweetData[];
+        if (data.length > 0) {
+            setTweetText(data[0].tweet);
+            setTweetLabel({label: data[0].label});
+        }
+    };
+
+    const classificationTemplate = (rowData: TTweetData) => {
+        return (
             <div className="flex">
-              <DataTable
-                value={TweetStore.tweets}
-                scrollable
-                scrollHeight="50rem"
-                loading={TweetStore.loading}
-              >
-                <Column field="id" header="Id"></Column>
-                <Column field="tweet" header="Tweet"></Column>
-                <Column field="label" header="Label"></Column>
-                <Column field="classify" header=""></Column>
-                <Column body={classificationTemplate}></Column>
-              </DataTable>
-            </div>
-            <div className="flex mt-4">
-              <div className="ml-2 flex flex-row align-items-center justify-content-center">
                 <Button
-                  label="Zufall"
-                  type="button"
-                  className="p-button-sm p-button-text m-2"
-                  onClick={() => handleRandomDataClick()}
-                  tooltip="Zufällig Tweet aus den Testdaten (mixed)"
-                  tooltipOptions={{ position: "top" }}
-                />
-                <h4>Tweet: </h4>
-                <InputText
-                  className="m-2"
-                  style={{ width: "45rem" }}
-                  id="tweetInput"
-                  value={tweetText}
-                  onChange={(e) => setTweetText(e.target.value)}
-                  invalid={isInputInvalid()}
-                />
-                <h4>Label: </h4>
-                <Dropdown
-                  value={tweetLabel}
-                  onChange={(e: DropdownChangeEvent) => setTweetLabel(e.value)}
-                  options={labels}
-                  optionLabel="label"
-                  defaultValue={"0"}
-                  className="w-full md:w-5rem m-2"
+                    rounded
+                    type="button"
+                    icon="pi pi-tags"
+                    className="p-button-sm p-button-text"
+                    style={{borderBottomRightRadius: "0", borderTopRightRadius: "0"}}
+                    severity="info"
+                    onClick={() => {
+                        handlePinningClickSingle(
+                            rowData["id"],
+                            rowData["tweet"],
+                            rowData["label"],
+                        );
+                    }}
                 />
                 <Button
-                  type="button"
-                  icon="pi pi-tags"
-                  className="p-button-sm p-button-text"
-                  disabled={isInputInvalid()}
-                  onClick={() =>
-                    handleClassificationClickSingle(
-                      -1,
-                      tweetText,
-                      tweetLabel.label,
-                    )
-                  }
+                    rounded
+                    type="button"
+                    icon="pi pi-tags"
+                    className="p-button-sm p-button-text"
+                    style={{borderBottomLeftRadius: "0", borderTopLeftRadius: "0"}}
+                    severity="success"
+                    onClick={() => {
+                        handleClassificationClickSingle(
+                            rowData["id"],
+                            rowData["tweet"],
+                            rowData["label"],
+                        );
+                    }}
                 />
-              </div>
             </div>
-          </Panel>
-        </div>
+        );
+    };
+    
+    const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+        const _filters = { ...filters };
 
-        <div className="flex flex-column m-2" style={{ width: "46vw" }}>
-          <Panel header="Einzelner Tweet" className="mb-3">
-            <div className="ml-2 flex flex-row align-items-center">
-              <h4>Ausgewählter Tweet: </h4>
-              <div className="ml-2">
-                {selectedTweet ? selectedTweet["tweet"] : ""}
-              </div>
+        // @ts-ignore
+        _filters['global'].value = value;
+
+        setFilters(_filters);
+        setGlobalFilterValue(value);
+    };
+
+    const datatableSearchHeader = () => {
+        return (
+            <div className="flex justify-content-end">
+                <IconField iconPosition="left">
+                    <InputIcon className="pi pi-search"/>
+                    <InputText value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Keyword Search"/>
+                </IconField>
             </div>
-            <div className="flex flex-row justify-content-start">
-              <div className="ml-2 flex flex-row align-items-center">
-                <h4>Label: </h4>
-                <div className="ml-2">
-                  {selectedTweet ? selectedTweet["label"] : ""}
+        );
+    };
+
+    return (
+        <>
+            <div className="flex overflow-hidden  ml-3">
+                <div className="flex flex-column m-2" style={{width: "50vw"}}>
+                    <Panel header="Tweetübersicht">
+                        <div className="flex">
+                            <DataTable
+                                value={TweetStore.tweets}
+                                scrollable
+                                scrollHeight="50rem"
+                                loading={TweetStore.loading}
+                                filters={filters}
+                                filterDisplay="menu"
+                                globalFilterFields={['id', 'tweet']}
+                                header={datatableSearchHeader}
+                            >
+                                <Column field="id" header="Id"></Column>
+                                <Column field="tweet" header="Tweet"></Column>
+                                <Column field="label" header="Label"></Column>
+                                <Column field="classify" header=""></Column>
+                                <Column body={classificationTemplate}></Column>
+                            </DataTable>
+                        </div>
+                        <div className="flex mt-4">
+                            <div className="ml-2 flex flex-row align-items-center justify-content-center">
+                                <Button
+                                    label="Zufall"
+                                    type="button"
+                                    className="p-button-sm p-button-text m-2"
+                                    onClick={() => handleRandomDataClick()}
+                                    tooltip="Zufällig Tweet aus den Testdaten (mixed)"
+                                    tooltipOptions={{position: "top"}}
+                                />
+                                <h4>Tweet: </h4>
+                                <InputText
+                                    className="m-2"
+                                    style={{width: "45rem"}}
+                                    id="tweetInput"
+                                    value={tweetText}
+                                    onChange={(e) => setTweetText(e.target.value)}
+                                    invalid={isInputInvalid()}
+                                />
+                                <h4>Label: </h4>
+                                <Dropdown
+                                    value={tweetLabel}
+                                    onChange={(e: DropdownChangeEvent) => setTweetLabel(e.value)}
+                                    options={labels}
+                                    optionLabel="label"
+                                    defaultValue={"0"}
+                                    className="w-full md:w-5rem m-2"
+                                />
+
+                                <div className="flex">
+                                    <Button
+                                        rounded
+                                        type="button"
+                                        icon="pi pi-tags"
+                                        className="p-button-sm p-button-text"
+                                        style={{borderBottomRightRadius: "0", borderTopRightRadius: "0"}}
+                                        severity="info"
+                                        onClick={() => {
+                                            handlePinningClickSingle(
+                                                -1,
+                                                tweetText,
+                                                tweetLabel.label,
+                                            );
+                                        }}
+                                    />
+                                    <Button
+                                        rounded
+                                        type="button"
+                                        icon="pi pi-tags"
+                                        className="p-button-sm p-button-text"
+                                        style={{borderBottomLeftRadius: "0", borderTopLeftRadius: "0"}}
+                                        severity="success"
+                                        onClick={() => {
+                                            handleClassificationClickSingle(
+                                                -1,
+                                                tweetText,
+                                                tweetLabel.label,
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </Panel>
                 </div>
-              </div>
-            </div>
 
-            <DataTable
-              value={predictionData}
-              tableStyle={{ width: "45rem", height: "30vh" }}
-              scrollable
-              scrollHeight="50rem"
-              loading={loadingPrediction}
-              size="small"
-            >
-              <Column field="model_name" header="Model Name"></Column>
-              <Column
-                field="zero_probability"
-                header="No Hatespeech-Probability"
-              ></Column>
-              <Column
-                field="one_probability"
-                header="Hatespeech-Probability"
-              ></Column>
-              <Column
-                field="label"
-                header="Prediction"
-                body={predictionTemplate}
-              ></Column>
-            </DataTable>
-          </Panel>
-        </div>
-      </div>
-    </>
-  );
+                <div className="flex flex-column m-2" style={{width: "46vw"}}>
+                    <TweetPredictionComponent selectedTweet={pinnedSelectedTweet} predictionData={pinnedPredictionData} loadingPrediction={loadingPinningPrediction}/>
+                    <TweetPredictionComponent selectedTweet={selectedTweet} predictionData={predictionData} loadingPrediction={loadingPrediction}/>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default observer(TweetOverviewSingle);

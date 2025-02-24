@@ -20,6 +20,7 @@ export type TClassificationDataWithMetrics = {
   f1_score: number;
   precision: number;
   recall: number;
+  mcc: number;
 };
 
 export type TClassificationModelData = {
