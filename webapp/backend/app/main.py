@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from pydantic import BaseModel
 
 from webapp.backend.app.classification_metrics import generate_classification_metrics_for_ensemble, \
     generate_classification_metrics_for_svm, generate_classification_metrics_for_nb, \
@@ -9,9 +10,8 @@ from webapp.backend.app.classification_metrics import generate_classification_me
 from webapp.backend.app.data_reader import get_data_evaluation, get_data_mixed, get_data_new, \
     get_data_old
 from webapp.backend.app.classifications import classify_with_ensemble, classify_with_svm, classify_with_nb, \
-    classify_with_gru, \
-    classify_with_lstm, classify_with_bert, classify_with_roberta, classify_with_roberta2
-from webapp.backend.app.types import Tweet
+    classify_with_gru, classify_with_lstm, classify_with_bert, classify_with_roberta
+from webapp.backend.app.types import TweetData, Tweet
 
 app = FastAPI()
 origins = ["*"]
@@ -55,16 +55,16 @@ async def get_random_test_data_mixed(count: int = 1):
 
 
 @app.post("/get_classification_data")
-async def get_classification_data(request_body: str = Body(..., media_type="text/plain")):
+async def get_classification_data(tweet: Tweet):
     classification_data = []
 
-    result_ensemble = classify_with_ensemble(request_body)
-    result_svm = classify_with_svm(request_body)
-    result_nb = classify_with_nb(request_body)
-    result_gru = classify_with_gru(request_body)
-    result_lstm = classify_with_lstm(request_body)
-    result_bert = classify_with_bert(request_body)
-    result_roberta = classify_with_roberta(request_body)
+    result_ensemble = classify_with_ensemble(tweet.tweet)
+    result_svm = classify_with_svm(tweet.tweet)
+    result_nb = classify_with_nb(tweet.tweet)
+    result_gru = classify_with_gru(tweet.tweet)
+    result_lstm = classify_with_lstm(tweet.tweet)
+    result_bert = classify_with_bert(tweet.tweet)
+    result_roberta = classify_with_roberta(tweet.tweet)
 
     classification_data.append(result_ensemble)
     classification_data.append(result_svm)
@@ -88,7 +88,7 @@ async def get_classification_data_alt(request_body: str = Body(..., media_type="
     result_roberta = classify_with_roberta(request_body)
 
     result = {
-        "classification_ensemble" : result_ensemble["label"],
+        "classification_ensemble": result_ensemble["label"],
         "classification_svm": result_svm["label"],
         "classification_nb": result_nb["label"],
         "classification_gru": result_gru["label"],
@@ -100,7 +100,7 @@ async def get_classification_data_alt(request_body: str = Body(..., media_type="
 
 
 @app.post("/get_classification_metrics")
-async def get_classification_metrics(tweets: list[Tweet]):
+async def get_classification_metrics(tweets: list[TweetData]):
     classification_metrics = []
 
     result_ensemble = generate_classification_metrics_for_ensemble(tweets)
@@ -121,45 +121,46 @@ async def get_classification_metrics(tweets: list[Tweet]):
 
     return classification_metrics
 
+
 @app.post("/get_prediction_ensemble")
-async def get_prediction_ensemble(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_ensemble(request_body)
+async def get_prediction_ensemble(tweet: Tweet):
+    classification_result = classify_with_ensemble(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_svm")
-async def get_prediction_svm(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_svm(request_body)
+async def get_prediction_svm(tweet: Tweet):
+    classification_result = classify_with_svm(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_nb")
-async def get_prediction_nb(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_nb(request_body)
+async def get_prediction_nb(tweet: Tweet):
+    classification_result = classify_with_nb(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_lstm")
-async def get_prediction_lstm(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_lstm(request_body)
+async def get_prediction_lstm(tweet: Tweet):
+    classification_result = classify_with_lstm(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_gru")
-async def get_prediction_gru(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_gru(request_body)
+async def get_prediction_gru(tweet: Tweet):
+    classification_result = classify_with_gru(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_bert")
-async def get_prediction_bert(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_bert(request_body)
+async def get_prediction_bert(tweet: Tweet):
+    classification_result = classify_with_bert(tweet)
     return classification_result
 
 
 @app.post("/get_prediction_roberta")
-async def get_prediction_roberta(request_body: str = Body(..., media_type="text/plain")):
-    classification_result = classify_with_roberta(request_body)
+async def get_prediction_roberta(tweet: Tweet):
+    classification_result = classify_with_roberta(tweet)
     return classification_result
 
 
