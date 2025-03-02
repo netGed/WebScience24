@@ -207,6 +207,11 @@ src/2. Classical ML Methods/elena/mixed_data/glove/svm_glove_vectorizer_opt.jobl
 src/2. Classical ML Methods/elena/1_original_data/glove/svm_glove_grid_original_datavectorizer.joblib
 src/2. Classical ML Methods/elena/mixed_data/glove/svm_glove_vectorizer_opt.joblib
 
+# Trainierte Modelle die nicht verwendet werden
+src/2. Classical ML Methods/sven/first_dataset/joblib_models
+src/2. Classical ML Methods/sven/mixed_dataset/joblib_models
+src/2. Classical ML Methods/sven/archive/archive_models
+
 
 
 
