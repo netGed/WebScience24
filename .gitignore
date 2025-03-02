@@ -193,11 +193,18 @@ src/2. Classical ML Methods/elena/mixed_data/w2v/2_Lauf_joblib/linear/svm_w2v_li
 src/2. Classical ML Methods/elena/mixed_data/w2v/2_Lauf_joblib/poly/svm_w2v_poly_best_model_opt.joblib
 src/2. Classical ML Methods/elena/mixed_data/w2v/2_Lauf_joblib/rbf/svm_w2v_rbf_best_model_opt.joblib
 src/2. Classical ML Methods/elena/mixed_data/w2v/2_Lauf_joblib/sigmoid/svm_w2v_sigmoid_best_model_opt.joblib
+# glove
+src/2. Classical ML Methods/elena/mixed_data/glove/linear/svm_glove_linear_best_model_opt.joblib
+src/2. Classical ML Methods/elena/mixed_data/glove/poly/svm_glove_poly_best_model_opt.joblib
+src/2. Classical ML Methods/elena/mixed_data/glove/rbf/svm_glove_rbf_best_model_opt.joblib
+src/2. Classical ML Methods/elena/mixed_data/glove/sigmoid/svm_glove_sigmoid_best_model_opt.joblib
 # vectorizer
 src/2. Classical ML Methods/elena/mixed_data/tfidf/1_Lauf_pkl/svm_tfidf_vectorizer_opt.pkl
 src/2. Classical ML Methods/elena/mixed_data/tfidf/2_Lauf_joblib/svm_tfidf_vectorizer_opt.joblib
 src/2. Classical ML Methods/elena/mixed_data/w2v/1_Lauf_pkl/svm_w2v_vectorizer_opt.pkl
 src/2. Classical ML Methods/elena/mixed_data/w2v/2_Lauf_joblib/svm_w2v_vectorizer_opt.joblib
+src/2. Classical ML Methods/elena/mixed_data/glove/svm_glove_vectorizer_opt.joblib
+src/2. Classical ML Methods/elena/1_original_data/glove/svm_glove_grid_original_datavectorizer.joblib
 src/2. Classical ML Methods/elena/mixed_data/glove/svm_glove_vectorizer_opt.joblib
 
 
