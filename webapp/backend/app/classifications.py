@@ -18,8 +18,8 @@ def classify_with_ensemble(tweet):
 
     # generate classification
     probs = model.predict_proba(tweet_vectorized)
-    preds0 = round(probs[:, 0][0], 5)
-    preds1 = round(probs[:, 1][0], 5)
+    preds0 = round(probs[:, 0][0], 2)
+    preds1 = round(probs[:, 1][0], 2)
     pred = model.predict(tweet_vectorized)[0]
 
     result = {
@@ -39,8 +39,8 @@ def classify_with_nb(tweet):
 
     # generate classification
     probs = model_nb_w2v.predict_proba(tweet_vectorized)
-    preds0 = round(probs[:, 0][0], 5)
-    preds1 = round(probs[:, 1][0], 5)
+    preds0 = round(probs[:, 0][0], 2)
+    preds1 = round(probs[:, 1][0], 2)
     pred = model_nb_w2v.predict(tweet_vectorized)[0]
 
     result = {
@@ -63,13 +63,13 @@ def classify_with_svm(tweet):
 
     # generate classification
     # probs = model.predict_proba(tweet_vectorized)
-    # preds0 = round(probs[:, 0][0], 5)
-    # preds1 = round(probs[:, 1][0], 5)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
     # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    preds0 = round(random.randint(0, 99) / 100, 5)
-    preds1 = round(1 - preds0, 5)
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -92,8 +92,8 @@ def classify_with_gru(tweet):
     pred = model_gru.predict(tweet_padded)[0][0]
 
     # mock classification
-    preds0 = round(1 - pred, 5)
-    preds1 = round(pred, 5)
+    preds0 = round(1 - pred, 2)
+    preds1 = round(pred, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -119,13 +119,13 @@ def classify_with_lstm(tweet):
 
     # generate classification
     # probs = model.predict_proba(tweet_vectorized)
-    # preds0 = round(probs[:, 0][0], 5)
-    # preds1 = round(probs[:, 1][0], 5)
+    # preds0 = round(probs[:, 0][0], 2)
+    # preds1 = round(probs[:, 1][0], 2)
     # pred = model.predict(tweet_vectorized)[0]
 
     # mock classification
-    preds0 = round(random.randint(0, 99) / 100, 5)
-    preds1 = round(1 - preds0, 5)
+    preds0 = round(random.randint(0, 99) / 100, 2)
+    preds1 = round(1 - preds0, 2)
     if preds0 > preds1:
         pred = 0
     else:
@@ -151,8 +151,8 @@ def classify_with_bert(tweet):
     scores = softmax(scores)
 
     # generate classification
-    preds0 = round(scores[0], 5)
-    preds1 = round(scores[1], 5)
+    preds0 = round(scores[0], 2)
+    preds1 = round(scores[1], 2)
     if preds0 > 0.5:
         pred = 0
     else:
@@ -178,8 +178,8 @@ def classify_with_roberta(tweet):
     scores = softmax(scores)
 
     # generate classification
-    preds0 = round(scores[0], 5)
-    preds1 = round(scores[1], 5)
+    preds0 = round(scores[0], 2)
+    preds1 = round(scores[1], 2)
     if preds0 > 0.5:
         pred = 0
     else:

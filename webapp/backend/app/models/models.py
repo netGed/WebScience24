@@ -53,11 +53,11 @@ with open("models/gru/tokenizer_mixed-dataset.pkl", 'rb') as f:
     tokenizer_gru = pickle.load(f)
 
 # BERT
-PATH_BERT_TUNED = f"models/bert/bert-tuned20best"
+PATH_BERT_TUNED = f"models/bert/bert_mixed_imran"
 tokenizer_bert = BertTokenizer.from_pretrained(PATH_BERT_TUNED, local_files_only=True)
 model_bert = AutoModelForSequenceClassification.from_pretrained(PATH_BERT_TUNED, local_files_only=True)
 
 # ROBERTA
-PATH_ROBERTA_TUNED = f"models/roberta/roberta-tuned5"
+PATH_ROBERTA_TUNED = f"models/roberta/roberta_hate_mixed_cleaned"
 tokenizer_roberta = AutoTokenizer.from_pretrained(PATH_ROBERTA_TUNED, local_files_only=True)
 model_roberta = AutoModelForSequenceClassification.from_pretrained(PATH_ROBERTA_TUNED, local_files_only=True)
