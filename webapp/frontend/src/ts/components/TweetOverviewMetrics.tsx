@@ -130,6 +130,7 @@ const TweetOverviewMetrics: React.FC = () => {
               <Column field="f1_score" header="F1-Score"></Column>
               <Column field="precision" header="Precision"></Column>
               <Column field="recall" header="Recall"></Column>
+              <Column field="mcc" header="MCC"></Column>
             </DataTable>
           </Panel>
           <Panel header={plotHeaderTemplate()} className="mt-3">

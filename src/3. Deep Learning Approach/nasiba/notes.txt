@@ -50,3 +50,20 @@ MEhr Neuronen mit sigmoid wie 256 hat ohne class_weight gut funktioniert, mit cl
 
 Verwenden einfach Recall() ohne class_id, da TensorFlow bei einem binären Klassifikationsproblem automatisch den Recall für Klasse 1 berechnet. Dadurch kannst du den Recall in jeder Epoche direkt in der history-Variable verfolgen, ohne One-Hot-Encoding der Labels.
 
+
+EarlyStopping:
+Überwacht den Validierungsverlust (val_loss) während des Trainings.
+Falls sich der val_loss über 5 aufeinanderfolgende Epochen nicht verbessert, wird das Training automatisch gestoppt.
+Mit restore_best_weights=True stellt es nach dem Abbruch die besten Gewichte (die mit dem niedrigsten val_loss) wieder her.
+Warum ist das wichtig?
+Verhindert Overfitting: Falls das Modell zu lange trainiert, passt es sich zu stark an die Trainingsdaten an.
+Spart Rechenzeit: Wenn das Modell bereits optimal ist, stoppt es das Training früher.
+
+ReduceLROnPlateau:
+Was macht es?
+Überwacht ebenfalls den Validierungsverlust (val_loss).
+Falls sich der val_loss über 3 Epochen nicht verbessert, wird die Lernrate (learning rate) halbiert (factor=0.5).
+Die minimale Lernrate ist auf 0.00001 begrenzt.
+Warum ist das wichtig?
+Verhindert Instabilität: Falls das Modell zu große Sprünge macht, kann eine kleinere Lernrate helfen, das Modell feiner zu justieren.
+Verbessert Konvergenz: Falls das Modell in einem lokalen Minimum feststeckt, kann eine kleinere Lernrate das Feintuning verbessern.

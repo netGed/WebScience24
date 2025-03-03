@@ -1,38 +1,39 @@
 import joblib
 import random
 
-import numpy as np
 import pandas as pd
-import torch
-from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+from keras.src.utils import pad_sequences
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score, matthews_corrcoef
 from scipy.special import softmax
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-from webapp.backend.app.types import Tweet
+from webapp.backend.app.models.models import model_gru, threshold_gru, tokenizer_gru, max_len_gru, model_ensemble, \
+    tfidf_vectorizer_ensemble, model_svm, model_lstm, tokenizer_bert, model_bert, tokenizer_roberta, \
+    model_roberta, vectorize_w2v, w2v_vectorizer_nb
+from webapp.backend.app.types import TweetData
 
-tfidf_vectorizer_mixeddata = joblib.load("models/ensemble/tfidf_vectorizer_for_brf.joblib")
 
-
-def generate_classification_metrics_for_ensemble(tweets: list[Tweet]):
+def generate_classification_metrics_for_ensemble(tweets: list[TweetData]):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
     X = df["tweet"]
     y = df["label"]
 
     # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
+    model = model_ensemble
 
     # clean tweets before vectorization
     # todo?
 
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    X_vectorized = tfidf_vectorizer_ensemble.transform(X)
 
     # generate metrics
-    acc = model.score(X_vectorized, y)
-    precision = precision_score(y, model.predict(X_vectorized))
-    recall = recall_score(y, model.predict(X_vectorized))
-    f1 = f1_score(y, model.predict(X_vectorized))
+    pred = model.predict(X_vectorized)
+    acc = accuracy_score(y, pred)
+    precision = precision_score(y, pred)
+    recall = recall_score(y, pred)
+    f1 = f1_score(y, pred)
+    mcc = matthews_corrcoef(y, pred)
 
     result = {
         "model_name": "Balanced Random Forest",
@@ -40,6 +41,7 @@ def generate_classification_metrics_for_ensemble(tweets: list[Tweet]):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
@@ -53,13 +55,10 @@ def generate_classification_metrics_for_svm(tweets):
     y = df["label"]
 
     # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
-
-    # clean tweets before vectorization
-    # todo?
+    model = model_svm
 
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    X_vectorized = tfidf_vectorizer_ensemble.transform(X)
 
     # generate metrics
     # acc = model.score(X_vectorized, y)
@@ -72,6 +71,7 @@ def generate_classification_metrics_for_svm(tweets):
     precision = round(random.randint(0, 99) / 100, 2)
     recall = round(random.randint(0, 99) / 100, 2)
     f1 = round((2 * precision * recall) / (precision + recall))
+    mcc = round(random.randint(-99, 99) / 100, 2)
 
     result = {
         "model_name": "SVM",
@@ -79,12 +79,12 @@ def generate_classification_metrics_for_svm(tweets):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
 
 
-# todo
 def generate_classification_metrics_for_nb(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
@@ -92,25 +92,19 @@ def generate_classification_metrics_for_nb(tweets):
     y = df["label"]
 
     # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
-
-    # clean tweets before vectorization
-    # todo?
+    model = model_ensemble
 
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    df = pd.DataFrame(X)
+    X_vectorized = vectorize_w2v(df[0], w2v_vectorizer_nb)
 
     # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
-
-    # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    pred = model.predict(X_vectorized)
+    acc = accuracy_score(y, pred)
+    precision = precision_score(y, pred)
+    recall = recall_score(y, pred)
+    f1 = f1_score(y, pred)
+    mcc = matthews_corrcoef(y, pred)
 
     result = {
         "model_name": "Naive Bayes",
@@ -118,12 +112,12 @@ def generate_classification_metrics_for_nb(tweets):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
 
 
-# todo
 def generate_classification_metrics_for_gru(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
@@ -131,25 +125,19 @@ def generate_classification_metrics_for_gru(tweets):
     y = df["label"]
 
     # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
-
-    # clean tweets before vectorization
-    # todo?
+    model = model_gru
 
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    X_seq = tokenizer_gru.texts_to_sequences(X)
+    X_tokenized = pad_sequences(X_seq, padding='post', maxlen=max_len_gru)
 
     # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
-
-    # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    pred = (model.predict(X_tokenized) > threshold_gru).astype(int)
+    acc = accuracy_score(y, pred)
+    precision = precision_score(y, pred)
+    recall = recall_score(y, pred)
+    f1 = f1_score(y, pred)
+    mcc = matthews_corrcoef(y, pred)
 
     result = {
         "model_name": "RNN-GRU",
@@ -157,6 +145,7 @@ def generate_classification_metrics_for_gru(tweets):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
@@ -170,13 +159,10 @@ def generate_classification_metrics_for_lstm(tweets):
     y = df["label"]
 
     # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
-
-    # clean tweets before vectorization
-    # todo?
+    model = model_lstm
 
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+    X_vectorized = tfidf_vectorizer_ensemble.transform(X)
 
     # generate metrics
     # acc = model.score(X_vectorized, y)
@@ -185,10 +171,11 @@ def generate_classification_metrics_for_lstm(tweets):
     # f1 = f1_score(y, model.predict(X_vectorized))
 
     # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    acc = random.randint(0, 99) / 100
+    precision = random.randint(0, 99) / 100
+    recall = random.randint(0, 99) / 100
+    f1 = (2 * precision * recall) / (precision + recall)
+    mcc = random.randint(-99, 99) / 100
 
     result = {
         "model_name": "RNN-LSTM",
@@ -196,38 +183,34 @@ def generate_classification_metrics_for_lstm(tweets):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
 
 
-# todo
 def generate_classification_metrics_for_bert(tweets):
-    # convert data
-    df = pd.DataFrame([vars(s) for s in tweets])
-    X = df["tweet"]
-    y = df["label"]
+    label = []
+    predictions = []
 
-    # load model
-    model = joblib.load("models/ensemble/brf_untuned_tfidf_model.joblib")
+    for tweet in tweets:
+        label.append(tweet.label)
+        encoded_input = tokenizer_bert(tweet.tweet, return_tensors='pt')
+        output = model_bert(**encoded_input)
+        scores = output[0][0].detach().numpy()
+        scores = softmax(scores)
 
-    # clean tweets before vectorization
-    # todo?
-
-    # vectorize tweets
-    X_vectorized = tfidf_vectorizer_mixeddata.transform(X)
+        if scores[0] > 0.5:
+            predictions.append(0)
+        else:
+            predictions.append(1)
 
     # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
-
-    # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
+    acc = accuracy_score(label, predictions)
+    precision = precision_score(label, predictions)
+    recall = recall_score(label, predictions)
+    f1 = f1_score(label, predictions)
+    mcc = matthews_corrcoef(label, predictions)
 
     result = {
         "model_name": "BERT",
@@ -235,18 +218,13 @@ def generate_classification_metrics_for_bert(tweets):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
 
 
-ROBERTA_MODEL_PATH = f"models/roberta/cardiffnlp/twitter-roberta-base-sentiment"
-tokenizer_roberta = AutoTokenizer.from_pretrained(ROBERTA_MODEL_PATH, map_location=torch.device('cpu'),
-                                                  local_files_only=True)
-model_roberta = AutoModelForSequenceClassification.from_pretrained(ROBERTA_MODEL_PATH, local_files_only=True)
-
-
-def generate_classification_metrics_for_roberta(tweets: list[Tweet]):
+def generate_classification_metrics_for_roberta(tweets: list[TweetData]):
     label = []
     predictions = []
 
@@ -257,16 +235,17 @@ def generate_classification_metrics_for_roberta(tweets: list[Tweet]):
         scores = output[0][0].detach().numpy()
         scores = softmax(scores)
 
-        if np.argmax(scores) == 0:
-            predictions.append(1)
-        else:
+        if scores[0] > 0.5:
             predictions.append(0)
+        else:
+            predictions.append(1)
 
     # generate metrics
     acc = accuracy_score(label, predictions)
     precision = precision_score(label, predictions)
     recall = recall_score(label, predictions)
     f1 = f1_score(label, predictions)
+    mcc = matthews_corrcoef(label, predictions)
 
     result = {
         "model_name": "ROBERTA",
@@ -274,6 +253,7 @@ def generate_classification_metrics_for_roberta(tweets: list[Tweet]):
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
         "recall": round(recall, 2),
+        "mcc": round(mcc, 2),
     }
 
     return result
