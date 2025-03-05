@@ -526,7 +526,7 @@ def vectorize_glove_test_data(df, text_column, label_column, glove_path, vector_
 
     return train_vectors, df[label_column], glove_embeddings, tokenizer
 
-def vectorize_glove_test_data_predict(df, text_column, glove_path, vector_size=200, max_seq_len=50, tokenizer=None):
+def vectorize_glove_test_data_predict(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50, tokenizer=None):
     """
     Vectorizes text data using pre-trained GloVe embeddings.
     Each sentence is represented as a sequence of word vectors.
@@ -585,7 +585,7 @@ def vectorize_glove_test_data_predict(df, text_column, glove_path, vector_size=2
     # Wandle Sequenzen in Vektoren um
     train_vectors = np.array([get_glove_vectors(seq, glove_embeddings, vector_size, max_seq_len) for seq in X_padded], dtype=np.float32)
 
-    return train_vectors, df[text_column] , glove_embeddings, tokenizer
+    return train_vectors, df[text_column] ,df[label_column], glove_embeddings, tokenizer
 
 def vectorize_glove_new(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50, test_size=0.3, random_state=42, tokenizer=None):
     """
