@@ -5,7 +5,7 @@ from scipy.special import softmax
 
 from webapp.backend.app.models.models import tokenizer_roberta, model_roberta, tokenizer_bert, model_bert, \
     model_ensemble, tfidf_vectorizer_ensemble, tokenizer_gru, model_gru, max_len_gru, \
-    vectorize_w2v, w2v_vectorizer_nb, model_nb_w2v
+    vectorize_w2v, w2v_vectorizer_nb, model_nb_w2v, threshold_gru
 
 
 def classify_with_ensemble(tweet):
@@ -94,7 +94,7 @@ def classify_with_gru(tweet):
     # mock classification
     preds0 = round(1 - pred, 2)
     preds1 = round(pred, 2)
-    if preds0 > preds1:
+    if preds0 > threshold_gru:
         pred = 0
     else:
         pred = 1
@@ -126,7 +126,7 @@ def classify_with_lstm(tweet):
     # mock classification
     preds0 = round(random.randint(0, 99) / 100, 2)
     preds1 = round(1 - preds0, 2)
-    if preds0 > preds1:
+    if preds0 > 0.5:
         pred = 0
     else:
         pred = 1
