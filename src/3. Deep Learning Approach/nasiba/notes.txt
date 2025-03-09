@@ -26,6 +26,7 @@ Umgekehrt können die Gradienten in manchen Fällen zu groß werden, was das Tra
 Lösung: LSTM (Long Short-Term Memory)
 
 Evaulation:
+Recall speziel für Klasse 1 festlegen: muss man in sigmoid nicht, da er dies automatisch macht
 
 Precision (Genauigkeit der positiven Vorhersagen)
 Class 0: 0.98 → 98 % der vorhergesagten Class-0-Fälle sind tatsächlich korrekt.
