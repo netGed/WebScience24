@@ -1,4 +1,3 @@
-import joblib
 import random
 
 import pandas as pd
@@ -8,7 +7,7 @@ from scipy.special import softmax
 
 from webapp.backend.app.models.models import model_gru, threshold_gru, tokenizer_gru, max_len_gru, model_ensemble, \
     tfidf_vectorizer_ensemble, model_svm, model_lstm, tokenizer_bert, model_bert, tokenizer_roberta, \
-    model_roberta, vectorize_w2v, w2v_vectorizer_nb
+    model_roberta, vectorizer_nb_tfidf, vectorizer_svm_tfidf
 from webapp.backend.app.types import TweetData
 
 
@@ -36,7 +35,7 @@ def generate_classification_metrics_for_ensemble(tweets: list[TweetData]):
     mcc = matthews_corrcoef(y, pred)
 
     result = {
-        "model_name": "Balanced Random Forest",
+        "model_name": "Ensemble",
         "accuracy": round(acc, 2),
         "f1_score": round(f1, 2),
         "precision": round(precision, 2),
@@ -47,7 +46,6 @@ def generate_classification_metrics_for_ensemble(tweets: list[TweetData]):
     return result
 
 
-# todo
 def generate_classification_metrics_for_svm(tweets):
     # convert data
     df = pd.DataFrame([vars(s) for s in tweets])
@@ -57,21 +55,19 @@ def generate_classification_metrics_for_svm(tweets):
     # load model
     model = model_svm
 
+    # clean tweets before vectorization
+    # todo?
+
     # vectorize tweets
-    X_vectorized = tfidf_vectorizer_ensemble.transform(X)
+    X_vectorized = vectorizer_svm_tfidf.transform(X)
 
     # generate metrics
-    # acc = model.score(X_vectorized, y)
-    # precision = precision_score(y, model.predict(X_vectorized))
-    # recall = recall_score(y, model.predict(X_vectorized))
-    # f1 = f1_score(y, model.predict(X_vectorized))
-
-    # mock classification
-    acc = round(random.randint(0, 99) / 100, 2)
-    precision = round(random.randint(0, 99) / 100, 2)
-    recall = round(random.randint(0, 99) / 100, 2)
-    f1 = round((2 * precision * recall) / (precision + recall))
-    mcc = round(random.randint(-99, 99) / 100, 2)
+    pred = model.predict(X_vectorized)
+    acc = accuracy_score(y, pred)
+    precision = precision_score(y, pred)
+    recall = recall_score(y, pred)
+    f1 = f1_score(y, pred)
+    mcc = matthews_corrcoef(y, pred)
 
     result = {
         "model_name": "SVM",
@@ -96,7 +92,7 @@ def generate_classification_metrics_for_nb(tweets):
 
     # vectorize tweets
     df = pd.DataFrame(X)
-    X_vectorized = vectorize_w2v(df[0], w2v_vectorizer_nb)
+    X_vectorized = vectorizer_nb_tfidf.transform(X)
 
     # generate metrics
     pred = model.predict(X_vectorized)
