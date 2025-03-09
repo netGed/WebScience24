@@ -5,6 +5,8 @@ from gensim.models import Word2Vec
 import numpy as np
 from sklearn.model_selection import train_test_split
 import gensim.downloader as api
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
 
 def vectorize_tfidf(df, text_column, label_column, test_size=0.3, random_state=42):
     """
@@ -332,3 +334,64 @@ def vectorize_glove_test_data(df, text_column, label_column, glove_path, vector_
     train_y = df[label_column]
 
     return train_vectors, train_y, glove_embeddings
+
+def vectorize_glove_test_data_predict(df, text_column, label_column, glove_path, vector_size=200, max_seq_len=50, tokenizer=None):
+    """
+    Vectorizes text data using pre-trained GloVe embeddings.
+    Each sentence is represented as a sequence of word vectors.
+
+    Args:
+        df (pd.DataFrame): The DataFrame containing the text and labels.
+        text_column (str): The name of the column containing text data to vectorize.
+        label_column (str): The name of the column containing target labels.
+        glove_path (str): Path to the pre-trained GloVe embeddings file.
+        vector_size (int, optional): The size of the GloVe vectors (default is 200).
+        max_seq_len (int, optional): The maximum sequence length for padding (default is 50).
+        tokenizer (Tokenizer, optional): The fitted tokenizer object from training. If None, a new tokenizer is created.
+
+    Returns:
+        train_vectors (np.ndarray): GloVe vectorized data.
+        train_y (pd.Series): Labels of the training data.
+        glove_embeddings (dict): The loaded GloVe embedding dictionary.
+        tokenizer (Tokenizer): The fitted tokenizer.
+    """
+    # Entferne fehlende Werte und stelle sicher, dass der Text als String vorliegt
+    df = df[df[text_column].notna()]
+    df[text_column] = df[text_column].astype(str)
+
+    # Lade GloVe-Embeddings in ein Wörterbuch
+    glove_embeddings = {}
+    with open(glove_path, encoding='utf-8') as f:
+        for line in f:
+            values = line.split()
+            word = values[0]
+            vector = np.asarray(values[1:], dtype='float32')
+            glove_embeddings[word] = vector
+
+    # Falls kein Tokenizer übergeben wurde, erstelle einen neuen
+    if tokenizer is None:
+        tokenizer = Tokenizer(oov_token="<OOV>")
+        tokenizer.fit_on_texts(df[text_column])
+
+    # Tokenisiere den Text
+    X_sequences = tokenizer.texts_to_sequences(df[text_column])
+
+    # Padding der Sequenzen
+    X_padded = pad_sequences(X_sequences, padding='post', maxlen=max_seq_len)
+
+    # Funktion zur Umwandlung einer Sequenz in GloVe-Vektoren
+    def get_glove_vectors(sequence, glove_embeddings, vector_size, max_seq_len):
+        vectors = [glove_embeddings.get(tokenizer.index_word.get(idx, ''), np.zeros(vector_size)) for idx in sequence]
+        
+        # Sicherstellen, dass alle Sequenzen exakt `max_seq_len` lang sind
+        if len(vectors) < max_seq_len:
+            vectors.extend([np.zeros(vector_size)] * (max_seq_len - len(vectors)))
+        else:
+            vectors = vectors[:max_seq_len]
+        
+        return np.array(vectors, dtype=np.float32)
+
+    # Wandle Sequenzen in Vektoren um
+    train_vectors = np.array([get_glove_vectors(seq, glove_embeddings, vector_size, max_seq_len) for seq in X_padded], dtype=np.float32)
+
+    return train_vectors, df[text_column] ,df[label_column], glove_embeddings, tokenizer
