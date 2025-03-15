@@ -7,8 +7,8 @@ from tensorflow.keras.preprocessing.text import tokenizer_from_json
 from tensorflow.keras.models import load_model
 
 # SVM
-vectorizer_svm_tfidf = joblib.load("models/svc/tfidf_vectorizer_svc.joblib")
-model_svm = joblib.load("models/svc/model_svc.joblib")
+vectorizer_svm_tfidf = joblib.load("models/svc/tfidf_vectorizer_svc_linear.joblib")
+model_svm = joblib.load("models/svc/svc_linear_best.joblib")
 
 # ENSEMBLE
 tfidf_vectorizer_ensemble = joblib.load("models/ensemble/tfidf_vectorizer_for_brf.joblib")

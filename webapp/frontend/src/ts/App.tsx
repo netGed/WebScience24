@@ -96,9 +96,9 @@ const App: React.FC = () => {
                             className="svcAnchor"
                         />
                         <Tooltip anchorSelect=".svcAnchor" place="bottom">
-                            <h4>Modell: Support Vector Classifier</h4>
-                            <h4>Vektorisierung: ?</h4>
-                            <h4>Parameter: ?</h4>
+                            <h4>Modell: Support Vector Machine</h4>
+                            <h4>Vektorisierung: TF-IDF</h4>
+                            <h4>Kernel: linear </h4>
                         </Tooltip>
                         <Button
                             label="Naive Bayes"
@@ -106,9 +106,9 @@ const App: React.FC = () => {
                             className="bayesAnchor"
                         />
                         <Tooltip anchorSelect=".bayesAnchor" place="bottom">
-                            <h4>Modell: ?</h4>
-                            <h4>Vektorisierung: ?</h4>
-                            <h4>Parameter: ?</h4>
+                            <h4>Modell: ComplementNB</h4>
+                            <h4>Vektorisierung: TF-IDF</h4>
+                            <h4>Parameter: </h4>
                         </Tooltip>
                         <Button
                             label="RNN-GRU"
@@ -117,8 +117,8 @@ const App: React.FC = () => {
                         />
                         <Tooltip anchorSelect=".gruAnchor" place="bottom">
                             <h4>Modell: RNN-GRU</h4>
-                            <h4>Tokenisierung: ...</h4>
-                            <h4>Aufbau RNN: ...</h4>
+                            <h4>Tokenisierung: keras-Tokenizer</h4>
+                            <h4>Layer: Embedding, SpatialDropout,GRU,Dense</h4>
                         </Tooltip>
                         <Button
                             label="RNN-LSTM"
@@ -127,8 +127,9 @@ const App: React.FC = () => {
                         />
                         <Tooltip anchorSelect=".lstmAnchor" place="bottom">
                             <h4>Modell: RNN-LSTM</h4>
-                            <h4>Tokenisierung: ...</h4>
-                            <h4>Aufbau RNN: ...</h4>
+                            <h4>Tokenisierung: keras-Tokenizer</h4>
+                            <h4>Vektorisierung: GloVe</h4>
+                            <h4>Layer: Embedding,LSTM,Dropout,Dense</h4>
                         </Tooltip>
                         <Button
                             label="BERT"
@@ -137,7 +138,7 @@ const App: React.FC = () => {
                         />
                         <Tooltip anchorSelect=".bertAnchor" place="bottom">
                             <h4>Modell: bert-based-uncased (nachtrainiert)</h4>
-                            <h4>Training: ...</h4>
+                            <h4>Training: 5 Epochen, F1-Scoring</h4>
                         </Tooltip>
                         <Button
                             label="RoBERTa"
@@ -146,7 +147,7 @@ const App: React.FC = () => {
                         />
                         <Tooltip anchorSelect=".robertaAnchor" place="bottom">
                             <h4>Modell: roberta-hate-base (nachtrainiert)</h4>
-                            <h4>Training: ...</h4>
+                            <h4>Training: 5 Epochen, F1-Scoring</h4>
                         </Tooltip>
                     </div>
                 </div>
