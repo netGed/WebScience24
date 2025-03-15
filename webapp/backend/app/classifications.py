@@ -23,7 +23,7 @@ def classify_with_ensemble(tweet):
     pred = model.predict(tweet_vectorized)[0]
 
     result = {
-        "model_name": "Balanced Random Forest",
+        "model_name": "Ensemble",
         "zero_probability": str(preds0),
         "one_probability": str(preds1),
         "label": str(pred),

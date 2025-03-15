@@ -129,7 +129,7 @@ const TweetOverviewSingle: React.FC = () => {
             </div>
         );
     };
-    
+
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         const _filters = { ...filters };
@@ -167,6 +167,8 @@ const TweetOverviewSingle: React.FC = () => {
                                 filterDisplay="menu"
                                 globalFilterFields={['id', 'tweet']}
                                 header={datatableSearchHeader}
+                                paginator
+                                rows={25}
                             >
                                 <Column field="id" header="Id"></Column>
                                 <Column field="tweet" header="Tweet"></Column>
