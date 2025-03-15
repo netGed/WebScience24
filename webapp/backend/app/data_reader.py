@@ -2,9 +2,9 @@ import pandas as pd
 
 
 def get_data_evaluation():
-    df = pd.read_csv("data/evaluation_dataset.csv", delimiter=";")
-    df = df[["id", "tweet", "new_label"]]
-    df = df.rename(columns={'new_label': 'label'})
+    df = pd.read_csv("data/evaluation_dataset.csv", delimiter=",")
+    df = df[["id", "tweet", "label_manual"]]
+    df = df.rename(columns={'label_manual': 'label'})
     df = df.sample(frac=1)
     return df.to_dict(orient="records")
 
