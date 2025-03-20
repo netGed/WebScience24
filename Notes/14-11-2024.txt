@@ -1,0 +1,32 @@
+Besprechung 14.11.2024
+
+Allgemein
+- @Sven: Entscheidungskritieren aus Fachliteratur o.Ä. erarbeiten
+- @Sven: für Vektorisierungsarten Funktionen erstellen, die X_train, X_test, y_train, y_test zurückliefern (ausgelagert in python-Datei)
+- @alle: Zusatz für 28.11. Modelltraining: vier vektorisierte Datensätze (TF-IDF, Word2Vec, FastText, BagOfWords) beim Modelltraining verwenden
+- @Chris: Resampling Notebooks zusammenfassen und für Aufruf bereitstellen
+- @Elena: Kanban-Board prüfen, schnell einzurichten?
+- @Nasiba: offene todo's vom 01.11.2024
+- @Imran: Explorative Datenanalyse in Teamnotebook zusammenführen
+
+
+Ausarbeitung
+- @Elena: Einleitung überarbeiten, Quellen hinzufügen
+- @Chris: Datensatz & Aufbereitung -> Wordcloud bereinigt/unbereinigt einbeziehen (Vorgriff auf EDA)
+- @Imran: Explorative Datenanalyse
+- @Sven: Vektorisierung, Entscheidungskritierien
+
+
+Präsentation
+- Folie 1: Überblick des Workflows @Elena
+- Folie 2: Datensatz und Fragestellung @Chris
+- Folie 3: Knackpunkte im Datensatz (Emojis, Hashtags) @Nasiba -> Wordcloud bereinigt/unbereinigt einbeziehen
+- Folie 4: Verwendete Modelle @Elena
+- Folie 5: Eigene Ideen / Ansätze (BERT, LLM) @Imran
+
+
+Nächste Besprechung: streiche 28.11, setze 30.11.2024 16:00 Uhr
+
+
+Links:
+https://www.researchgate.net/publication/363759715_Comparing_Bag_of_Words_and_TF-IDF_with_different_models_for_hate_speech_detection_from_live_tweets

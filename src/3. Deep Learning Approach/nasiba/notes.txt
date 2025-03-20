@@ -1,0 +1,70 @@
+https://gpt5.blog/glove-global-vectors-for-word-representation/
+https://nlp.stanford.edu/projects/glove/
+
+word2vec hat größere Vector Size nicht gut funktioniert
+Vektor Size Änderung bei 
+
+Bei Glove wurden keine Durschnittsvektoren sondern die richtigen Vektoren genommen
+
+Warum wird One-Hot-Encoding verwendet?
+✅ Notwendig für neuronale Netze: Viele Machine-Learning-Modelle (z. B. neuronale Netze mit Softmax-Output) erwarten die Klassen als One-Hot-Vektoren.
+✅ Verhindert falsche numerische Interpretationen: Ein klassisches y_train = [0, 1, 2] könnte sonst als kontinuierliche Werte interpretiert werden.
+✅ Erleichtert die Berechnung des Fehlers (Loss Function): One-Hot-Vektoren werden oft mit der Kreuzentropie (categorical crossentropy) verwendet.
+to_categorical() wandelt Labels in One-Hot-Format um.
+Wird in klassifizierenden neuronalen Netzen benötigt.
+Verhindert, dass das Modell fälschlicherweise Klassen als Zahlen mit Reihenfolge interpretiert.
+Ist besonders wichtig bei mehrklassigen Klassifikationsproblemen mit Softmax-Aktivierung.
+
+Problem von RNNs: Vanishing Gradient
+Beim Training mit Backpropagation treten oft zwei Probleme auf:
+
+Vanishing Gradient (verschwindender Gradient)
+Wenn die Gradienten in tiefen Netzwerken immer kleiner werden, können frühere Zustände kaum mehr beeinflusst werden. Das macht es schwer, langfristige Abhängigkeiten zu lernen.
+Exploding Gradient (explodierender Gradient)
+Umgekehrt können die Gradienten in manchen Fällen zu groß werden, was das Training instabil macht.
+👎 Standard-RNNs sind daher nicht gut für lange Sequenzen geeignet.
+Lösung: LSTM (Long Short-Term Memory)
+
+Evaulation:
+Recall speziel für Klasse 1 festlegen: muss man in sigmoid nicht, da er dies automatisch macht
+
+Precision (Genauigkeit der positiven Vorhersagen)
+Class 0: 0.98 → 98 % der vorhergesagten Class-0-Fälle sind tatsächlich korrekt.
+Class 1: 0.88 → 88 % der vorhergesagten Class-1-Fälle sind tatsächlich korrekt.
+
+Recall (Empfindlichkeit / Wie viele Positive wurden erkannt?)
+Class 0: 0.99 → 99 % der tatsächlichen Class-0-Fälle wurden richtig vorhergesagt.
+Class 1: 0.66 → Nur 66 % der tatsächlichen Class-1-Fälle wurden richtig erkannt.
+➡ Der niedrige Recall für Class 1 bedeutet, dass 34 % der tatsächlichen positiven Fälle nicht erkannt wurden (False Negatives). Das Modell hat also Schwierigkeiten, alle Hate-Speech-Fälle zu erkennen.
+
+F1-Score (Harm. Mittelwert von Precision & Recall)
+Class 0: 0.99 → Sehr gut, da Precision & Recall hoch sind.
+Class 1: 0.76 → Mittelmäßig, da Recall niedrig ist.
+➡ Der niedrige F1-Score für Class 1 zeigt, dass das Modell nicht optimal darin ist, alle Hate-Speech-Fälle korrekt zu erkennen.
+
+
+Für sigmoid benötigt man kein one hot coding, während für softmax hot coding braucht
+
+Durch class_weight wurde an model mit sigmoid eine neu gewichtete Klassen übergeben
+
+MEhr Neuronen mit sigmoid wie 256 hat ohne class_weight gut funktioniert, mit class_weight war es gleich 0
+
+Verwenden einfach Recall() ohne class_id, da TensorFlow bei einem binären Klassifikationsproblem automatisch den Recall für Klasse 1 berechnet. Dadurch kannst du den Recall in jeder Epoche direkt in der history-Variable verfolgen, ohne One-Hot-Encoding der Labels.
+
+
+EarlyStopping:
+Überwacht den Validierungsverlust (val_loss) während des Trainings.
+Falls sich der val_loss über 5 aufeinanderfolgende Epochen nicht verbessert, wird das Training automatisch gestoppt.
+Mit restore_best_weights=True stellt es nach dem Abbruch die besten Gewichte (die mit dem niedrigsten val_loss) wieder her.
+Warum ist das wichtig?
+Verhindert Overfitting: Falls das Modell zu lange trainiert, passt es sich zu stark an die Trainingsdaten an.
+Spart Rechenzeit: Wenn das Modell bereits optimal ist, stoppt es das Training früher.
+
+ReduceLROnPlateau:
+Was macht es?
+Überwacht ebenfalls den Validierungsverlust (val_loss).
+Falls sich der val_loss über 3 Epochen nicht verbessert, wird die Lernrate (learning rate) halbiert (factor=0.5).
+Die minimale Lernrate ist auf 0.00001 begrenzt.
+Warum ist das wichtig?
+Verhindert Instabilität: Falls das Modell zu große Sprünge macht, kann eine kleinere Lernrate helfen, das Modell feiner zu justieren.
+Verbessert Konvergenz: Falls das Modell in einem lokalen Minimum feststeckt, kann eine kleinere Lernrate das Feintuning verbessern.
