@@ -15,7 +15,9 @@ In diesem Repository werden die Ergebnisse des WebScience-Praktikums 2024/2025 f
 
 ## Datenvorverarbeitung
 
-### Resampling
+### Resampling 
+Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der Implementierung geeigneter Resampling-Methoden begonnen. Nachdem sich jedoch die Datenqualität des ursprünglichen Datensatzes als unzureichend erwiesen hatte, wurde diese Arbeit gestoppt. Stattdessen wurde der Fokus auf das Training mit den erweiterten Daten und die Implementierung zusätzlicher Modelle gelegt.
+
 
 ### Vektorisierung
 
