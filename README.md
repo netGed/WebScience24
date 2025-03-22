@@ -28,6 +28,14 @@ In diesem Repository werden die Ergebnisse des WebScience-Praktikums 2024/2025 f
 ### Naive Bayes
 
 ### Support Vector Machine
+- zu finden im Ordner "Elena"
+- 1_original_date enthält die Dateien aus Trainingsphase 1 auf dem initalen Datensatz
+- In Trainingsphase 1 wurden für die Vektorisierungsmethoden w2v, glove und tfidf verschiedene SVM konfigurationen trainiert
+  [https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/elena/1_original_data/glove/SVM_glove_grid_original_data.ipynb]
+- Mixed_data enhätlt die Dateien aus Trainingsphase 2, in welcher das Training auf dem erweiterten Datensatz durchgeführt wurde
+- In beiden Trainingsphasen wurde jeweils für die drei Vektorisierungsmethoden w2v, glove und tfidf vier verschiedene Läufe - für jeweils einen der vier Kernel linear, poly, sigmoid und rbf trainiert. 
+
+
 
 ### RNN-GRU
 
