@@ -7,9 +7,9 @@ Vektor Size Änderung bei
 Bei Glove wurden keine Durschnittsvektoren sondern die richtigen Vektoren genommen
 
 Warum wird One-Hot-Encoding verwendet?
-✅ Notwendig für neuronale Netze: Viele Machine-Learning-Modelle (z. B. neuronale Netze mit Softmax-Output) erwarten die Klassen als One-Hot-Vektoren.
-✅ Verhindert falsche numerische Interpretationen: Ein klassisches y_train = [0, 1, 2] könnte sonst als kontinuierliche Werte interpretiert werden.
-✅ Erleichtert die Berechnung des Fehlers (Loss Function): One-Hot-Vektoren werden oft mit der Kreuzentropie (categorical crossentropy) verwendet.
+Notwendig für neuronale Netze: Viele Machine-Learning-Modelle (z. B. neuronale Netze mit Softmax-Output) erwarten die Klassen als One-Hot-Vektoren.
+Verhindert falsche numerische Interpretationen: Ein klassisches y_train = [0, 1, 2] könnte sonst als kontinuierliche Werte interpretiert werden.
+Erleichtert die Berechnung des Fehlers (Loss Function): One-Hot-Vektoren werden oft mit der Kreuzentropie (categorical crossentropy) verwendet.
 to_categorical() wandelt Labels in One-Hot-Format um.
 Wird in klassifizierenden neuronalen Netzen benötigt.
 Verhindert, dass das Modell fälschlicherweise Klassen als Zahlen mit Reihenfolge interpretiert.
