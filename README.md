@@ -21,9 +21,8 @@ Diese wurden im Notebook [Data Cleaning Notebook](https://github.com/netGed/WebS
 ### Resampling 
 Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der Implementierung geeigneter Resampling-Methoden begonnen. Nachdem sich jedoch die Datenqualität des ursprünglichen Datensatzes als unzureichend erwiesen hatte, wurde diese Arbeit gestoppt. Stattdessen wurde der Fokus auf das Training mit den erweiterten Daten und die Implementierung zusätzlicher Modelle gelegt.
 
-
 ### Vektorisierung
-Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/vectorize_functions.py) abgelegt. Jedoch haben einige Modelle diese Funktionen speziell für diese Modelle angepasst. 
+Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/vectorize_functions.py) abgelegt. Jedoch haben einige Modelle diese Funktionen speziell für diese Modelle angepasst. (siehe [LSTM Glove](https://github.com/netGed/WebScience24/blob/c858a5a7f404ab17090bdaed5d69d01615f158b7/src/3.%20Deep%20Learning%20Approach/nasiba/Training/Phase_2/vector_functions.py). Die Funktionen wurden direkt im jeweiligen Modelltraining in Notebooks als Datenvorbereitungsschritt angewendet, bevor diese in Trainings eingespeist wurden.
 
 ## Modelltraining
 
