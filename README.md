@@ -9,17 +9,21 @@ In diesem Repository werden die Ergebnisse des WebScience-Praktikums 2024/2025 f
 + [manual_labeled](https://github.com/netGed/WebScience24/tree/main/data/manual_labeled): Stichprobe der mixed-data-Testdaten, bei denen das Label durch die Gruppe kontrolliert wurde.
 + Die Jupyter-Notebooks im [data](https://github.com/netGed/WebScience24/tree/main/data)-Ordner sind für das Data-Splitting und -Preprocessing (=> Aufruf der einzelnen Aufbereitungsschritte gem. Anforderungen) zuständig. Bei den Datensätzen für Deep-Learning-Modelle wurden z.B. Lemmatisierung, Entfernen von Stopwords nicht ausgeführt. 
 
-
-
 ## Explorative Datenanalyse
-
++ Das Jupyter-Notebook im ([Data Exploring](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/1_2_explore_data.ipynb)) wurden die allgemeine Data Explorationsschritte und im Notebook [Data Qualitiy Checks](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/0_0_data_quality_check.ipynb) wurden die Datenqualität Checks durchgeführt.
+  
 ## Datenvorverarbeitung
+
+### Datenbereinigung
+Die Funktionen zur Datenbereinigung wurden im zentralen Ordner [functions/cleaning_functions](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/clean_data_generic_functions.py) abgelegt. 
+Diese wurden im Notebook [Data Cleaning Notebook](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/1_1_clean_data.ipynb) verwendet, um initialen Datensatz durch erstellten Funktionen zu bereinigen. 
 
 ### Resampling 
 Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der Implementierung geeigneter Resampling-Methoden begonnen. Nachdem sich jedoch die Datenqualität des ursprünglichen Datensatzes als unzureichend erwiesen hatte, wurde diese Arbeit gestoppt. Stattdessen wurde der Fokus auf das Training mit den erweiterten Daten und die Implementierung zusätzlicher Modelle gelegt.
 
 
 ### Vektorisierung
+Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/vectorize_functions.py) abgelegt. Jedoch haben einige Modelle diese Funktionen speziell für diese Modelle angepasst. 
 
 ## Modelltraining
 
@@ -48,7 +52,8 @@ Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der
 - Die Evaluation der Trainingsphase 2 fand über alle Outputs hinweg statt: [https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/elena/mixed_data/evaluate_models_new_reports.ipynb]
 
 ### RNN-LSTM
-
+LSTM-Modelle wurden im Ordner [LSTM Trainings](https://github.com/netGed/WebScience24/tree/accfb11e2146db2f377ce93ae31b101dbe01051a/src/3.%20Deep%20Learning%20Approach/nasiba/Training) für 2 Phasen in jeweiligen Ordner [Phase 1](https://github.com/netGed/WebScience24/tree/accfb11e2146db2f377ce93ae31b101dbe01051a/src/3.%20Deep%20Learning%20Approach/nasiba/Training/Phase_1) und [Phase 2](https://github.com/netGed/WebScience24/tree/accfb11e2146db2f377ce93ae31b101dbe01051a/src/3.%20Deep%20Learning%20Approach/nasiba/Training/Phase_2) trainiert. 
+Die Trainings und Ergebnisse wurden für jede Vektorisierungsart jeweils separat gespeichert.
 
 ### RNN-GRU
 + [deep-learning-models.ipynb](https://github.com/netGed/WebScience24/blob/main/src/3.%20Deep%20Learning%20Approach/imran/deep-learning-models.ipynb): Notebook für das Training der GRU-Modelle, das sowohl Phase 1 als auch Phase 2 abdeckt. Da die Hyperparameter-Optimierung in Phase 2 keine weiteren Leistungsverbesserungen erzielte, wurde die Architektur sowie die Parameterkonfiguration aus Phase 1 übernommen. Für die Modellentwicklung wurden verschiedene Varianten mit unterschiedlichen Embedding-Methoden und Parametereinstellungen trainiert. Final ausgewählt wurde die Konfiguration, die die beste Modellperformance erreichte.
