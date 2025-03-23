@@ -47,12 +47,14 @@ Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der
   jeweils verschiedene SVM Konfigurationen für die vier Kernel linear, sigmoid, rbf und poly trainiert
 - Die Evaluation der Trainingsphase 2 fand über alle Outputs hinweg statt: [https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/elena/mixed_data/evaluate_models_new_reports.ipynb]
 
-
-### RNN-GRU
-
 ### RNN-LSTM
 
+
+### RNN-GRU
++ [deep-learning-models.ipynb](https://github.com/netGed/WebScience24/blob/main/src/3.%20Deep%20Learning%20Approach/imran/deep-learning-models.ipynb): Notebook für das Training der GRU-Modelle, das sowohl Phase 1 als auch Phase 2 abdeckt. Da die Hyperparameter-Optimierung in Phase 2 keine weiteren Leistungsverbesserungen erzielte, wurde die Architektur sowie die Parameterkonfiguration aus Phase 1 übernommen. Für die Modellentwicklung wurden verschiedene Varianten mit unterschiedlichen Embedding-Methoden und Parametereinstellungen trainiert. Final ausgewählt wurde die Konfiguration, die die beste Modellperformance erreichte.
+
 ### BERT
+[bert-models.ipynb](https://github.com/netGed/WebScience24/blob/main/src/3.%20Deep%20Learning%20Approach/imran/bert-models.ipynb): Notebook für das Finetuning von BERT-Modellen.. Aufgrund der hohen Rechenanforderungen wurde das Training ausschließlich auf der GPU-Infrastruktur der Universität durchgeführt. Je nach Experiment wurden im Notebook flexibel Parameter angepasst, darunter das eingesetzte Basismodell [bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased), die Anzahl der Epochen sowie der Scoring-Mechanismus. Dank des modularen Aufbaus konnte das gesamte Finetuning verschiedener BERT-Modelle zentral in einem einzigen Notebook umgesetzt werden.
 
 ### RoBERTa
 + [01_finetuning_roberta-models.ipynb](https://github.com/netGed/WebScience24/blob/main/src/3.%20Deep%20Learning%20Approach/chris/01_finetuning_roberta-models.ipynb): Notebook für das Finetuning von RoBERTa-Modellen. Aufgrund der benötigten Rechenleistung fand das Training ausschließlich auf Hardware der Uni statt und es wurden je nach Modell Parameter im Notebook ausgetauscht (z.B. Basismodelle [roberta-base-sentiment](https://huggingface.co/cardiffnlp/twitter-roberta-base-sentiment-latest), [roberta-base-hate](https://huggingface.co/cardiffnlp/twitter-roberta-base-hate), Anzahl der Epochen, Scorer etc.), dementsprechend nur ein Notebook für das gesamte Finetuning.
