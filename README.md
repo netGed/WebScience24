@@ -30,7 +30,20 @@ Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing]
 + [01_olddata_ensemble_training_tuning_model-selection.ipynb](https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/chris): Notebook für die Trainingsphase 1 von Ensemble-Modellen auf den ursprünglichen Daten. Hierbei wurde zuerst eine geeignete Vektorisierungsart als Basis bestimmt (TF-IDF). Anschließend wurden verschiedene Modelle aus Libraries wie CatBoost, XGBoost oder (Balanced-)RandomForest trainiert und ausgewertet. Für das beste Modell dieser Phase wurde anschließend ein umfassendes Hyperparametertuning (Parameter, Scoring) durchgeführt.  
 + [02_mixed_ensemble_training_tuning_model-selection.ipynb](https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/chris): Notebook analog zum Vorgehen für die ursprünglichen Daten, hier dann Trainingsphase 2 auf den erweiterten Daten (mixed-data). 
 + [03_mixed_ensemble_detail-evaluation.ipynb](https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/chris/03_mixed_ensemble_detail-evaluation.ipynb): Detaillierte Auswertung der besten beiden Modelle (BalancedRF und CatBoostClassifier), dabei Analyse, welche Tweets falsch vorhergesagt werden und was sie gemeinsam haben bzw. wo sie sich unterscheiden.
+
 ### Naive Bayes
+- zu finden [hier]([https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/elena/1_original_data/glove/SVM_glove_grid_original_data.ipynb)
+- Im Ordner [https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/first_dataset](https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/first_dataset) befinden sich Notebooks für den initialen Datensatz und das Training mit:
+  - GloVe
+  - TF-IDF
+  - Word2Vec
+  - Word2Vec mit Experimenten zu den Parametern
+  - Evaluation
+- Im Ordner [https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/new_dataset](https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/new_dataset) analog für den zweiten Datensatz
+- Im Ordner [https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/mixed_dataset](https://github.com/netGed/WebScience24/tree/main/src/2.%20Classical%20ML%20Methods/sven/mixed_dataset) analog für den aus beiden Datensätzen gemischten Datensatz (mixed-data)
+- [Notebook](https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/sven/evaluate_first_models_test_dataset.ipynb) zur Evaluation der auf dem ersten Datensatz trainierten Modelle
+- [Notebook](https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/sven/evaluate_mixed_models_test_dataset.ipynb) zur Evaluation der auf dem gemischten Datensatz trainierten Modelle
+- [Notebook](https://github.com/netGed/WebScience24/blob/main/src/2.%20Classical%20ML%20Methods/sven/tweet_classification_old_and_new_models.ipynb) zur Detailanalyse z.B. einzelner Tweets oder Schlagwörter (Wie oft wurden Tweets die Wort xy enthalten falsch klassifiziert?)
 
 ### Support Vector Machine
 - zu finden im Ordner "Elena"
