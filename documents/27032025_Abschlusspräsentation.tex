@@ -1,0 +1,347 @@
+%%% Choose between 16:9 and 4:3 format by commenting out/uncommenting one of the following lines:
+\documentclass[aspectratio=169]{beamer} % 16:9
+% \documentclass{beamer} % 4:3
+%=========================================================================================================================
+\usepackage[ngerman]{babel}
+\usepackage[utf8]{inputenc}
+% \usepackage[english]{babel}     % English language
+\usepackage[latin1]{inputenc}   % Input encoding
+\usepackage{tikz}               % For creating graphics
+\usepackage{ulem} % für das Unterstreichen
+\usepackage{url}                % For including urls
+\usepackage{tabularx}           % For better tables
+\usepackage{graphicx}
+\usetheme{aig}                  % Set beamer theme
+% \usepackage{enumitem}
+
+\documentclass{article}
+\usepackage{beamerthemeaig} 
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+
+% \usepackage{xcolor} %  use colors
+
+% \definecolor{myred}{rgb}{1, 0, 0}
+% \definecolor{myblue}{rgb}{0, 0, 1}
+% \definecolor{mygreen}{rgb}{0, 1, 0}
+% \definecolor{mypurple}{rgb}{0.5, 0, 0.5}
+% \definecolor{myorange}{rgb}{1, 0.5, 0}
+% \definecolor{mypink}{rgb}{1, 0.75, 0.8}
+% \definecolor{mycyan}{rgb}{0, 1, 1}
+% \definecolor{mybrown}{rgb}{0.6, 0.4, 0.2}
+% \definecolor{mygelb}{rgb}{1.0, 1.0, 0.0}  
+
+
+%=========================================================================================================================
+\title{Erkennung von Hate Speech mit Twitter - Abschlusspr\"asentation}
+
+\author[Friedrich, Tuychieva, Wall, Chalil, Engels]{Elena Marion Friedrich, Nasiba Tuychieva, Sven Ole Wall, Imran Nteli Chalil, Christian Engels}
+\institute{Artificial Intelligence Group,\\
+University of Hagen, Germany}
+\date{18. März 2025}
+%=========================================================================================================================
+\logo{\includegraphics[width=3cm]{figures/logoaig.png}}
+%=========================================================================================================================
+
+\begin{document}
+
+%=========================================================================================================================
+
+\begin{frame}
+  \titlepage
+\end{frame}
+\nologo
+
+\begin{frame}
+		\frametitle{Overview}
+        \tableofcontents[]
+\end{frame}
+
+
+
+\section{Workflow}
+\begin{frame}{Workflow}
+ \begin{figure}[h!]
+        \centering
+        \includegraphics[scale=0.5]{figures/workflow_latestV.png}
+        %\caption{Workflow}
+        \label{fig:yourimage}
+    \end{figure}
+\end{frame}
+%\begin{frame}{Workflow}
+% \begin{figure}[h!]
+%        \centering
+%        \includegraphics[scale=0.7]
+%{figures/workflow_neu.png}
+ %       %\caption{Workflow}
+%        \label{fig:yourimage}
+%    \end{figure}
+%\end{frame}
+
+
+
+\section{Verfeinerung Fragestellung (Dez.)}
+\begin{frame}{Verfeinerung Fragestellung (Dez.)}
+    \begin{block}{Ausgangsfrage}
+        Wie kann mithilfe von klassischen Verfahren des maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+        \begin{itemize}
+            \item Klassifikation von Text / Sentiment Analysis
+        \end{itemize}
+    \end{block}    
+    \begin{exampleblock}{Methodische Detailfragen}
+        \begin{itemize}
+            \item Welche M\"oglichkeiten zum Umgang mit Klassenungleichgewichten gibt es und wie ist deren Einfluss auf die Modellperformance?
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+\section{Auswahl der Modelle und Evaluationsmetriken}
+\begin{frame}{Modellauswahl}
+    \vspace{-0.5cm} % Bild nach oben verschieben
+    \begin{figure}
+        \centering
+        \includegraphics[scale=0.42]{figures/modellauswahl_alle.png}
+        %\caption{Modellauswahl}
+        \label{fig:yourimage}
+    \end{figure}
+\end{frame}
+
+
+\begin{frame}{Auswahl der Evaluationsmetriken}
+
+\textbf{Warum Recall für Klasse 1 (Hate Speech)?}
+\begin{itemize}
+    \item \textbf{Hauptziel:} Kein Hate-Speech-Tweet soll übersehen werden.
+    \item Definition: Anteil der korrekt erkannten Hate-Speech-Tweets an allen tatsächlichen Hate-Speech-Tweets.
+\end{itemize}
+
+\textbf{Warum zusätzlich der F1-Score?}
+\begin{itemize}
+    \item Precision bleibt relevant: Unnötige False Positives sollen vermieden werden.
+    \item F1-Score als harmonisches Mittel: Stellt sicher, dass nicht nur eine der beiden Metriken optimiert wird.
+\end{itemize}
+
+\textbf{Warum nicht Accuracy als Hauptmetrik?}
+\begin{itemize}
+    \item Klassenungleichgewicht: Hate Speech ist viel seltener als Nicht-Hate-Speech \\
+    (7\% der Datensätze).
+\end{itemize}
+
+\end{frame}
+
+\section{Experimente und Ergebnisse}
+\begin{frame}{Trainingsphase I}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|p{5.5cm}|p{2cm}|p{2cm}|p{2cm}|}
+        \hline
+            \textbf{Modell} & \textbf{F1} & \textbf{Recall} \\
+        \hline
+            BalancedRandomForest TFIDF & 0.555  & 0.439 \\
+            SVM GloVe rbf & 0.572 & 0.738 \\
+            SVM TFIDF rbf & 0.633 & 0.610 \\
+            NB TFIDF & 0.325 & 0.323  \\
+            NB GloVe & 0.337 & 0.417  \\
+            LSTM Fasttext & 0.234 & 0.936 \\
+            LSTM GloVe & 0.581 & 0.638  \\
+            GRU GloVe & 0.651 & 0.603\\
+        \hline
+\end{tabular}
+\caption{Konfiguration und Ergebnisse für die am besten performenden Modelle}
+\label{tab:model_performance}
+\end{table}
+\end{frame}
+
+% \section{Datensätze}
+\begin{frame}{Datensätze}
+
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|l|p{6.5cm}|p{1.4cm}|p{1.4cm}|}
+        \hline
+        \textbf{ID} & \textbf{Tweet} & \textbf{Label Original} & \textbf{Label Team} \\
+        \hline
+        805 & keep up the opposition to @user \#endthenation & 1 & 0 \\
+        14306 & @user i'm blessedt #iconic \#lovebeingalegend & 1 & 0 \\
+        18 & retweet if you agree!  & 1 & 0 \\
+        2994 & #aloha and peace symbol on earth symbol we oppose #fascism  and all #warsforoil  & 1 & 0 \\
+        \hline
+    \end{tabular}
+    \caption{Beispiele für unzureichende Qualität der originalen Labels}
+    \label{tab:model_performance}
+\end{table}
+
+\centering
+\large$\downarrow$ \\ 
+\vspace{0.10cm} 
+\small\textbf{Entscheidung gegen Resampling und stattdessen für Datenerweiterung}
+
+% \vspace{0.3cm} % Kleiner Abstand zwischen Pfeil und Text
+% Neuer Datensatz: 
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{|l|c|}
+%         \hline
+%         \textbf{Label} & \textbf{Einträge} \\
+%         \hline
+%         Keine Hassrede & 1?? \\
+%         Hassrede & ?? \\
+%         \hline
+%         \textbf{} & \textbf{176.000} \\
+%         \hline
+%     \end{tabular}
+%     \caption{Übersicht der Label-Verteilung nach Datenerweiterung}
+%     \label{tab:label_distribution}
+% \end{table}
+
+
+
+\end{frame}
+
+
+%\section{Verfeinerung Fragestellung (Jan.)}
+\begin{frame}{Verfeinerung Fragestellung (Jan.)}
+    \begin{block}{Ausgangsfrage}
+        Wie kann mithilfe von klassischen Verfahren des maschinellen Lernens sowie mit Deep-Learning-Verfahren Hate Speech auf sozialen Plattformen anhand des Beispiels Twitter erkannt werden?
+        \begin{itemize}
+            \item Klassifikation von Text / Sentiment Analysis
+        \end{itemize}
+    \end{block}    
+    \begin{exampleblock}{Methodische Detailfragen}
+        \begin{itemize}
+            \item Gibt es Modelle mit besserer Performance z.B. BERT/RoBERTa?
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+
+%\section{Trainingsphase II}
+\begin{frame}{Trainingsphase II}
+
+\begin{table}[h]
+	\begin{tabular}{|p{5.5cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline
+			\textbf{Modell} & \textbf{F1} & \textbf{Recall} \\
+		\hline 
+                BalancedRF TFIDF	&  0.564 & 0.702  \\
+			NB TFIDF	& 0.513	& 0.754	 \\
+			NB W2V	& 0.469	& 0.712 \\
+                SVM TFIDF Linear & 0.539 & 0.779 \\
+                SVM GloVe rbf & 0.506 & 0.823 \\
+			LSTM GloVe	& 0.524 & 0.803  \\
+			GRU GloVe	& 0.563 & 0.602   \\
+                
+		\hline
+\end{tabular}
+\caption{Konfiguration und Ergebnisse für die am besten performenden Modelle}
+\label{tab:model_performance}
+\end{table}
+
+\end{frame}
+
+
+%\section{Training Transformer-Modelle}
+\begin{frame}{Training Transformer-Modelle}
+
+\begin{columns}  % Spaltenlayout starten
+
+\begin{column}{0.4\textwidth}
+    \centering
+    %\vspace{-2cm}  % Hier den Wert anpassen, um das Bild weiter nach oben zu schieben
+    \includegraphics[scale=0.4]{figures/modellauswahl_bert.png}
+    %\caption{Modellauswahl}
+\end{column}
+
+% Rechte Spalte mit der Tabelle
+\begin{column}{0.6\textwidth}
+    \raggedright  % Setzt die Tabelle linksbündig
+    \hspace{-2.5cm}  % Verschiebt die Tabelle nach links (anpassen, falls nötig)
+    \begin{table}
+        \renewcommand{\arraystretch}{1.2}  % Abstand zwischen Zeilen leicht erhöhen
+        \begin{tabular}{|p{2cm}|p{2cm}|p{2cm}|}  % Dritte Spalte ergänzt für Recall
+            \hline
+            \textbf{Modell} & \textbf{F1-Score} & \textbf{Recall} \\
+            \hline
+            BERT & 0.59	& 0.678 \\
+            RoBERTa & 0.593 & 0.619 \\
+            \hline
+        \end{tabular}
+        \caption{Ergebnisse der besten Modelle}
+        \label{tab:model_performance}
+    \end{table}
+\end{column}
+
+\end{columns}  % Spaltenlayout beenden
+\end{frame}
+
+%\section{Modellevaluation Manuelles Labeling}
+\begin{frame}{Modellevaluation Manuelles Labeling}
+
+\begin{table}[h]
+	\begin{tabular}{|p{5.5cm}|p{2cm}|p{2cm}|p{2cm}|}
+		\hline
+			\textbf{Modell} & \textbf{F1} & \textbf{Recall} \\
+		\hline   
+                BalancedRF & 0.842 &	0.774 \\
+			NB & 0.669 & 0.989\\
+			SVM	& 0.753 & 0.785 \\
+			LSTM 	& 0.739 & 0.907  \\
+			GRU & 0.745 & 0.751 \\
+                BERT &  0.781 & 0.797 \\
+                RoBERTa & 0.847 & 0.814	\\
+		\hline
+\end{tabular}
+\caption{Konfiguration und Ergebnisse für die am besten performenden Modelle mit manuell gelabelten Datensätzen}
+\label{tab:model_performance}
+\end{table}
+
+\end{frame}
+\section{Live Demo}
+\begin{frame}{Live Demo}
+    
+\end{frame}
+
+\section{Fazit und Ausblick}
+\setbeamertemplate{itemize items}[default]
+\begin{frame}{Fazit und Ausblick}
+\textbf{Herausforderungen}
+\begin{itemize}
+    \item Datensätze mit Klassenungleichgewicht.
+    \item Fehlklassifizierte Labels beeinflussten die Ergebnisse.
+    \item Hoher Anteil an Rechtschreibfehlern in Social-Media-Texten erschwert die Klassifikation.
+\end{itemize}
+
+\textbf{Erkenntnisse}
+\begin{itemize}
+    \item Vortrainierte Vektorisierungsmethoden performen meistens besser (GloVe vs. Word2Vec).
+    \item Getestete Modelle haben unterschiedliche Stärken.
+   \item Manuelles Labeling führte zu erheblicher Performance-Verbesserung.
+    
+\end{itemize}
+
+\textbf{Ausblick}
+\begin{itemize}
+    \item Zukünftige Arbeiten mit hochwertiger gelabelten Datensätze.
+    \item Einbeziehung zusätzlicher Merkmale (z. B. Hashtags, Emojis).
+\end{itemize}
+\end{frame}
+
+% \appendix
+
+% \section{Appendix}
+
+% \begin{frame}{Appendix}
+%    This is an appendix.
+%   \begin{itemize}
+%       \item Page numbers start from the 
+% beginning.
+%    \end{itemize}
+% \end{frame}
+
+
+\begin{frame}
+  \titlepage
+\end{frame}
+\nologo
+
+\end{document}
