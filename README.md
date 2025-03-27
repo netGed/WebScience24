@@ -22,8 +22,11 @@ In diesem Repository werden die Ergebnisse des WebScience-Praktikums 2024/2025 f
 ## Datenvorverarbeitung
 
 ### Datenbereinigung
-Die Funktionen zur Datenbereinigung wurden im zentralen Ordner [functions/cleaning_functions](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/clean_data_generic_functions.py) abgelegt. 
-Diese wurden im Notebook [Data Cleaning Notebook](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/1_1_clean_data.ipynb) verwendet, um initialen Datensatz durch erstellten Funktionen zu bereinigen. 
+Die Funktionen zur Datenbereinigung wurden im zentralen Ordner [functions/cleaning_functions](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/clean_data_generic_functions.py) angelegt. 
+Diese Funktionen wurden in den Notebooks
++ [Data Cleaning Notebook](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/1_1_clean_data.ipynb)
++ [Data Cleaning Pipeline](https://github.com/netGed/WebScience24/blob/main/src/functions/cleaning_pipeline.py)
+verwendet, um unterschiedliche Datensätze zu bereinigen.
 
 ### Resampling 
 Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der Implementierung geeigneter Resampling-Methoden begonnen. Die dabei entstandenen Ergebnisse sind unter [resampling](https://github.com/netGed/WebScience24/tree/main/src/1a.%20Resampling%20Methods) einsehbar. Nachdem sich jedoch die Datenqualität des ursprünglichen Datensatzes als unzureichend erwiesen hatte, wurde diese Arbeit gestoppt. Stattdessen wurde der Fokus auf das Training mit den erweiterten Daten und die Implementierung zusätzlicher Modelle gelegt.
