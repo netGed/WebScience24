@@ -26,13 +26,14 @@ Die Funktionen zur Datenbereinigung wurden im zentralen Ordner [functions/cleani
 Diese Funktionen wurden in den Notebooks
 + [Data Cleaning Notebook](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/1.%20Explorative%20Analysis%20%26%20Preprocessing/team/1_1_clean_data.ipynb)
 + [Data Cleaning Pipeline](https://github.com/netGed/WebScience24/blob/main/src/functions/cleaning_pipeline.py)
+
 verwendet, um unterschiedliche Datensätze zu bereinigen.
 
 ### Resampling 
 Verschiedene Teammitglieder haben bereits zu Beginn der Trainingsphase 1 mit der Implementierung geeigneter Resampling-Methoden begonnen. Die dabei entstandenen Ergebnisse sind unter [resampling](https://github.com/netGed/WebScience24/tree/main/src/1a.%20Resampling%20Methods) einsehbar. Nachdem sich jedoch die Datenqualität des ursprünglichen Datensatzes als unzureichend erwiesen hatte, wurde diese Arbeit gestoppt. Stattdessen wurde der Fokus auf das Training mit den erweiterten Daten und die Implementierung zusätzlicher Modelle gelegt.
 
 ### Vektorisierung
-Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/vectorize_functions.py) abgelegt. Jedoch haben einige Modelle diese Funktionen speziell für diese Modelle angepasst. (siehe [LSTM Glove](https://github.com/netGed/WebScience24/blob/c858a5a7f404ab17090bdaed5d69d01615f158b7/src/3.%20Deep%20Learning%20Approach/nasiba/Training/Phase_2/vector_functions.py). Die Funktionen wurden direkt im jeweiligen Modelltraining in Notebooks als Datenvorbereitungsschritt angewendet, bevor diese in Trainings eingespeist wurden.
+Die Vektorisierungsfunktionen wurden im zentralen Ordner [functions/vectorizing](https://github.com/netGed/WebScience24/blob/accfb11e2146db2f377ce93ae31b101dbe01051a/src/functions/vectorize_functions.py) abgelegt. Jedoch wurden diese Funktionen für einige Modelle indivudell angepasst (siehe [LSTM Glove](https://github.com/netGed/WebScience24/blob/c858a5a7f404ab17090bdaed5d69d01615f158b7/src/3.%20Deep%20Learning%20Approach/nasiba/Training/Phase_2/vector_functions.py)). Die Funktionen wurden direkt im jeweiligen Modelltraining in Notebooks als Datenvorbereitungsschritt angewendet, bevor diese in Trainings eingespeist wurden.
 
 ## Modelltraining
 
