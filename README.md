@@ -7,7 +7,7 @@ In diesem Repository werden die Ergebnisse des WebScience-Praktikums 2024/2025 f
 
 ### Abschlusspräsentation [[Latex]](https://github.com/netGed/WebScience24/tree/main/documents/20250318_Abschlusspräsentation.tex) [[PDF]](https://github.com/netGed/WebScience24/tree/main/documents/20250318_Abschlusspräsentation.pdf)
 
-### Ausarbeitung 
+### Ausarbeitung [[PDF]](https://github.com/netGed/WebScience24/tree/main/documents/Abschlussbericht.pdf)
 
 ## Daten
 + [twitter_hate-speech](https://github.com/netGed/WebScience24/tree/main/data/twitter_hate-speech): Ursprüngliche Daten, für die weitere Verarbeitung der einzelnen Modelle und nach Train/Test/Predict aufgeteilt. Bei Predict handelt es sich um Daten ohne Label (wurden nicht bereitgestellt), daher können diese Daten nur für eine stichprobenartige Klassifikation verwendet werden.
