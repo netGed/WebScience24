@@ -22,7 +22,7 @@ Vanishing Gradient (verschwindender Gradient)
 Wenn die Gradienten in tiefen Netzwerken immer kleiner werden, können frühere Zustände kaum mehr beeinflusst werden. Das macht es schwer, langfristige Abhängigkeiten zu lernen.
 Exploding Gradient (explodierender Gradient)
 Umgekehrt können die Gradienten in manchen Fällen zu groß werden, was das Training instabil macht.
-👎 Standard-RNNs sind daher nicht gut für lange Sequenzen geeignet.
+Standard-RNNs sind daher nicht gut für lange Sequenzen geeignet.
 Lösung: LSTM (Long Short-Term Memory)
 
 Evaulation:
